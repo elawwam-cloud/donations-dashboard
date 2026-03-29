@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سجل الحضور 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f5f0e8;
+  --surface: #fdfaf5;
+  --border: #d6c9a8;
+  --green: #2d6a4f;
+  --green-mid: #40916c;
+  --green-light: #d8f3dc;
+  --green-border: #95d5b2;
+  --red: #9b2226;
+  --red-light: #fde8e8;
+  --red-border: #e9a0a0;
+  --text: #1a1a0e;
+  --muted: #7a7060;
+  --surface2: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+header { background: linear-gradient(135deg, #1a2e1a, #2d5a3d, #1a2e1a); padding: 30px 24px; text-align: center; }
+header h1 { color: #b7e4c7; font-size: 26px; font-weight: 900; }
+header p { color: #74c69d; font-size: 13px; margin-top: 6px; }
+
+.tabs { display:flex; border-bottom:2px solid var(--border); background:var(--surface); }
+.tab { flex:1; padding:14px; text-align:center; font-family:'Cairo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; border:none; background:transparent; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+.tab.active { color:var(--green); border-bottom-color:var(--green); }
+
+.page { display:none; padding:24px; max-width:680px; margin:0 auto; }
+.page.active { display:block; }
+
+.date-box { background:var(--green-light); border:1px solid var(--green-border); border-radius:12px; padding:14px 18px; text-align:center; margin-bottom:20px; font-weight:700; color:var(--green); font-size:15px; }
+
+.names-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px; margin-bottom:24px; }
+.name-btn { padding:13px 8px; border-radius:10px; border:2px solid var(--border); background:var(--surface); font-family:'Cairo',sans-serif; font-size:13px; font-weight:700; cursor:pointer; color:var(--text); transition:all 0.2s; text-align:center; }
+.name-btn:hover { border-color:var(--green-mid); color:var(--green); background:var(--green-light); }
+.name-btn.selected { background:var(--green); border-color:var(--green); color:white; transform:scale(1.03); }
+.name-btn.recorded { background:var(--green-light); border-color:var(--green-border); color:var(--green); cursor:default; }
+
+.submit-btn { width:100%; padding:16px; background:var(--green); color:white; border:none; border-radius:12px; font-family:'Cairo',sans-serif; font-size:16px; font-weight:900; cursor:pointer; transition:all 0.2s; }
+.submit-btn:hover:not(:disabled) { background:var(--green-mid); }
+.submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.success-box { display:none; background:var(--green-light); border:1px solid var(--green-border); border-radius:12px; padding:16px; text-align:center; color:var(--green); font-weight:700; margin-top:14px; font-size:15px; }
+.error-box { display:none; background:var(--red-light); border:1px solid var(--red-border); border-radius:12px; padding:14px; text-align:center; color:var(--red); font-weight:700; margin-top:14px; font-size:14px; }
+
+.admin-lock { text-align:center; padding:50px 20px; }
+.pass-input { width:100%; max-width:260px; padding:12px 16px; border:2px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:16px; text-align:center; outline:none; margin:18px 0 10px; letter-spacing:6px; background:var(--surface); }
+.pass-input:focus { border-color:var(--green); }
+.lock-btn { padding:11px 32px; background:var(--green); color:white; border:none; border-radius:10px; font-family:'Cairo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
+.lock-btn:hover { background:var(--green-mid); }
+.pass-error { color:var(--red); font-size:13px; margin-top:10px; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:12px; margin-bottom:20px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 14px; text-align:center; }
+.stat-val { font-size:30px; font-weight:900; color:var(--green); }
+.stat-lbl { font-size:12px; color:var(--muted); font-weight:600; margin-top:4px; }
+
+.refresh-btn { width:100%; padding:10px; background:transparent; border:1.5px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:13px; font-weight:700; cursor:pointer; color:var(--muted); margin-bottom:14px; transition:all 0.2s; }
+.refresh-btn:hover { border-color:var(--green); color:var(--green); }
+.filter-input { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:13px; outline:none; margin-bottom:14px; background:var(--surface); color:var(--text); }
+.filter-input:focus { border-color:var(--green); }
+
+.girl-row { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:10px; cursor:pointer; transition:all 0.2s; }
+.girl-row:hover { border-color:var(--green-mid); box-shadow:0 2px 12px rgba(45,106,79,0.1); transform:translateY(-1px); }
+.girl-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.girl-name-lbl { font-weight:700; font-size:14px; }
+.girl-badges { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.badge { padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700; }
+.badge-green { background:var(--green-light); color:var(--green); }
+.badge-red { background:var(--red-light); color:var(--red); }
+.rate { font-size:15px; font-weight:900; }
+.dots-wrap { display:flex; flex-wrap:wrap; gap:4px; }
+.dot { width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
+.dot-p { background:var(--green-light); color:var(--green); border:1px solid var(--green-border); }
+.dot-a { background:var(--red-light); color:var(--red); border:1px solid var(--red-border); }
+.tap-hint { font-size:11px; color:var(--muted); margin-top:8px; text-align:left; }
+
+.loading-txt { text-align:center; padding:50px; color:var(--muted); font-size:15px; }
+
+/* ══ Modal ══ */
+.modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.55); z-index:1000; overflow-y:auto; padding:20px; }
+.modal-box { background:var(--surface2); border-radius:16px; max-width:720px; margin:0 auto; padding:28px; position:relative; }
+.modal-close { position:absolute; top:16px; left:16px; background:var(--red-light); border:none; border-radius:8px; padding:7px 16px; cursor:pointer; font-family:'Cairo',sans-serif; font-weight:700; color:var(--red); font-size:13px; }
+.modal-print { position:absolute; top:16px; right:16px; background:var(--green); border:none; border-radius:8px; padding:7px 16px; cursor:pointer; font-family:'Cairo',sans-serif; font-weight:700; color:white; font-size:13px; }
+
+/* ══ Report inside modal ══ */
+.report-header { text-align:center; margin:40px 0 24px; }
+.report-name { font-size:24px; font-weight:900; color:var(--green); }
+.report-sub { font-size:13px; color:var(--muted); margin-top:4px; }
+.report-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+.rep-stat { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+.rep-stat-val { font-size:24px; font-weight:900; color:var(--green); }
+.rep-stat-lbl { font-size:12px; color:var(--muted); font-weight:600; margin-top:3px; }
+.chart-section { margin-bottom:24px; }
+.section-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:12px; border-right:4px solid var(--green); padding-right:10px; }
+.chart-wrap { background:var(--bg); border-radius:10px; padding:16px; border:1px solid var(--border); margin-bottom:16px; }
+.sessions-table { width:100%; border-collapse:collapse; font-size:13px; }
+.sessions-table th { background:var(--green); color:white; padding:10px 12px; text-align:right; font-weight:700; }
+.sessions-table td { padding:9px 12px; border-bottom:1px solid var(--border); }
+.sessions-table tr:nth-child(even) td { background:var(--bg); }
+.present-row td { color:var(--green); font-weight:700; }
+.absent-row td { color:var(--red); }
+
+/* ══ Print ══ */
+@media print {
+  body > *:not(.modal-overlay) { display:none !important; }
+  .modal-overlay { display:block !important; position:static; background:none; padding:0; }
+  .modal-box { box-shadow:none; padding:16px; }
+  .modal-close, .modal-print { display:none !important; }
+  .report-header { margin-top:0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 سجل الحضور 2026</h1>
+  <p id="hdr-date"></p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('attend')">تسجيل حضوري ✅</button>
+  <button class="tab" onclick="showTab('admin')">لوحة الإدارة 📊</button>
+</div>
+
+<!-- ══ Attend ══ -->
+<div class="page active" id="tab-attend">
+  <div class="date-box" id="today-box"></div>
+  <div class="names-grid" id="names-grid"></div>
+  <button class="submit-btn" id="submit-btn" onclick="submitAttendance()" disabled>سجّلي حضوري 🌿</button>
+  <div class="success-box" id="success-box"></div>
+  <div class="error-box" id="error-box"></div>
+</div>
+
+<!-- ══ Admin ══ -->
+<div class="page" id="tab-admin">
+  <div id="admin-lock-ui">
+    <div class="admin-lock">
+      <div style="font-size:52px">🔐</div>
+      <h2 style="font-size:18px;font-weight:700;margin-top:14px">لوحة الإدارة</h2>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">ادخلي الباسورد للدخول</p>
+      <input class="pass-input" type="password" id="pass-input" placeholder="••••" onkeydown="if(event.key==='Enter')checkPass()">
+      <br>
+      <button class="lock-btn" onclick="checkPass()">دخول</button>
+      <div class="pass-error" id="pass-error"></div>
+    </div>
+  </div>
+
+  <div id="admin-ui" style="display:none">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="a-girls">—</div><div class="stat-lbl">البنات</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-sessions">—</div><div class="stat-lbl">الجلسات</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-avg">—</div><div class="stat-lbl">متوسط الحضور</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-today">—</div><div class="stat-lbl">حضور اليوم</div></div>
+    </div>
+    <button class="refresh-btn" onclick="loadAdminData()">🔄 تحديث</button>
+    <input class="filter-input" type="text" id="admin-search" placeholder="🔍 ابحثي بالاسم..." oninput="renderAdmin()">
+    <div id="admin-list"><div class="loading-txt">🌿 جاري التحميل...</div></div>
+  </div>
+</div>
+
+<!-- ══ Modal ══ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕ إغلاق</button>
+    <button class="modal-print" onclick="window.print()">🖨️ طباعة الريبورت</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLgSBOwNNHHyrr7_WYt0Kf10R3oZItg8jfACEngh6K93eGMECftXb8CdxUpGBQXamB/exec";
+const SHEET_ID   = "1OCQkn2RdRtyPiVQmqX8Lumhng2tpevj0StJFhjmrMVc";
+const SHEET_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const ADMIN_PASS = "admin2026";
+const YEAR       = 2026;
+
+const GIRLS = [
+  "آية طارق","آية عبدالمنعم","أماني","أمل","أميرة",
+  "إسراء","تسنيم","تقى محمد أحمد","خديجة","دنيا",
+  "ضحى","ريم","رفيدة","سلمى","فاطمة",
+  "منار","منة","ميرفت","نهى","نور علاء",
+  "نوران هشام","نوران وليد","نورهان"
+].sort((a,b) => a.localeCompare(b,'ar'));
+
+const now        = new Date();
+const todayStr   = toDateStr(now);
+const todayLabel = now.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+document.getElementById('hdr-date').textContent  = todayLabel;
+document.getElementById('today-box').textContent = '📅 ' + todayLabel;
+
+let selectedName = null;
+let todayRecorded = new Set();
+let allData = [];
+let chartLine = null, chartDough = null;
+
+// ── Names ──
+function buildNames() {
+  document.getElementById('names-grid').innerHTML = GIRLS.map(name =>
+    `<button class="name-btn" onclick="selectName(this,'${name.replace(/'/g,"\\'")}')">
+      ${name}
+    </button>`
+  ).join('');
+}
+
+function selectName(el, name) {
+  if (todayRecorded.has(name)) return;
+  selectedName = name;
+  document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('success-box').style.display = 'none';
+  document.getElementById('error-box').style.display   = 'none';
+}
+
+// ── Submit ──
+async function submitAttendance() {
+  if (!selectedName) return;
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري التسجيل...';
+  try {
+    await fetch(SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name: selectedName})
+    });
+    todayRecorded.add(selectedName);
+    document.querySelectorAll('.name-btn').forEach(b => {
+      if (b.textContent.trim() === selectedName) { b.classList.remove('selected'); b.classList.add('recorded'); b.textContent = '✅ ' + selectedName; }
+    });
+    const box = document.getElementById('success-box');
+    box.style.display = 'block';
+    box.innerHTML = `✅ تم تسجيل حضور <strong>${selectedName}</strong> بنجاح!<br>جزاكِ الله خيراً 🌿`;
+    selectedName = null;
+    btn.textContent = 'سجّلي حضوري 🌿';
+    document.getElementById('error-box').style.display = 'none';
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'سجّلي حضوري 🌿';
+    document.getElementById('error-box').style.display = 'block';
+    document.getElementById('error-box').textContent = '❌ حصل خطأ، حاولي تاني';
+  }
+}
+
+// ── Tabs ──
+function showTab(tab) {
+  ['attend','admin'].forEach(t => document.getElementById('tab-'+t).classList.toggle('active',t===tab));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active',(i===0&&tab==='attend')||(i===1&&tab==='admin')));
+}
+
+// ── Admin Auth ──
+function checkPass() {
+  if (document.getElementById('pass-input').value === ADMIN_PASS) {
+    document.getElementById('admin-lock-ui').style.display = 'none';
+    document.getElementById('admin-ui').style.display = 'block';
+    loadAdminData();
+  } else {
+    document.getElementById('pass-error').textContent = '❌ باسورد غلط';
+  }
+}
+
+// ── Load Data ──
+async function loadAdminData() {
+  document.getElementById('admin-list').innerHTML = '<div class="loading-txt">🌿 جاري التحميل...</div>';
+  try {
+    const res  = await fetch(SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
+    allData = json.table.rows.slice(1).map(r => {
+      const cell = r.c[0];
+      const name = (r.c[1]?.v || '').trim();
+      if (!cell || !name) return null;
+      let d;
+      if (typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const p = cell.v.replace('Date(','').replace(')','').split(',').map(Number);
+        d = new Date(p[0], p[1], p[2]);
+      } else { d = new Date(cell.f || cell.v); }
+      if (!d || isNaN(d) || d.getFullYear() !== YEAR) return null;
+      return { date: d, dateStr: toDateStr(d), name };
+    }).filter(Boolean);
+    renderAdmin();
+  } catch(e) {
+    document.getElementById('admin-list').innerHTML = '<div class="loading-txt">❌ تعذر تحميل البيانات</div>';
+  }
+}
+
+// ── Render Admin List ──
+function renderAdmin() {
+  const q        = document.getElementById('admin-search').value.trim();
+  const sessions = [...new Set(allData.map(r => r.dateStr))].sort();
+  const todayCount = allData.filter(r => r.dateStr === todayStr).length;
+
+  document.getElementById('a-girls').textContent    = GIRLS.length;
+  document.getElementById('a-sessions').textContent = sessions.length;
+  document.getElementById('a-today').textContent    = todayCount;
+  if (sessions.length) {
+    const avg = Math.round(GIRLS.reduce((s,g) => s + allData.filter(r=>r.name===g).length/sessions.length*100, 0) / GIRLS.length);
+    document.getElementById('a-avg').textContent = avg + '%';
+  }
+
+  const girls = GIRLS.filter(g => !q || g.includes(q))
+    .sort((a,b) => allData.filter(r=>r.name===b).length - allData.filter(r=>r.name===a).length);
+
+  if (!girls.length) { document.getElementById('admin-list').innerHTML='<div class="loading-txt">لا توجد نتائج</div>'; return; }
+
+  document.getElementById('admin-list').innerHTML = girls.map(name => {
+    const presentSet = new Set(allData.filter(r=>r.name===name).map(r=>r.dateStr));
+    const total = sessions.length, present = presentSet.size, absent = total - present;
+    const rate = total ? Math.round(present/total*100) : 0;
+    const rateColor = rate>=80?'var(--green)':rate>=50?'#b5860d':'var(--red)';
+    const dots = sessions.map(d => `<div class="dot ${presentSet.has(d)?'dot-p':'dot-a'}" title="${d}">${d.slice(5).replace('-','/')}</div>`).join('');
+    return `<div class="girl-row" onclick="openModal('${name.replace(/'/g,"\\'")}')">
+      <div class="girl-top">
+        <div class="girl-name-lbl">${name}</div>
+        <div class="girl-badges">
+          <span class="badge badge-green">✅ ${present}</span>
+          <span class="badge badge-red">❌ ${absent}</span>
+          <span class="rate" style="color:${rateColor}">${rate}%</span>
+        </div>
+      </div>
+      <div class="dots-wrap">${dots||'<span style="font-size:12px;color:var(--muted)">لا توجد جلسات بعد</span>'}</div>
+      <div class="tap-hint">اضغطي للتفاصيل والريبورت 📄</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Modal ──
+function openModal(name) {
+  const sessions  = [...new Set(allData.map(r => r.dateStr))].sort();
+  const presentSet = new Set(allData.filter(r=>r.name===name).map(r=>r.dateStr));
+  const total = sessions.length, present = presentSet.size, absent = total - present;
+  const rate  = total ? Math.round(present/total*100) : 0;
+  const rateColor = rate>=80?'#2d6a4f':rate>=50?'#b5860d':'#9b2226';
+
+  // Cumulative attendance for line chart
+  let cum = 0;
+  const cumData  = sessions.map(d => { if (presentSet.has(d)) cum++; return cum; });
+  const cumRates = sessions.map((_,i) => Math.round(cumData[i]/(i+1)*100));
+  const labels   = sessions.map(d => d.slice(5).replace('-','/'));
+
+  // Sessions table
+  const tableRows = sessions.map((d,i) => {
+    const isP = presentSet.has(d);
+    return `<tr class="${isP?'present-row':'absent-row'}">
+      <td>${i+1}</td>
+      <td>${new Date(d).toLocaleDateString('ar-EG',{weekday:'short',year:'numeric',month:'short',day:'numeric'})}</td>
+      <td>${isP?'✅ حاضرة':'❌ غائبة'}</td>
+      <td>${Math.round(cumData[i]/(i+1)*100)}%</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('modal-content').innerHTML = `
+    <div class="report-header">
+      <div class="report-name">${name}</div>
+      <div class="report-sub">تقرير الحضور والغياب — 2026</div>
+    </div>
+
+    <div class="report-stats">
+      <div class="rep-stat"><div class="rep-stat-val" style="color:${rateColor}">${rate}%</div><div class="rep-stat-lbl">نسبة الحضور</div></div>
+      <div class="rep-stat"><div class="rep-stat-val" style="color:var(--green)">${present}</div><div class="rep-stat-lbl">جلسات الحضور</div></div>
+      <div class="rep-stat"><div class="rep-stat-val" style="color:var(--red)">${absent}</div><div class="rep-stat-lbl">جلسات الغياب</div></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="section-title">📈 منحنى الحضور التراكمي</div>
+      <div class="chart-wrap"><canvas id="chart-line" height="120"></canvas></div>
+
+      <div class="section-title">📊 نسبة الحضور والغياب</div>
+      <div class="chart-wrap" style="max-width:280px;margin:0 auto 16px">
+        <canvas id="chart-dough" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="section-title">📋 تفاصيل الجلسات</div>
+    <table class="sessions-table">
+      <thead><tr><th>#</th><th>التاريخ</th><th>الحالة</th><th>نسبة تراكمية</th></tr></thead>
+      <tbody>${tableRows||'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted)">لا توجد جلسات بعد</td></tr>'}</tbody>
+    </table>`;
+
+  document.getElementById('modal-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+
+  // Draw charts after render
+  setTimeout(() => {
+    if (chartLine)  { chartLine.destroy();  chartLine  = null; }
+    if (chartDough) { chartDough.destroy(); chartDough = null; }
+
+    // Line chart
+    const ctxL = document.getElementById('chart-line').getContext('2d');
+    chartLine = new Chart(ctxL, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'نسبة الحضور التراكمية %',
+          data: cumRates,
+          borderColor: '#2d6a4f',
+          backgroundColor: 'rgba(45,106,79,0.08)',
+          borderWidth: 2.5,
+          pointBackgroundColor: cumRates.map((_,i) => presentSet.has(sessions[i])?'#2d6a4f':'#9b2226'),
+          pointRadius: 5,
+          tension: 0.3,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { min:0, max:100, ticks: { callback: v => v+'%' } },
+          x: { ticks: { font: { size: 10 } } }
+        }
+      }
+    });
+
+    // Doughnut chart
+    const ctxD = document.getElementById('chart-dough').getContext('2d');
+    chartDough = new Chart(ctxD, {
+      type: 'doughnut',
+      data: {
+        labels: ['حضور', 'غياب'],
+        datasets: [{
+          data: [present, absent],
+          backgroundColor: ['#2d6a4f','#9b2226'],
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position:'bottom', labels:{ font:{family:'Cairo',size:13}, padding:16 } },
+        },
+        cutout: '65%',
+      }
+    });
+  }, 100);
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  if (chartLine)  { chartLine.destroy();  chartLine  = null; }
+  if (chartDough) { chartDough.destroy(); chartDough = null; }
+}
+
+function toDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+buildNames();
+</script>
+</body>
+</html>
