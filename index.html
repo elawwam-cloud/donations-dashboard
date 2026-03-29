@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سجل الحضور والغياب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdf8f0;
+  --surface: #ffffff;
+  --card: #fffdf9;
+  --border: #e8dcc8;
+  --gold: #c9973a;
+  --gold-light: #fef3dc;
+  --gold-dark: #8a6520;
+  --green: #2d7a4f;
+  --green-light: #e8f5ee;
+  --red: #c0392b;
+  --red-light: #fdecea;
+  --text: #1a1208;
+  --muted: #7a6848;
+  --moon: #f5c842;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #1a0e02 0%, #2d1a05 50%, #1a0e02 100%);
+  padding: 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '🌙✨🌟✨🌙';
+  position: absolute;
+  top: 12px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  letter-spacing: 8px;
+  opacity: 0.6;
+}
+header h1 {
+  color: var(--moon);
+  font-size: 28px;
+  font-weight: 900;
+  margin-top: 20px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 0 30px rgba(245,200,66,0.5);
+}
+header p { color: #a08060; font-size: 14px; margin-top: 6px; }
+
+/* ── Year Filter ── */
+.year-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.year-btn {
+  padding: 7px 20px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.year-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: white;
+}
+.year-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+
+/* ── Stats ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  padding: 24px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.stat-val { font-size: 30px; font-weight: 900; color: var(--gold); }
+.stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+/* ── Search ── */
+.search-bar {
+  padding: 0 24px 16px;
+}
+.search-bar input {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-bar input:focus { border-color: var(--gold); }
+.search-bar input::placeholder { color: var(--muted); }
+
+/* ── Girls Grid ── */
+.grid {
+  padding: 0 24px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.girl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.girl-card:hover { box-shadow: 0 4px 20px rgba(201,151,58,0.15); transform: translateY(-2px); }
+
+.girl-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+.girl-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.girl-meta { display: flex; gap: 8px; align-items: center; }
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-red { background: var(--red-light); color: var(--red); }
+.badge-gold { background: var(--gold-light); color: var(--gold-dark); }
+
+.attendance-rate {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+/* ── Calendar dots ── */
+.cal-wrap { padding: 14px 18px; }
+.cal-label { font-size: 11px; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+.cal-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.dot {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: default;
+  title: '';
+  position: relative;
+}
+.dot-present { background: var(--green-light); color: var(--green); border: 1px solid #b8dfc9; }
+.dot-absent  { background: var(--red-light);   color: var(--red);   border: 1px solid #f0c0bb; }
+
+/* ── Loading ── */
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+  font-size: 18px;
+}
+.moon-spin { font-size: 40px; animation: spin 3s linear infinite; display: inline-block; }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+/* ── Empty ── */
+.empty { text-align: center; padding: 60px; color: var(--muted); font-size: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>سجل الحضور والغياب 🌙</h1>
+  <p id="hdr-sub">جاري تحميل البيانات...</p>
+</header>
+
+<div class="year-bar" id="year-bar">
+  <span style="color:var(--muted);font-size:13px;font-weight:700">السنة:</span>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="s-girls">—</div><div class="stat-lbl">عدد البنات</div></div>
+  <div class="stat"><div class="stat-val" id="s-sessions">—</div><div class="stat-lbl">عدد الجلسات</div></div>
+  <div class="stat"><div class="stat-val" id="s-rate">—</div><div class="stat-lbl">متوسط الحضور</div></div>
+  <div class="stat"><div class="stat-val" id="s-perfect">—</div><div class="stat-lbl">حضور كامل</div></div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="🔍 ابحثي باسم البنت..." oninput="renderGrid()">
+</div>
+
+<div class="grid" id="grid">
+  <div class="loading" style="grid-column:1/-1">
+    <div class="moon-spin">🌙</div>
+    <p style="margin-top:16px">جاري تحميل البيانات...</p>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = "1OCQkn2RdRtyPiVQmqX8Lumhng2tpevj0StJFhjmrMVc";
+const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+let allData = [];   // [{date, name}]
+let selectedYear = 2026;
+let processed = {}; // {name: {sessions: [dates], present: Set}}
+
+async function loadData() {
+  try {
+    const res = await fetch(URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
+    const rows = json.table.rows;
+
+    allData = rows.slice(1).map(r => {
+      const cell = r.c[0];
+      const name = (r.c[1]?.v || '').trim();
+      if (!cell || !name) return null;
+      let d;
+      // gviz returns dates as "Date(YYYY,M,D,H,m,s)" — M is 0-based
+      if (cell.v && typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const parts = cell.v.replace('Date(','').replace(')','').split(',').map(Number);
+        d = new Date(parts[0], parts[1], parts[2], parts[3]||0, parts[4]||0, parts[5]||0);
+      } else if (cell.f) {
+        // fallback: formatted string like "1/12/2024 11:11:58"
+        d = new Date(cell.f);
+      } else {
+        d = new Date(cell.v);
+      }
+      if (!d || isNaN(d)) return null;
+      return { date: d, name };
+    }).filter(Boolean);
+
+    // Get available years
+    const years = [...new Set(allData.map(r => r.date.getFullYear()))].sort();
+    renderYearBar(years);
+
+    // Default to 2026 if available, else last year
+    selectedYear = years.includes(2026) ? 2026 : years[years.length - 1];
+    setActiveYear(selectedYear);
+
+    processData();
+  } catch(e) {
+    document.getElementById('grid').innerHTML =
+      `<div class="loading" style="grid-column:1/-1">❌ تعذر تحميل البيانات<br><small style="font-size:13px;margin-top:8px;display:block">تأكدي إن الشيت عام (Anyone with link)</small></div>`;
+  }
+}
+
+function renderYearBar(years) {
+  const bar = document.getElementById('year-bar');
+  years.forEach(y => {
+    const btn = document.createElement('button');
+    btn.className = 'year-btn';
+    btn.textContent = y;
+    btn.onclick = () => { selectedYear = y; setActiveYear(y); processData(); };
+    bar.appendChild(btn);
+  });
+}
+
+function setActiveYear(y) {
+  document.querySelectorAll('.year-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent == y);
+  });
+}
+
+function processData() {
+  const yearData = allData.filter(r => r.date.getFullYear() === selectedYear);
+
+  // All session days (unique dates)
+  const sessionDays = [...new Set(yearData.map(r => toDateStr(r.date)))].sort();
+
+  // All girls
+  const allGirls = [...new Set(allData.map(r => r.name))].sort();
+
+  // For each girl, build presence set
+  processed = {};
+  allGirls.forEach(name => {
+    const presentDays = new Set(
+      yearData.filter(r => r.name === name).map(r => toDateStr(r.date))
+    );
+    processed[name] = { presentDays, sessionDays };
+  });
+
+  // Stats
+  const rates = allGirls.map(n => {
+    if (!sessionDays.length) return 0;
+    return processed[n].presentDays.size / sessionDays.length * 100;
+  });
+  const avgRate = rates.length ? Math.round(rates.reduce((a,b)=>a+b,0)/rates.length) : 0;
+  const perfect = rates.filter(r => r === 100).length;
+
+  document.getElementById('s-girls').textContent = allGirls.length;
+  document.getElementById('s-sessions').textContent = sessionDays.length;
+  document.getElementById('s-rate').textContent = avgRate + '%';
+  document.getElementById('s-perfect').textContent = perfect;
+  document.getElementById('hdr-sub').textContent =
+    `سنة ${selectedYear} — ${sessionDays.length} جلسة — ${allGirls.length} بنت`;
+
+  renderGrid();
+}
+
+function renderGrid() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const grid = document.getElementById('grid');
+  const girls = Object.keys(processed).filter(n => !q || n.includes(q));
+
+  if (!girls.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">🔍 مفيش نتائج</div>`;
+    return;
+  }
+
+  // Sort by attendance rate desc
+  girls.sort((a,b) => {
+    const ra = processed[a].presentDays.size / (processed[a].sessionDays.length || 1);
+    const rb = processed[b].presentDays.size / (processed[b].sessionDays.length || 1);
+    return rb - ra;
+  });
+
+  grid.innerHTML = girls.map(name => {
+    const { presentDays, sessionDays } = processed[name];
+    const total = sessionDays.length;
+    const present = presentDays.size;
+    const absent = total - present;
+    const rate = total ? Math.round(present / total * 100) : 0;
+
+    const rateColor = rate >= 80 ? 'var(--green)' : rate >= 50 ? 'var(--gold)' : 'var(--red)';
+
+    const dots = sessionDays.map(d => {
+      const isPresent = presentDays.has(d);
+      const label = formatDateShort(d);
+      return `<div class="dot ${isPresent?'dot-present':'dot-absent'}" title="${d}">${label}</div>`;
+    }).join('');
+
+    return `
+    <div class="girl-card">
+      <div class="girl-header">
+        <div class="girl-name">${name}</div>
+        <div class="girl-meta">
+          <span class="badge badge-green">✅ ${present}</span>
+          <span class="badge badge-red">❌ ${absent}</span>
+          <span class="attendance-rate" style="color:${rateColor}">${rate}%</span>
+        </div>
+      </div>
+      <div class="cal-wrap">
+        <div class="cal-label">سجل الجلسات (${total} جلسة)</div>
+        <div class="cal-dots">${dots || '<span style="color:var(--muted);font-size:13px">لا توجد جلسات</span>'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function formatDateShort(dateStr) {
+  const [,m,d] = dateStr.split('-');
+  return `${parseInt(d)}/${parseInt(m)}`;
+}
+
+loadData();
+setInterval(loadData, 120000);
+</script>
+</body>
+</html>
