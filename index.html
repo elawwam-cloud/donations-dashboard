@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سجل الحضور</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdf8f0;
+  --surface: #ffffff;
+  --border: #e8dcc8;
+  --gold: #c9973a;
+  --gold-light: #fef3dc;
+  --gold-dark: #8a6520;
+  --green: #2d7a4f;
+  --green-light: #e8f5ee;
+  --red: #c0392b;
+  --red-light: #fdecea;
+  --text: #1a1208;
+  --muted: #7a6848;
+  --moon: #f5c842;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+header {
+  background: linear-gradient(135deg, #1a0e02, #2d1a05, #1a0e02);
+  padding: 28px 24px;
+  text-align: center;
+}
+header h1 { color: var(--moon); font-size: 26px; font-weight: 900; text-shadow: 0 0 20px rgba(245,200,66,0.4); }
+header p { color: #a08060; font-size: 13px; margin-top: 6px; }
+
+.tabs { display: flex; border-bottom: 2px solid var(--border); background: var(--surface); }
+.tab { flex:1; padding:14px; text-align:center; font-family:'Cairo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; border:none; background:transparent; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+.tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+.page { display:none; padding:24px; max-width:600px; margin:0 auto; }
+.page.active { display:block; }
+
+.date-box { background:var(--gold-light); border:1px solid var(--border); border-radius:12px; padding:14px 18px; text-align:center; margin-bottom:20px; font-weight:700; color:var(--gold-dark); font-size:15px; }
+
+.names-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px; margin-bottom:24px; }
+.name-btn { padding:12px 8px; border-radius:10px; border:2px solid var(--border); background:var(--surface); font-family:'Cairo',sans-serif; font-size:13px; font-weight:700; cursor:pointer; color:var(--text); transition:all 0.2s; text-align:center; }
+.name-btn:hover { border-color:var(--gold); color:var(--gold); }
+.name-btn.selected { background:var(--gold); border-color:var(--gold); color:white; transform:scale(1.03); }
+.name-btn.recorded { background:var(--green-light); border-color:var(--green); color:var(--green); cursor:default; }
+
+.submit-btn { width:100%; padding:16px; background:var(--gold); color:white; border:none; border-radius:12px; font-family:'Cairo',sans-serif; font-size:16px; font-weight:900; cursor:pointer; transition:all 0.2s; }
+.submit-btn:hover:not(:disabled) { background:var(--gold-dark); }
+.submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+.success-msg { display:none; background:var(--green-light); border:1px solid var(--green); border-radius:10px; padding:16px; text-align:center; color:var(--green); font-weight:700; margin-top:14px; font-size:15px; }
+.error-msg-box { display:none; background:var(--red-light); border:1px solid var(--red); border-radius:10px; padding:14px; text-align:center; color:var(--red); font-weight:700; margin-top:14px; font-size:14px; }
+
+/* Admin */
+.admin-lock { text-align:center; padding:40px 20px; }
+.pass-input { width:100%; max-width:280px; padding:12px 16px; border:2px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:16px; text-align:center; outline:none; margin:16px 0; letter-spacing:6px; }
+.pass-input:focus { border-color:var(--gold); }
+.lock-btn { padding:10px 30px; background:var(--gold); color:white; border:none; border-radius:10px; font-family:'Cairo',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
+.lock-btn:hover { background:var(--gold-dark); }
+.pass-error { color:var(--red); font-size:13px; margin-top:8px; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:12px; margin-bottom:20px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+.stat-val { font-size:28px; font-weight:900; color:var(--gold); }
+.stat-lbl { font-size:12px; color:var(--muted); font-weight:600; margin-top:4px; }
+
+.girl-row { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:10px; }
+.girl-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+.girl-name-lbl { font-weight:700; font-size:14px; }
+.girl-badges { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.badge { padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700; }
+.badge-green { background:var(--green-light); color:var(--green); }
+.badge-red { background:var(--red-light); color:var(--red); }
+.badge-gold { background:var(--gold-light); color:var(--gold-dark); }
+.rate { font-size:14px; font-weight:900; }
+
+.dots-wrap { display:flex; flex-wrap:wrap; gap:4px; }
+.dot { width:24px; height:24px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
+.dot-p { background:var(--green-light); color:var(--green); border:1px solid #b8dfc9; }
+.dot-a { background:var(--red-light); color:var(--red); border:1px solid #f0c0bb; }
+
+.filter-input { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:13px; outline:none; margin-bottom:16px; background:var(--surface); }
+.filter-input:focus { border-color:var(--gold); }
+
+.loading-txt { text-align:center; padding:40px; color:var(--muted); font-size:15px; }
+.refresh-btn { width:100%; padding:10px; background:transparent; border:1.5px solid var(--border); border-radius:10px; font-family:'Cairo',sans-serif; font-size:13px; font-weight:700; cursor:pointer; color:var(--muted); margin-bottom:16px; }
+.refresh-btn:hover { border-color:var(--gold); color:var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌙 سجل الحضور</h1>
+  <p id="hdr-date"></p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('attend')">تسجيل حضوري ✅</button>
+  <button class="tab" onclick="showTab('admin')">لوحة الإدارة 📊</button>
+</div>
+
+<!-- ══ Attendance Tab ══ -->
+<div class="page active" id="tab-attend">
+  <div class="date-box" id="today-box"></div>
+  <div class="names-grid" id="names-grid"></div>
+  <button class="submit-btn" id="submit-btn" onclick="submitAttendance()" disabled>سجّلي حضوري 🌙</button>
+  <div class="success-msg" id="success-msg"></div>
+  <div class="error-msg-box" id="error-msg"></div>
+</div>
+
+<!-- ══ Admin Tab ══ -->
+<div class="page" id="tab-admin">
+
+  <div id="admin-lock-ui">
+    <div class="admin-lock">
+      <div style="font-size:48px">🔐</div>
+      <p style="font-weight:700;font-size:16px;margin-top:12px">لوحة الإدارة</p>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">ادخلي الباسورد للدخول</p>
+      <br>
+      <input class="pass-input" type="password" id="pass-input" placeholder="••••" onkeydown="if(event.key==='Enter')checkPass()">
+      <br>
+      <button class="lock-btn" onclick="checkPass()">دخول</button>
+      <div class="pass-error" id="pass-error"></div>
+    </div>
+  </div>
+
+  <div id="admin-ui" style="display:none">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val" id="a-girls">—</div><div class="stat-lbl">البنات</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-sessions">—</div><div class="stat-lbl">الجلسات</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-avg">—</div><div class="stat-lbl">متوسط الحضور</div></div>
+      <div class="stat-card"><div class="stat-val" id="a-today">—</div><div class="stat-lbl">حضور اليوم</div></div>
+    </div>
+    <button class="refresh-btn" onclick="loadAdminData()">🔄 تحديث البيانات</button>
+    <input class="filter-input" type="text" id="admin-search" placeholder="🔍 ابحثي بالاسم..." oninput="renderAdmin()">
+    <div id="admin-list"><div class="loading-txt">🌙 جاري التحميل...</div></div>
+  </div>
+
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTDS4UkQDWDp8yvRaKuXRguwjqcdyR3bKhjUnkW92BiaVyebgUGevX1nfK8eKAuzc_/exec";
+const SHEET_ID   = "1OCQkn2RdRtyPiVQmqX8Lumhng2tpevj0StJFhjmrMVc";
+const SHEET_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const ADMIN_PASS = "admin2024";
+
+const GIRLS = [
+  "آية طارق","آية عبدالمنعم","أماني","أمل","أميرة",
+  "إسراء","تسنيم","تقى محمد أحمد","خديجة","دنيا",
+  "ضحى","ريم","رفيدة","سلمى","فاطمة",
+  "منار","منة","ميرفت","نهى","نور علاء",
+  "نوران هشام","نوران وليد","نورهان"
+].sort((a,b) => a.localeCompare(b,'ar'));
+
+const now      = new Date();
+const todayStr = toDateStr(now);
+const todayLabel = now.toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+document.getElementById('hdr-date').textContent   = todayLabel;
+document.getElementById('today-box').textContent  = '📅 ' + todayLabel;
+
+let selectedName  = null;
+let todayRecorded = new Set();
+let allData       = [];
+
+// ── build name buttons ──────────────────────────
+function buildNames() {
+  const grid = document.getElementById('names-grid');
+  grid.innerHTML = GIRLS.map(name => `
+    <button class="name-btn" id="btn-${CSS.escape(name)}" onclick="selectName('${name.replace(/'/g,"\\'")}')">
+      ${name}
+    </button>`).join('');
+}
+
+function selectName(name) {
+  if (todayRecorded.has(name)) return;
+  selectedName = name;
+  document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
+  const btn = document.querySelector(`#btn-${CSS.escape(name)}`);
+  if (btn) btn.classList.add('selected');
+  document.getElementById('submit-btn').disabled = false;
+}
+
+// ── submit attendance ───────────────────────────
+async function submitAttendance() {
+  if (!selectedName) return;
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري التسجيل...';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name: selectedName})
+    });
+
+    // Mark as recorded
+    todayRecorded.add(selectedName);
+    const nameBtn = document.querySelector(`#btn-${CSS.escape(selectedName)}`);
+    if (nameBtn) { nameBtn.classList.remove('selected'); nameBtn.classList.add('recorded'); nameBtn.textContent = '✅ ' + selectedName; }
+
+    const suc = document.getElementById('success-msg');
+    suc.style.display = 'block';
+    suc.textContent = `✅ تم تسجيل حضور ${selectedName} بنجاح! جزاكِ الله خيراً 🌙`;
+
+    selectedName = null;
+    btn.textContent = 'سجّلي حضوري 🌙';
+    document.getElementById('error-msg').style.display = 'none';
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'سجّلي حضوري 🌙';
+    const err = document.getElementById('error-msg');
+    err.style.display = 'block';
+    err.textContent = '❌ حصل خطأ، حاولي تاني';
+  }
+}
+
+// ── tabs ────────────────────────────────────────
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='attend')||(i===1&&tab==='admin')));
+  document.getElementById('tab-attend').classList.toggle('active', tab==='attend');
+  document.getElementById('tab-admin').classList.toggle('active',  tab==='admin');
+}
+
+// ── admin auth ──────────────────────────────────
+function checkPass() {
+  const val = document.getElementById('pass-input').value;
+  if (val === ADMIN_PASS) {
+    document.getElementById('admin-lock-ui').style.display = 'none';
+    document.getElementById('admin-ui').style.display = 'block';
+    loadAdminData();
+  } else {
+    document.getElementById('pass-error').textContent = '❌ باسورد غلط';
+  }
+}
+
+// ── load admin data from sheet ──────────────────
+async function loadAdminData() {
+  document.getElementById('admin-list').innerHTML = '<div class="loading-txt">🌙 جاري التحميل...</div>';
+  try {
+    const res  = await fetch(SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
+    const rows = json.table.rows;
+
+    allData = rows.slice(1).map(r => {
+      const cell = r.c[0];
+      const name = (r.c[1]?.v || '').trim();
+      if (!cell || !name) return null;
+      let d;
+      if (cell.v && typeof cell.v === 'string' && cell.v.startsWith('Date(')) {
+        const p = cell.v.replace('Date(','').replace(')','').split(',').map(Number);
+        d = new Date(p[0], p[1], p[2]);
+      } else if (cell.f) {
+        d = new Date(cell.f);
+      } else {
+        d = new Date(cell.v);
+      }
+      if (!d || isNaN(d)) return null;
+      return { date: d, dateStr: toDateStr(d), name };
+    }).filter(Boolean);
+
+    renderAdmin();
+  } catch(e) {
+    document.getElementById('admin-list').innerHTML = '<div class="loading-txt">❌ تعذر تحميل البيانات</div>';
+  }
+}
+
+function renderAdmin() {
+  const q        = document.getElementById('admin-search').value.trim();
+  const sessions = [...new Set(allData.map(r => r.dateStr))].sort();
+  const todayCount = allData.filter(r => r.dateStr === todayStr).length;
+
+  // Stats
+  document.getElementById('a-girls').textContent    = GIRLS.length;
+  document.getElementById('a-sessions').textContent = sessions.length;
+  document.getElementById('a-today').textContent    = todayCount;
+
+  if (sessions.length && GIRLS.length) {
+    const rates = GIRLS.map(g => {
+      const p = allData.filter(r => r.name === g).length;
+      return p / sessions.length * 100;
+    });
+    const avg = Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
+    document.getElementById('a-avg').textContent = avg + '%';
+  }
+
+  // Filter girls
+  const girls = GIRLS.filter(g => !q || g.includes(q));
+
+  // Sort by attendance rate desc
+  girls.sort((a,b) => {
+    const ra = allData.filter(r=>r.name===a).length;
+    const rb = allData.filter(r=>r.name===b).length;
+    return rb - ra;
+  });
+
+  const list = document.getElementById('admin-list');
+  if (!girls.length) { list.innerHTML = '<div class="loading-txt">لا توجد نتائج</div>'; return; }
+
+  list.innerHTML = girls.map(name => {
+    const presentDays = new Set(allData.filter(r=>r.name===name).map(r=>r.dateStr));
+    const total   = sessions.length;
+    const present = presentDays.size;
+    const absent  = total - present;
+    const rate    = total ? Math.round(present/total*100) : 0;
+    const rateColor = rate>=80?'var(--green)':rate>=50?'var(--gold)':'var(--red)';
+
+    const dots = sessions.map(d => {
+      const isP = presentDays.has(d);
+      const label = d.slice(5).replace('-','/');
+      return `<div class="dot ${isP?'dot-p':'dot-a'}" title="${d}">${label}</div>`;
+    }).join('');
+
+    return `<div class="girl-row">
+      <div class="girl-top">
+        <div class="girl-name-lbl">${name}</div>
+        <div class="girl-badges">
+          <span class="badge badge-green">✅ ${present}</span>
+          <span class="badge badge-red">❌ ${absent}</span>
+          <span class="rate" style="color:${rateColor}">${rate}%</span>
+        </div>
+      </div>
+      <div class="dots-wrap">${dots || '<span style="font-size:12px;color:var(--muted)">لا توجد جلسات بعد</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── helpers ─────────────────────────────────────
+function toDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── init ────────────────────────────────────────
+buildNames();
+</script>
+</body>
+</html>
