@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>استمارة التسجيل — مدرسة القلوب</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green-50:#E1F5EE;--green-100:#9FE1CB;--green-400:#1D9E75;
+  --green-600:#0F6E56;--green-800:#085041;--green-900:#04342C;
+  --bg:#F7F5F0;--card:#FFFFFF;--text:#1a1a1a;--muted:#6b7280;
+  --border:rgba(0,0,0,0.1);--radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+
+.hero{background:var(--green-800);padding:3rem 2rem 5rem;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(29,158,117,0.25) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 80% 30%,rgba(159,225,203,0.12) 0%,transparent 55%);pointer-events:none}
+.hero-ornament{font-family:'Noto Naskh Arabic',serif;font-size:13px;color:var(--green-100);letter-spacing:0.15em;opacity:0.7;margin-bottom:1.2rem;display:block}
+.hero-logo{font-family:'Noto Naskh Arabic',serif;font-size:clamp(2.2rem,6vw,3.5rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:0.5rem;position:relative}
+.hero-logo span{color:var(--green-100)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.65);font-weight:300;margin-bottom:2.5rem}
+.steps-bar{display:flex;justify-content:center;gap:0;position:relative;max-width:480px;margin:0 auto}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:16px;left:0;width:100%;height:1px;background:rgba(255,255,255,0.2);transform:translateX(-50%);z-index:0}
+.step-dot{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);transition:all 0.3s;position:relative;z-index:1}
+.step-item.active .step-dot{background:var(--green-400);border-color:var(--green-400);color:white}
+.step-item.done .step-dot{background:var(--green-100);border-color:var(--green-100);color:var(--green-800)}
+.step-label{font-size:11px;color:rgba(255,255,255,0.45);white-space:nowrap}
+.step-item.active .step-label{color:rgba(255,255,255,0.9)}
+.step-item.done .step-label{color:var(--green-100)}
+
+.main-wrap{max-width:700px;margin:-2.5rem auto 4rem;padding:0 1.25rem;position:relative;z-index:10}
+.form-card{background:var(--card);border-radius:var(--radius);border:1px solid rgba(0,0,0,0.06);box-shadow:0 4px 32px rgba(0,0,0,0.08),0 1px 4px rgba(0,0,0,0.04);overflow:hidden}
+.step-page{display:none}
+.step-page.active{display:block}
+.step-header{padding:2rem 2rem 1.5rem;border-bottom:1px solid rgba(0,0,0,0.06)}
+.step-header h2{font-family:'Noto Naskh Arabic',serif;font-size:1.35rem;font-weight:600;color:var(--green-800);margin-bottom:4px}
+.step-header p{font-size:13px;color:var(--muted)}
+.step-body{padding:1.75rem 2rem}
+
+/* SCHOOL CARDS */
+.school-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:500px){.school-grid{grid-template-columns:1fr}}
+.school-card{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all 0.2s;background:#fff;position:relative;user-select:none}
+.school-card:hover{border-color:var(--green-400);background:var(--green-50)}
+.school-card.selected{border-color:var(--green-400);border-width:2px;background:var(--green-50)}
+.school-card.disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+.check-circle{position:absolute;top:10px;left:10px;width:22px;height:22px;border-radius:50%;background:var(--green-400);display:none;align-items:center;justify-content:center}
+.check-circle svg{width:12px;height:12px}
+.school-card.selected .check-circle{display:flex}
+.sc-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+.sc-name{font-family:'Noto Naskh Arabic',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4}
+.sc-tag{font-size:11px;padding:3px 9px;border-radius:20px;display:inline-block;font-weight:500}
+.tag-green{background:#9FE1CB;color:#085041}
+.tag-gold{background:#FAC775;color:#633806}
+.tag-purple{background:#CECBF6;color:#26215C}
+
+/* EXTERNAL LINK NOTICE */
+.ext-link-notice{display:none;background:var(--green-50);border:1px solid var(--green-100);border-right:3px solid var(--green-400);border-radius:var(--radius-sm);padding:12px 16px;margin-top:1rem;font-size:13px;color:var(--green-800);align-items:center;gap:10px}
+.ext-link-notice.show{display:flex}
+.ext-link-notice a{color:var(--green-600);font-weight:500;word-break:break-all}
+
+/* FIELDS */
+.fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.fields-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label.field-label{font-size:13px;font-weight:500;color:#374151}
+label.field-label .req{color:#D85A30;margin-right:2px}
+input[type="text"],input[type="email"],input[type="number"],select{width:100%;height:42px;border:1px solid #D1D5DB;border-radius:var(--radius-sm);padding:0 13px;font-family:'Tajawal',sans-serif;font-size:14px;color:var(--text);background:#fff;direction:rtl;transition:border-color 0.15s,box-shadow 0.15s;outline:none;appearance:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center;padding-left:32px}
+input:focus,select:focus{border-color:var(--green-400);box-shadow:0 0 0 3px rgba(29,158,117,0.15)}
+input.error,select.error{border-color:#D85A30;box-shadow:0 0 0 3px rgba(216,90,48,0.12)}
+.error-msg{font-size:12px;color:#D85A30;display:none;margin-top:2px}
+.error-msg.show{display:block}
+
+/* RADIO */
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-opt{flex:1;min-width:90px;border:1px solid #D1D5DB;border-radius:var(--radius-sm);padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);background:#fff;transition:all 0.15s;user-select:none}
+.radio-opt input[type="radio"]{display:none}
+.radio-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid #D1D5DB;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.radio-dot::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--green-400);transform:scale(0);transition:transform 0.15s}
+.radio-opt:hover{border-color:var(--green-400);background:var(--green-50)}
+.radio-opt.checked{border-color:var(--green-400);background:var(--green-50)}
+.radio-opt.checked .radio-dot{border-color:var(--green-400)}
+.radio-opt.checked .radio-dot::after{transform:scale(1)}
+
+/* TERMS */
+.terms-box{background:#F9F8F5;border:1px solid rgba(0,0,0,0.08);border-right:3px solid var(--green-400);border-radius:var(--radius-sm);padding:16px 18px;max-height:200px;overflow-y:auto;margin-bottom:1rem}
+.terms-box h3{font-family:'Noto Naskh Arabic',serif;font-size:15px;font-weight:600;color:var(--green-800);margin-bottom:10px}
+.terms-box ol{padding-right:18px}
+.terms-box li{font-size:13px;color:#4B5563;line-height:1.9;margin-bottom:2px}
+.terms-accept{display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:12px 14px;border:1px solid #D1D5DB;border-radius:var(--radius-sm);transition:all 0.15s;user-select:none}
+.terms-accept:hover{border-color:var(--green-400);background:var(--green-50)}
+.terms-accept.accepted{border-color:var(--green-400);background:var(--green-50)}
+.terms-accept input[type="checkbox"]{display:none}
+.check-box{width:18px;height:18px;border:1.5px solid #D1D5DB;border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.terms-accept.accepted .check-box{background:var(--green-400);border-color:var(--green-400)}
+.check-box svg{display:none}
+.terms-accept.accepted .check-box svg{display:block}
+.terms-accept span{font-size:13px;color:var(--text);line-height:1.6}
+
+/* BUTTONS */
+.form-footer{padding:1.25rem 2rem 1.75rem;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.btn{height:44px;padding:0 24px;border-radius:var(--radius-sm);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all 0.18s;border:none;display:flex;align-items:center;gap:8px}
+.btn-back{background:transparent;border:1px solid #D1D5DB;color:var(--muted)}
+.btn-back:hover{background:#F3F4F6;border-color:#9CA3AF}
+.btn-next{background:var(--green-400);color:white;flex:1;justify-content:center}
+.btn-next:hover{background:var(--green-600)}
+.btn-next:disabled{background:#D1D5DB;cursor:not-allowed}
+.btn-submit{background:var(--green-800);color:white;flex:1;justify-content:center}
+.btn-submit:hover{background:var(--green-900)}
+.btn-submit:disabled{background:#D1D5DB;cursor:not-allowed}
+
+/* PROGRESS */
+.progress-bar-wrap{height:3px;background:rgba(0,0,0,0.06)}
+.progress-bar-fill{height:100%;background:var(--green-400);transition:width 0.4s ease}
+
+/* SUMMARY */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.summary-grid{grid-template-columns:1fr}}
+.summary-item{background:#F9F8F5;border-radius:var(--radius-sm);padding:10px 14px}
+.summary-item .s-label{font-size:11px;color:var(--muted);margin-bottom:3px;display:block}
+.summary-item .s-val{font-size:14px;font-weight:500;color:var(--text)}
+.summary-item.full{grid-column:1/-1}
+.section-divider{display:flex;align-items:center;gap:12px;margin:1.5rem 0 1.25rem}
+.section-divider span{font-size:12px;font-weight:500;color:var(--muted);white-space:nowrap;background:white;padding:0 8px}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:rgba(0,0,0,0.08)}
+
+/* SUCCESS */
+.success-page{display:none;text-align:center;padding:4rem 2rem}
+.success-page.visible{display:block}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--green-50);border:2px solid var(--green-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:32px}
+.success-page h2{font-family:'Noto Naskh Arabic',serif;font-size:1.5rem;color:var(--green-800);margin-bottom:0.75rem}
+.success-page p{font-size:14px;color:var(--muted);line-height:1.8;max-width:380px;margin:0 auto 1rem}
+.school-confirm-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-50);border:1px solid var(--green-100);border-radius:30px;padding:8px 18px;font-size:14px;font-weight:500;color:var(--green-800);margin-bottom:2rem}
+
+/* SPINNER */
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LOADING SCREEN */
+.init-loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:999;transition:opacity 0.4s}
+.init-loading.hide{opacity:0;pointer-events:none}
+.init-spinner{width:40px;height:40px;border:3px solid var(--green-100);border-top-color:var(--green-400);border-radius:50%;animation:spin 0.7s linear infinite}
+.init-loading p{font-size:14px;color:var(--muted)}
+
+@media(max-width:600px){
+  .step-header{padding:1.5rem 1.25rem 1rem}
+  .step-body{padding:1.25rem 1.25rem}
+  .form-footer{padding:1rem 1.25rem 1.25rem}
+  .hero{padding:2rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- INIT LOADING -->
+<div class="init-loading" id="initLoading">
+  <div class="init-spinner"></div>
+  <p>جاري تحميل الاستمارة...</p>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-ornament">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
+  <div class="hero-logo">مدرسة <span>القلوب</span></div>
+  <p class="hero-sub">استمارة التسجيل والانضمام للبرامج التعليمية</p>
+  <div class="steps-bar">
+    <div class="step-item active" id="si-1"><div class="step-dot">١</div><span class="step-label">اختيار المدرسة</span></div>
+    <div class="step-item" id="si-2"><div class="step-dot">٢</div><span class="step-label">البيانات الأساسية</span></div>
+    <div class="step-item" id="si-3"><div class="step-dot">٣</div><span class="step-label">بيانات إضافية</span></div>
+    <div class="step-item" id="si-4"><div class="step-dot">٤</div><span class="step-label">المراجعة والإرسال</span></div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="form-card">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:25%"></div></div>
+
+    <!-- STEP 1 -->
+    <div class="step-page active" id="step1">
+      <div class="step-header">
+        <h2>اختاري المدرسة التي تودين الالتحاق بها</h2>
+        <p>كل مدرسة لها برنامج مختلف — اختاري ما يناسب رحلتك</p>
+      </div>
+      <div class="step-body">
+        <div class="school-grid" id="schoolGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--muted)">جاري التحميل...</div>
+        </div>
+        <p id="school-err" class="error-msg" style="margin-top:8px">الرجاء اختيار المدرسة أولاً</p>
+      </div>
+      <div class="form-footer">
+        <div></div>
+        <button class="btn btn-next" onclick="goNext(1)">
+          التالي
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 7L5 3M9 7L5 11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-page" id="step2">
+      <div class="step-header"><h2>البيانات الأساسية</h2><p>يُرجى تعبئة جميع الحقول المطلوبة بدقة</p></div>
+      <div class="step-body">
+        <div class="fields-grid">
+          <div class="field full">
+            <label class="field-label">الاسم الكامل <span class="req">*</span></label>
+            <input type="text" id="f-name" placeholder="الاسم الرباعي كاملاً"/>
+            <span class="error-msg" id="e-name">هذا الحقل مطلوب</span>
+          </div>
+          <div class="field">
+            <label class="field-label">العمر <span class="req">*</span></label>
+            <input type="number" id="f-age" placeholder="مثال: 25" min="10" max="80"/>
+            <span class="error-msg" id="e-age">أدخلي عمراً صحيحاً</span>
+          </div>
+          <div class="field">
+            <label class="field-label">الجنسية <span class="req">*</span></label>
+            <select id="f-nationality">
+              <option value="" disabled selected>اختاري الجنسية</option>
+              <option>مصرية</option><option>سعودية</option><option>إماراتية</option>
+              <option>كويتية</option><option>قطرية</option><option>بحرينية</option>
+              <option>عُمانية</option><option>أردنية</option><option>فلسطينية</option>
+              <option>لبنانية</option><option>سورية</option><option>عراقية</option>
+              <option>يمنية</option><option>ليبية</option><option>تونسية</option>
+              <option>جزائرية</option><option>مغربية</option><option>سودانية</option>
+              <option>أخرى</option>
+            </select>
+            <span class="error-msg" id="e-nationality">هذا الحقل مطلوب</span>
+          </div>
+          <div class="field full">
+            <label class="field-label">البريد الإلكتروني <span class="req">*</span></label>
+            <input type="email" id="f-email" placeholder="example@email.com" style="direction:ltr;text-align:right"/>
+            <span class="error-msg" id="e-email">أدخلي بريداً إلكترونياً صحيحاً</span>
+          </div>
+          <div class="field">
+            <label class="field-label">رقم الموبايل <span class="req">*</span></label>
+            <input type="text" id="f-mobile" placeholder="+20 xxxxxxxxxx" style="direction:ltr;text-align:right"/>
+            <span class="error-msg" id="e-mobile">هذا الحقل مطلوب</span>
+          </div>
+          <div class="field">
+            <label class="field-label">رقم واتساب</label>
+            <input type="text" id="f-whatsapp" placeholder="+20 xxxxxxxxxx" style="direction:ltr;text-align:right"/>
+          </div>
+          <div class="field">
+            <label class="field-label">رقم تيليجرام</label>
+            <input type="text" id="f-telegram" placeholder="+20 xxxxxxxxxx" style="direction:ltr;text-align:right"/>
+          </div>
+          <div class="field">
+            <label class="field-label">يوزرنيم تيليجرام</label>
+            <input type="text" id="f-tguser" placeholder="@username" style="direction:ltr;text-align:right"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-back" onclick="goBack(2)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 7l4-4M5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> السابق</button>
+        <button class="btn btn-next" onclick="goNext(2)">التالي <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 7L5 3M9 7L5 11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-page" id="step3">
+      <div class="step-header"><h2>بيانات إضافية</h2><p>تساعدنا في تخصيص تجربتك التعليمية</p></div>
+      <div class="step-body">
+        <div class="fields-grid">
+          <div class="field full">
+            <label class="field-label">الجنس <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="pickRadio(this,'gender','أنثى')"><input type="radio" name="gender" value="أنثى"/><div class="radio-dot"></div>أنثى</label>
+              <label class="radio-opt" onclick="pickRadio(this,'gender','ذكر')"><input type="radio" name="gender" value="ذكر"/><div class="radio-dot"></div>ذكر</label>
+            </div>
+            <span class="error-msg" id="e-gender">الرجاء الاختيار</span>
+          </div>
+          <div class="field full">
+            <label class="field-label">الحالة الاجتماعية <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="pickRadio(this,'marital','متزوجة')"><input type="radio" name="marital" value="متزوجة"/><div class="radio-dot"></div>متزوجة</label>
+              <label class="radio-opt" onclick="pickRadio(this,'marital','غير متزوجة')"><input type="radio" name="marital" value="غير متزوجة"/><div class="radio-dot"></div>غير متزوجة</label>
+              <label class="radio-opt" onclick="pickRadio(this,'marital','مطلقة')"><input type="radio" name="marital" value="مطلقة"/><div class="radio-dot"></div>مطلقة</label>
+              <label class="radio-opt" onclick="pickRadio(this,'marital','أرملة')"><input type="radio" name="marital" value="أرملة"/><div class="radio-dot"></div>أرملة</label>
+            </div>
+            <span class="error-msg" id="e-marital">الرجاء الاختيار</span>
+          </div>
+          <div class="field full">
+            <label class="field-label">الوظيفة / المجال</label>
+            <input type="text" id="f-job" placeholder="مثال: معلمة، ربة منزل، مهندسة..."/>
+          </div>
+          <div class="field full">
+            <label class="field-label">هل درستِ في أبجديات من قبل؟ <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-opt" onclick="pickRadio(this,'abjadiyat','نعم')"><input type="radio" name="abjadiyat" value="نعم"/><div class="radio-dot"></div>نعم</label>
+              <label class="radio-opt" onclick="pickRadio(this,'abjadiyat','لا')"><input type="radio" name="abjadiyat" value="لا"/><div class="radio-dot"></div>لا</label>
+              <label class="radio-opt" onclick="pickRadio(this,'abjadiyat','جزئياً')"><input type="radio" name="abjadiyat" value="جزئياً"/><div class="radio-dot"></div>جزئياً</label>
+            </div>
+            <span class="error-msg" id="e-abjadiyat">الرجاء الاختيار</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-back" onclick="goBack(3)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 7l4-4M5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> السابق</button>
+        <button class="btn btn-next" onclick="goNext(3)">التالي <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 7L5 3M9 7L5 11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-page" id="step4">
+      <div class="step-header"><h2>المراجعة والإرسال</h2><p>تأكدي من بياناتك قبل الإرسال النهائي</p></div>
+      <div class="step-body">
+        <div style="background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--green-400);flex-shrink:0"></div>
+          <span style="font-size:14px;font-weight:500;color:var(--green-800)" id="summary-school">—</span>
+        </div>
+        <div class="summary-grid" id="summary-grid"></div>
+        <div class="section-divider" style="margin-top:1.75rem"><span>الشروط والأحكام</span></div>
+        <div class="terms-box">
+          <h3>📋 الشروط والأحكام</h3>
+          <ol>
+            <li>الالتزام بحضور جلسات المدرسة في مواعيدها المحددة.</li>
+            <li>المحافظة على أدب التعامل مع المعلمة وزميلات المجموعة.</li>
+            <li>عدم مشاركة المواد التعليمية خارج المجموعة دون إذن مسبق.</li>
+            <li>في حال الغياب أكثر من مرتين متتاليتين، يحق للمدرسة مراجعة الاستمرار في البرنامج.</li>
+            <li>الرسوم الدراسية غير قابلة للاسترداد بعد بدء البرنامج.</li>
+            <li>يُلزَم الطالب بالمشاركة الإيجابية والانتفاع بالمحتوى المقدَّم.</li>
+            <li>تحتفظ مدرسة القلوب بحق تعديل الجداول والمحتوى وفق المصلحة التعليمية.</li>
+            <li>يُعدّ التسجيل إقراراً بالموافقة على جميع السياسات المذكورة.</li>
+          </ol>
+        </div>
+        <label class="terms-accept" id="termsLabel" onclick="toggleTerms()">
+          <input type="checkbox" id="termsCheck"/>
+          <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span>أوافق على الشروط والأحكام وأتعهد بالالتزام الكامل بها</span>
+        </label>
+        <span class="error-msg" id="e-terms" style="margin-top:6px">يجب الموافقة على الشروط للمتابعة</span>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-back" onclick="goBack(4)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 7l4-4M5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> السابق</button>
+        <button class="btn btn-submit" id="submitBtn" onclick="submitForm()">
+          <span id="submitLabel">إرسال الاستمارة</span>
+          <div class="spinner" id="submitSpinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-page" id="successPage">
+      <div class="success-icon">✅</div>
+      <h2>تم التسجيل بنجاح!</h2>
+      <div class="school-confirm-badge"><span>🎓</span><span id="success-school-name">—</span></div>
+      <p>جزاكِ الله خيراً على تسجيلك. سيتواصل معكِ فريق مدرسة القلوب قريباً لتأكيد قبولك وتفاصيل البرنامج.</p>
+      <div id="successLinkBox" style="display:none;margin:1rem auto 1.5rem;max-width:420px;background:var(--green-50);border:1.5px solid var(--green-100);border-radius:12px;padding:16px 20px;text-align:center">
+        <p style="font-size:13px;color:var(--green-600);margin-bottom:10px;font-weight:500">🔗 رابط مجموعتك الخاص</p>
+        <a id="successLinkHref" href="#" target="_blank" style="font-size:14px;color:var(--green-800);font-weight:600;word-break:break-all;text-decoration:underline;text-underline-offset:3px">—</a>
+        <button onclick="copySuccessLink()" style="display:block;margin:12px auto 0;height:36px;padding:0 20px;background:var(--green-400);color:white;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:500;cursor:pointer" id="copyLinkBtn">نسخ الرابط</button>
+      </div>
+      <p style="color:var(--green-400);font-weight:500">وفّقكِ الله ونفع بكِ 🤍</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtOEwjSzSYxZCpQykEKLxw5ZkEy-hgppX5nVNLFuZay5YtldhIKE2hFiswsp6SZps/exec";
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbwCb3DZ5i550WXcpipOXyIaDiiEieIMlChwMcxSoYurJ3SE0gxj6XZ0HXg69nrIO7A/exec";
+
+const SCHOOL_META = {
+  ibadat: {icon:'🕌', bg:'#E1F5EE', tag:'tag-green', tagText:'برنامج قائم'},
+  hayat1: {icon:'🌱', bg:'#FAEEDA', tag:'tag-gold',  tagText:'الترم الأول'},
+  hayat2: {icon:'🌿', bg:'#FAEEDA', tag:'tag-gold',  tagText:'الترم الثاني'},
+  qulub1: {icon:'💜', bg:'#EEEDFE', tag:'tag-purple',tagText:'الترم الأول'},
+};
+
+let formData = {school:'', schoolLabel:''};
+let radioValues = {gender:'', marital:'', abjadiyat:''};
+let schoolLinks = {};
+
+// ===== INIT =====
+async function init() {
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=getLinks');
+    const json = await res.json();
+    if (json.status === 'success') {
+      json.data.forEach(d => schoolLinks[d.key] = d);
+    }
+  } catch(e) {}
+  renderSchoolCards();
+  document.getElementById('initLoading').classList.add('hide');
+
+  // auto-select from URL param
+  const sp = new URLSearchParams(window.location.search).get('school');
+  if (sp) {
+    const card = document.querySelector(`[data-key="${sp}"]`);
+    if (card && !card.classList.contains('disabled')) card.click();
+  }
+}
+
+function renderSchoolCards() {
+  const grid = document.getElementById('schoolGrid');
+  const keys = ['ibadat','hayat1','hayat2','qulub1'];
+  grid.innerHTML = keys.map(key => {
+    const d = schoolLinks[key] || {};
+    const meta = SCHOOL_META[key];
+    const active = d.active !== false && d.active !== 'FALSE';
+    const label = d.label || key;
+    const shortName = label.split('—')[0].trim();
+    return `
+    <div class="school-card ${active?'':'disabled'}" onclick="selectSchool(this,'${key}')" data-key="${key}" data-label="${label}" data-link="${d.link||''}">
+      <div class="check-circle"><svg viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="sc-icon" style="background:${meta.bg}">${meta.icon}</div>
+      <div class="sc-name">${shortName}</div>
+      <span class="sc-tag ${meta.tag}">${meta.tagText}</span>
+      ${!active ? '<div style="font-size:11px;color:#D85A30;margin-top:4px">غير متاحة حالياً</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectSchool(el, key) {
+  document.querySelectorAll('.school-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  formData.school = key;
+  formData.schoolLabel = el.dataset.label;
+  formData.schoolLink = el.dataset.link || '';
+  document.getElementById('school-err').classList.remove('show');
+}
+
+function pickRadio(el, group, val) {
+  const parent = el.closest('.radio-group');
+  parent.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('checked'));
+  el.classList.add('checked');
+  radioValues[group] = val;
+  const errMap = {gender:'e-gender',marital:'e-marital',abjadiyat:'e-abjadiyat'};
+  if (errMap[group]) document.getElementById(errMap[group]).classList.remove('show');
+}
+
+function toggleTerms() {
+  const lbl = document.getElementById('termsLabel');
+  const chk = document.getElementById('termsCheck');
+  chk.checked = !chk.checked;
+  lbl.classList.toggle('accepted', chk.checked);
+  if (chk.checked) document.getElementById('e-terms').classList.remove('show');
+}
+
+function setProgress(step) {
+  document.getElementById('progressFill').style.width = (step*25)+'%';
+  for (let i=1;i<=4;i++) {
+    const si = document.getElementById('si-'+i);
+    si.classList.remove('active','done');
+    if (i<step) si.classList.add('done');
+    else if (i===step) si.classList.add('active');
+  }
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  setProgress(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function validateStep(n) {
+  if (n===1) {
+    if (!formData.school) { document.getElementById('school-err').classList.add('show'); return false; }
+    return true;
+  }
+  if (n===2) {
+    let ok=true;
+    const checks=[
+      {id:'f-name',err:'e-name',test:v=>v.trim().length>2},
+      {id:'f-age',err:'e-age',test:v=>v&&+v>=10&&+v<=80},
+      {id:'f-nationality',err:'e-nationality',test:v=>!!v},
+      {id:'f-email',err:'e-email',test:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+      {id:'f-mobile',err:'e-mobile',test:v=>v.trim().length>=7},
+    ];
+    checks.forEach(c=>{
+      const el=document.getElementById(c.id);
+      const valid=c.test(el.value);
+      el.classList.toggle('error',!valid);
+      document.getElementById(c.err).classList.toggle('show',!valid);
+      if (!valid) ok=false;
+    });
+    return ok;
+  }
+  if (n===3) {
+    let ok=true;
+    if (!radioValues.gender){document.getElementById('e-gender').classList.add('show');ok=false;}
+    if (!radioValues.marital){document.getElementById('e-marital').classList.add('show');ok=false;}
+    if (!radioValues.abjadiyat){document.getElementById('e-abjadiyat').classList.add('show');ok=false;}
+    return ok;
+  }
+  return true;
+}
+
+function buildSummary() {
+  document.getElementById('summary-school').textContent = formData.schoolLabel;
+  document.getElementById('success-school-name').textContent = formData.schoolLabel;
+  const items=[
+    {label:'الاسم الكامل',val:document.getElementById('f-name').value},
+    {label:'العمر',val:document.getElementById('f-age').value+' سنة'},
+    {label:'الجنسية',val:document.getElementById('f-nationality').value},
+    {label:'البريد الإلكتروني',val:document.getElementById('f-email').value},
+    {label:'الموبايل',val:document.getElementById('f-mobile').value},
+    {label:'واتساب',val:document.getElementById('f-whatsapp').value||'—'},
+    {label:'تيليجرام',val:document.getElementById('f-telegram').value||'—'},
+    {label:'يوزر تيليجرام',val:document.getElementById('f-tguser').value||'—'},
+    {label:'الجنس',val:radioValues.gender},
+    {label:'الحالة الاجتماعية',val:radioValues.marital},
+    {label:'الوظيفة',val:document.getElementById('f-job').value||'—'},
+    {label:'أبجديات',val:radioValues.abjadiyat},
+  ];
+  document.getElementById('summary-grid').innerHTML=items.map(i=>`<div class="summary-item"><span class="s-label">${i.label}</span><span class="s-val">${i.val}</span></div>`).join('');
+}
+
+function goNext(from) {
+  if (!validateStep(from)) return;
+  if (from===3) buildSummary();
+  showStep(from+1);
+}
+
+function goBack(from) { showStep(from-1); }
+
+function copySuccessLink() {
+  const href = document.getElementById('successLinkHref').href;
+  navigator.clipboard.writeText(href).then(() => {
+    const btn = document.getElementById('copyLinkBtn');
+    btn.textContent = '✓ تم النسخ';
+    setTimeout(() => btn.textContent = 'نسخ الرابط', 2000);
+  });
+}
+
+async function submitForm() {
+  if (!document.getElementById('termsCheck').checked) {
+    document.getElementById('e-terms').classList.add('show'); return;
+  }
+  const btn = document.getElementById('submitBtn');
+  const label = document.getElementById('submitLabel');
+  const spinner = document.getElementById('submitSpinner');
+  btn.disabled = true; label.textContent = 'جاري الإرسال...'; spinner.style.display = 'block';
+
+  const payload = {
+    school:        formData.schoolLabel,
+    name:          document.getElementById('f-name').value,
+    age:           document.getElementById('f-age').value,
+    email:         document.getElementById('f-email').value,
+    mobile:        document.getElementById('f-mobile').value,
+    whatsapp:      document.getElementById('f-whatsapp').value,
+    telegram:      document.getElementById('f-telegram').value,
+    telegramUser:  document.getElementById('f-tguser').value,
+    nationality:   document.getElementById('f-nationality').value,
+    gender:        radioValues.gender,
+    maritalStatus: radioValues.marital,
+    job:           document.getElementById('f-job').value,
+    abjadiyat:     radioValues.abjadiyat
+  };
+
+  try {
+    // Use an iframe trick to bypass no-cors limitation with Google Apps Script
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SUBMIT_URL;
+    form.target = 'hidden_iframe';
+    form.style.display = 'none';
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'payload';
+    input.value = JSON.stringify(payload);
+    form.appendChild(input);
+
+    const iframe = document.createElement('iframe');
+    iframe.name = 'hidden_iframe';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+
+    await new Promise((resolve) => {
+      iframe.onload = resolve;
+      form.submit();
+      setTimeout(resolve, 4000); // fallback timeout
+    });
+
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+
+    // Show success
+    document.querySelectorAll('.step-page').forEach(p => p.style.display = 'none');
+    const sp = document.getElementById('successPage');
+    sp.classList.add('visible');
+    document.getElementById('progressFill').style.width = '100%';
+
+    // Show school link if available
+    const link = formData.schoolLink;
+    if (link && link.trim()) {
+      const box = document.getElementById('successLinkBox');
+      const href = document.getElementById('successLinkHref');
+      href.href = link;
+      href.textContent = link;
+      box.style.display = 'block';
+    }
+
+  } catch(e) {
+    btn.disabled = false;
+    label.textContent = 'إرسال الاستمارة';
+    spinner.style.display = 'none';
+    alert('حدث خطأ أثناء الإرسال. الرجاء المحاولة مرة أخرى.');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
