@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>في صحبته ﷺ — رجالًا ونساءً</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:        #C47F17;
+    --gold-light:  #F5C842;
+    --gold-pale:   #FFF8E1;
+    --teal:        #0D7377;
+    --teal-light:  #14BDAC;
+    --teal-pale:   #E0F7F6;
+    --rose:        #C0436A;
+    --rose-light:  #F06292;
+    --rose-pale:   #FCE4EC;
+    --sand:        #FDF6EC;
+    --white:       #FFFFFF;
+    --text:        #2D2D2D;
+    --muted:       #888070;
+    --border:      #EDE8DF;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Cairo',sans-serif;
+    background:var(--sand);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(196,127,23,0.07) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(13,115,119,0.07) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(192,67,106,0.04) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* HERO */
+  .hero {
+    position:relative; z-index:1;
+    text-align:center;
+    padding:60px 20px 48px;
+    background:linear-gradient(160deg,#fffdf7 0%,#fff8f2 50%,#f0fbfa 100%);
+    border-bottom:2px solid var(--border);
+    overflow:hidden;
+  }
+  .hero::after {
+    content:'✦  ✦  ✦';
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    color:var(--gold-light); font-size:0.65rem; letter-spacing:10px; opacity:0.5;
+  }
+  .hero-badge {
+    display:inline-block;
+    background:linear-gradient(135deg,var(--gold-pale),#fff9e6);
+    border:1.5px solid var(--gold-light);
+    color:var(--gold); font-size:0.72rem; letter-spacing:3px;
+    padding:7px 20px; border-radius:30px; margin-bottom:22px;
+    font-weight:700; text-transform:uppercase;
+    box-shadow:0 2px 12px rgba(196,127,23,0.12);
+  }
+  .hero h1 {
+    font-family:'Amiri',serif;
+    font-size:clamp(2rem,6vw,3.6rem);
+    color:var(--teal); line-height:1.35; margin-bottom:10px;
+  }
+  .hero h1 span { color:var(--gold); }
+  .hero-sub { font-size:0.95rem; color:var(--muted); margin-bottom:34px; }
+  .hero-stats {
+    display:flex; justify-content:center;
+    max-width:420px; margin:0 auto;
+    background:var(--white); border-radius:18px;
+    border:1.5px solid var(--border);
+    box-shadow:0 4px 24px rgba(0,0,0,0.06);
+    overflow:hidden;
+  }
+  .stat { flex:1; text-align:center; padding:18px 10px; border-left:1px solid var(--border); }
+  .stat:last-child { border-left:none; }
+  .stat-num { font-size:2rem; font-weight:900; display:block; line-height:1; margin-bottom:4px; }
+  .stat:nth-child(1) .stat-num { color:var(--gold); }
+  .stat:nth-child(2) .stat-num { color:var(--teal); }
+  .stat:nth-child(3) .stat-num { color:var(--rose); }
+  .stat-label { font-size:0.72rem; color:var(--muted); display:block; font-weight:600; }
+
+  /* PROGRESS */
+  .progress-section {
+    position:relative; z-index:1;
+    max-width:1100px; margin:0 auto; padding:22px 24px 0;
+  }
+  .progress-bar-wrap {
+    background:var(--border); border-radius:6px; height:6px; overflow:hidden; margin-bottom:8px;
+  }
+  .progress-bar-fill {
+    height:100%;
+    background:linear-gradient(90deg,var(--teal-light),var(--gold-light));
+    border-radius:6px; width:0%; transition:width 0.5s ease;
+  }
+  .progress-text { font-size:0.72rem; color:var(--muted); font-weight:600; }
+
+  /* UNITS NAV */
+  .units-nav {
+    position:relative; z-index:1;
+    display:flex; justify-content:center; gap:10px;
+    padding:24px 20px; flex-wrap:wrap;
+  }
+  .unit-btn {
+    background:var(--white); border:1.5px solid var(--border);
+    color:var(--muted); padding:9px 22px; border-radius:30px;
+    cursor:pointer; font-family:'Cairo',sans-serif;
+    font-size:0.85rem; font-weight:600;
+    transition:all 0.25s ease;
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  }
+  .unit-btn:hover { border-color:var(--teal-light); color:var(--teal); }
+  .unit-btn.active-all { background:var(--teal); border-color:var(--teal); color:#fff; box-shadow:0 4px 16px rgba(13,115,119,0.25); }
+  .unit-btn.active-1   { background:var(--gold); border-color:var(--gold); color:#fff; box-shadow:0 4px 16px rgba(196,127,23,0.25); }
+  .unit-btn.active-2   { background:var(--teal); border-color:var(--teal); color:#fff; box-shadow:0 4px 16px rgba(13,115,119,0.25); }
+  .unit-btn.active-3   { background:var(--rose); border-color:var(--rose); color:#fff; box-shadow:0 4px 16px rgba(192,67,106,0.25); }
+
+  /* CONTAINER */
+  .lessons-container {
+    position:relative; z-index:1;
+    max-width:1100px; margin:0 auto; padding:0 20px 60px;
+  }
+
+  /* UNIT LABEL */
+  .unit-label {
+    display:none; align-items:center; gap:12px; margin-bottom:18px;
+  }
+  .unit-label.visible { display:flex; }
+  .unit-label-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .u1 .unit-label-dot { background:var(--gold); }
+  .u2 .unit-label-dot { background:var(--teal); }
+  .u3 .unit-label-dot { background:var(--rose); }
+  .unit-label-text { font-size:0.72rem; letter-spacing:2.5px; text-transform:uppercase; font-weight:700; }
+  .u1 .unit-label-text { color:var(--gold); }
+  .u2 .unit-label-text { color:var(--teal); }
+  .u3 .unit-label-text { color:var(--rose); }
+  .unit-label-line { flex:1; height:1px; }
+  .u1 .unit-label-line { background:linear-gradient(90deg,rgba(196,127,23,0.3),transparent); }
+  .u2 .unit-label-line { background:linear-gradient(90deg,rgba(13,115,119,0.3),transparent); }
+  .u3 .unit-label-line { background:linear-gradient(90deg,rgba(192,67,106,0.3),transparent); }
+
+  /* GRID */
+  .lessons-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:18px; margin-bottom:36px;
+  }
+
+  /* CARD */
+  .lesson-card {
+    background:var(--white); border:1.5px solid var(--border);
+    border-radius:18px; overflow:hidden; cursor:pointer;
+    transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    display:none; box-shadow:0 2px 12px rgba(0,0,0,0.05);
+    animation:fadeUp 0.4s ease both;
+  }
+  .lesson-card:nth-child(1){animation-delay:0.05s}
+  .lesson-card:nth-child(2){animation-delay:0.1s}
+  .lesson-card:nth-child(3){animation-delay:0.15s}
+  .lesson-card:nth-child(4){animation-delay:0.2s}
+  .lesson-card.visible { display:block; }
+  .lesson-card:hover { transform:translateY(-5px); box-shadow:0 14px 36px rgba(0,0,0,0.1); }
+  .unit-1.lesson-card:hover { border-color:var(--gold-light); }
+  .unit-2.lesson-card:hover { border-color:var(--teal-light); }
+  .unit-3.lesson-card:hover { border-color:var(--rose-light); }
+
+  .card-stripe { height:5px; }
+  .unit-1 .card-stripe { background:linear-gradient(90deg,var(--gold-light),var(--gold)); }
+  .unit-2 .card-stripe { background:linear-gradient(90deg,var(--teal-light),var(--teal)); }
+  .unit-3 .card-stripe { background:linear-gradient(90deg,var(--rose-light),var(--rose)); }
+
+  .card-header { padding:20px 20px 18px; display:flex; align-items:flex-start; gap:14px; }
+
+  .lesson-num {
+    width:42px; height:42px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.85rem; font-weight:900; flex-shrink:0;
+  }
+  .unit-1 .lesson-num { background:var(--gold-pale); color:var(--gold); }
+  .unit-2 .lesson-num { background:var(--teal-pale); color:var(--teal); }
+  .unit-3 .lesson-num { background:var(--rose-pale); color:var(--rose); }
+
+  .card-title-group { flex:1; }
+  .card-unit-tag { font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; font-weight:700; }
+  .unit-1 .card-unit-tag { color:var(--gold); }
+  .unit-2 .card-unit-tag { color:var(--teal); }
+  .unit-3 .card-unit-tag { color:var(--rose); }
+  .card-name { font-family:'Amiri',serif; font-size:1.15rem; color:var(--text); line-height:1.45; }
+  .card-duration { font-size:0.7rem; color:var(--muted); margin-top:4px; font-weight:600; }
+
+  .card-arrow { font-size:1.3rem; transition:all 0.3s ease; flex-shrink:0; margin-top:2px; }
+  .unit-1 .card-arrow { color:var(--gold-light); }
+  .unit-2 .card-arrow { color:var(--teal-light); }
+  .unit-3 .card-arrow { color:var(--rose-light); }
+  .lesson-card.open .card-arrow { transform:rotate(90deg); }
+
+  /* CONTENT */
+  .lesson-content { max-height:0; overflow:hidden; transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .lesson-content.open { max-height:1000px; }
+  .content-inner { padding:0 20px 22px; border-top:1px solid var(--border); padding-top:18px; }
+
+  .core-idea { border-radius:12px; padding:14px 16px; margin-bottom:20px; }
+  .unit-1 .core-idea { background:var(--gold-pale); border:1px solid rgba(196,127,23,0.2); }
+  .unit-2 .core-idea { background:var(--teal-pale); border:1px solid rgba(13,115,119,0.2); }
+  .unit-3 .core-idea { background:var(--rose-pale); border:1px solid rgba(192,67,106,0.2); }
+  .core-idea-label { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:7px; font-weight:700; }
+  .unit-1 .core-idea-label { color:var(--gold); }
+  .unit-2 .core-idea-label { color:var(--teal); }
+  .unit-3 .core-idea-label { color:var(--rose); }
+  .core-idea p { font-family:'Amiri',serif; font-size:1rem; color:var(--text); line-height:1.7; }
+
+  .timeline-label { font-size:0.62rem; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:14px; font-weight:700; }
+  .timeline { display:flex; flex-direction:column; margin-bottom:18px; }
+  .timeline-item { display:flex; gap:12px; align-items:flex-start; }
+  .timeline-left { display:flex; flex-direction:column; align-items:center; width:20px; flex-shrink:0; padding-top:5px; }
+  .timeline-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .unit-1 .timeline-dot { background:var(--gold-light); }
+  .unit-2 .timeline-dot { background:var(--teal-light); }
+  .unit-3 .timeline-dot { background:var(--rose-light); }
+  .timeline-line { width:2px; flex:1; min-height:16px; border-radius:2px; }
+  .unit-1 .timeline-line { background:var(--gold-pale); }
+  .unit-2 .timeline-line { background:var(--teal-pale); }
+  .unit-3 .timeline-line { background:var(--rose-pale); }
+  .timeline-item:last-child .timeline-line { display:none; }
+  .timeline-body { padding-bottom:14px; flex:1; }
+  .timeline-title { font-size:0.84rem; font-weight:700; color:var(--text); margin-bottom:2px; }
+  .timeline-desc { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+  .timeline-time {
+    font-size:0.68rem; font-weight:700; white-space:nowrap;
+    background:var(--sand); border-radius:20px; padding:3px 10px;
+    height:fit-content; margin-top:3px; border:1px solid var(--border); flex-shrink:0;
+  }
+  .unit-1 .timeline-time { color:var(--gold); }
+  .unit-2 .timeline-time { color:var(--teal); }
+  .unit-3 .timeline-time { color:var(--rose); }
+
+  .lesson-quote { border-radius:12px; padding:14px 16px; }
+  .unit-1 .lesson-quote { background:linear-gradient(135deg,#fffde8,#fff8d0); border:1px solid rgba(196,127,23,0.15); }
+  .unit-2 .lesson-quote { background:linear-gradient(135deg,#e8f8f7,#d0f4f1); border:1px solid rgba(13,115,119,0.15); }
+  .unit-3 .lesson-quote { background:linear-gradient(135deg,#fce8f0,#f8d0e2); border:1px solid rgba(192,67,106,0.15); }
+  .quote-label { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; font-weight:700; }
+  .unit-1 .quote-label { color:var(--gold); }
+  .unit-2 .quote-label { color:var(--teal); }
+  .unit-3 .quote-label { color:var(--rose); }
+  .quote-text { font-family:'Amiri',serif; font-size:1.05rem; color:var(--text); line-height:1.7; }
+
+  @media(max-width:600px){
+    .hero{padding:44px 16px 36px;}
+    .lessons-grid{grid-template-columns:1fr;}
+  }
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(16px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">✨ ملحق الدبلومة</div>
+  <h1>في صحبته <span>ﷺ</span><br>رجالًا ونساءً</h1>
+  <p class="hero-sub">عشتِ معه ﷺ في الدبلومة — دلوقتي اعرفي مين عاشوا معاه</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">٨</span><span class="stat-label">دروس</span></div>
+    <div class="stat"><span class="stat-num">٨</span><span class="stat-label">ساعات</span></div>
+    <div class="stat"><span class="stat-num">٣</span><span class="stat-label">وحدات</span></div>
+  </div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">لم تفتحي أي درس بعد 🌱</div>
+</div>
+
+<div class="units-nav">
+  <button class="unit-btn active-all" onclick="filterUnit('all',this)">الكل</button>
+  <button class="unit-btn" onclick="filterUnit('1',this)">في صحبته</button>
+  <button class="unit-btn" onclick="filterUnit('2',this)">أصحاب المواقف</button>
+  <button class="unit-btn" onclick="filterUnit('3',this)">الصحابيات</button>
+</div>
+
+<div class="lessons-container">
+
+  <div class="unit-label u1 visible" id="label-1" data-unit="1">
+    <div class="unit-label-dot"></div>
+    <div class="unit-label-text">الوحدة الأولى — في صحبته ﷺ</div>
+    <div class="unit-label-line"></div>
+  </div>
+  <div class="lessons-grid">
+
+    <div class="lesson-card unit-1 visible" onclick="toggleLesson(this)" data-unit="1">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">١</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">في صحبته</div>
+          <div class="card-name">أبو بكر — الصاحب في الغار</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>علاقة أبو بكر بالنبي ﷺ ما بدأتش بالإسلام — هي صداقة عمر كلها، والإسلام كان تتويجها</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">افتح بسؤال</div><div class="timeline-desc">إيه الفرق بين صاحب وصاحب في الدين؟</div></div><div class="timeline-time">٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">قبل الإسلام</div><div class="timeline-desc">صداقتهم من الجاهلية — ليه النبي ﷺ اختار أبو بكر؟</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">لحظة الإسلام</div><div class="timeline-desc">ما ترددت في شيء كترددي في إسلام أبي بكر</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">موقف الغار</div><div class="timeline-desc">الخوف عليه ﷺ مش الخوف على نفسه</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">بعد وفاته ﷺ</div><div class="timeline-desc">من وقف لما انهار الكل</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">كيف تكون الصحبة الحقيقية في حياتك؟</div></div><div class="timeline-time">٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">الصحبة الحقيقية تظهر في أصعب لحظة — مش في أسهلها</div></div>
+      </div></div>
+    </div>
+
+    <div class="lesson-card unit-1 visible" onclick="toggleLesson(this)" data-unit="1">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٢</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">في صحبته</div>
+          <div class="card-name">عمر — من العداوة للمحبة</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>عمر كان من أشد أعداء الإسلام — وصار من أشد حماته. قصة تحول القلب لما يتلقى الحق</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">عمر قبل الإسلام</div><div class="timeline-desc">شخصيته وموقفه من النبي ﷺ — الكره والقوة</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">ليلة الإسلام</div><div class="timeline-desc">القصة الكاملة من قرار القتل لشهادة التوحيد</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">علاقته بالنبي ﷺ بعد الإسلام</div><div class="timeline-desc">المواقف التي أظهرت حبه الحقيقي</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">يوم وفاة النبي ﷺ</div><div class="timeline-desc">عمر الذي لم يصدق — وكيف تعامل مع الفقد</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">التحول الحقيقي يبدأ من داخل القلب</div></div><div class="timeline-time">٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">اللي بيتحول من عدو لمحب — بيكون أكثر الناس حماسًا للحق لأنه عارف ثمن التحول</div></div>
+      </div></div>
+    </div>
+
+    <div class="lesson-card unit-1 visible" onclick="toggleLesson(this)" data-unit="1">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٣</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">في صحبته</div>
+          <div class="card-name">علي — الطفل الذي رُبّي في بيته ﷺ</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>علي ما اختار الإسلام كبيرًا — هو نشأ عليه. الفرق بين من يختار الدين ومن يُربَّى عليه</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الطفولة في بيت النبي ﷺ</div><div class="timeline-desc">لماذا كُفل علي؟ وماذا تعلم؟</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">أول من أسلم من الصبيان</div><div class="timeline-desc">قصة إسلامه وموقف قريش</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">ليلة الهجرة</div><div class="timeline-desc">نام في فراش النبي ﷺ — الثقة والتضحية</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">علاقته العلمية بالنبي ﷺ</div><div class="timeline-desc">أنا مدينة العلم وعلي بابها</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">البيئة التي نُربَّى فيها تصنع من نكون</div></div><div class="timeline-time">١٠ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">البيت الذي يُربي على القرآن — يُخرج علماء لا مجرد مسلمين</div></div>
+      </div></div>
+    </div>
+
+    <div class="lesson-card unit-1 visible" onclick="toggleLesson(this)" data-unit="1">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٤</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">في صحبته</div>
+          <div class="card-name">أنس بن مالك — خادمه عشر سنين</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>أنس عاش مع النبي ﷺ بشكل يومي — وشهد ما لم يشهده غيره من أخلاقه في البيت والتفاصيل الصغيرة</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">كيف جاء أنس للنبي ﷺ</div><div class="timeline-desc">أمه التي أهدته للرسالة</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">أخلاق النبي ﷺ في البيت</div><div class="timeline-desc">ما رآه أنس يوميًا من الرحمة والصبر</div></div><div class="timeline-time">٢٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">أحاديثه عن النبي ﷺ</div><div class="timeline-desc">أنس من أكثر الصحابة رواية — لماذا؟</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">الخدمة قُربة — كيف تُحوّل الأعمال اليومية إلى عبادة</div></div><div class="timeline-time">١٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">من خدم النبي ﷺ عشر سنين — ما سمع منه كلمة أف ولا لم فعلت ولا ألا فعلت</div></div>
+      </div></div>
+    </div>
+
+  </div><!-- /grid-1 -->
+
+  <div class="unit-label u2 visible" id="label-2" data-unit="2">
+    <div class="unit-label-dot"></div>
+    <div class="unit-label-text">الوحدة الثانية — أصحاب المواقف</div>
+    <div class="unit-label-line"></div>
+  </div>
+  <div class="lessons-grid">
+
+    <div class="lesson-card unit-2 visible" onclick="toggleLesson(this)" data-unit="2">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٥</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">أصحاب المواقف</div>
+          <div class="card-name">مصعب بن عمير — موقف أُحد</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>مصعب ترك الدنيا كلها من أجل الإسلام — وفي أُحد أعطى آخر ما عنده حمايةً للواء النبي ﷺ</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">من كان مصعب قبل الإسلام</div><div class="timeline-desc">أناقته وثروته وحياة الترف</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">ما تركه من أجل الإسلام</div><div class="timeline-desc">أمه وماله وحياته كلها</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">سفيرًا للنبي ﷺ في المدينة</div><div class="timeline-desc">أول من فتح المدينة بالقرآن</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">موقف أُحد</div><div class="timeline-desc">حمل اللواء حتى قُطعت يداه — ثم حمله بصدره</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">التضحية الحقيقية — متى تستحق أن تعطي كل شيء؟</div></div><div class="timeline-time">٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">الذي يملك كل شيء ويتركه — أعظم ممن لم يملك شيئًا ابتداءً</div></div>
+      </div></div>
+    </div>
+
+    <div class="lesson-card unit-2 visible" onclick="toggleLesson(this)" data-unit="2">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٦</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">أصحاب المواقف</div>
+          <div class="card-name">خالد بن الوليد — موقف الفتح</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>خالد كان سيف قريش ضد الإسلام — وصار سيف الله في الإسلام. التحول من عدو للدين إلى بطله</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">خالد في غزوة أُحد</div><div class="timeline-desc">العبقري العسكري في خدمة الكفر</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">قصة إسلامه</div><div class="timeline-desc">الرحلة من مكة للمدينة ولقاء النبي ﷺ</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">فتح مكة — الموقف الكبير</div><div class="timeline-desc">كيف أدار خالد الدخول بلا دماء تقريبًا</div></div><div class="timeline-time">٢٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">الموهبة في خدمة الحق — متى تبلغ أقصاها؟</div></div><div class="timeline-time">١٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">كل موهبة تجد حجمها الحقيقي لما تُوضع في المكان الصح</div></div>
+      </div></div>
+    </div>
+
+  </div><!-- /grid-2 -->
+
+  <div class="unit-label u3 visible" id="label-3" data-unit="3">
+    <div class="unit-label-dot"></div>
+    <div class="unit-label-text">الوحدة الثالثة — الصحابيات</div>
+    <div class="unit-label-line"></div>
+  </div>
+  <div class="lessons-grid">
+
+    <div class="lesson-card unit-3 visible" onclick="toggleLesson(this)" data-unit="3">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٧</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">الصحابيات</div>
+          <div class="card-name">خديجة — أول من آمن وأول من دعم</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>خديجة لم تكن فقط زوجة — كانت الدعم الأول والأقوى في أصعب لحظات الدعوة</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">خديجة قبل الزواج</div><div class="timeline-desc">سيدة الأعمال والشخصية المستقلة</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">ليلة الوحي الأول</div><div class="timeline-desc">زملوني زملوني — وكيف ثبّتته</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">دعمها المادي للدعوة</div><div class="timeline-desc">أنفقت مالها كله — والأثر في انتشار الإسلام</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">عام الحزن ووفاتها</div><div class="timeline-desc">لماذا ظل النبي ﷺ يذكرها طول عمره</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">المرأة التي تدعم رسالة — ما أثرها؟</div></div><div class="timeline-time">١٠ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">أعظم دعم لا يُرى — ذلك الذي يُعطى في اللحظة التي يتزعزع فيها القلب</div></div>
+      </div></div>
+    </div>
+
+    <div class="lesson-card unit-3 visible" onclick="toggleLesson(this)" data-unit="3">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="lesson-num">٨</div>
+        <div class="card-title-group">
+          <div class="card-unit-tag">الصحابيات</div>
+          <div class="card-name">أم سلمة — عقل الأزمات</div>
+          <div class="card-duration">⏱ ساعة كاملة</div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+      <div class="lesson-content"><div class="content-inner">
+        <div class="core-idea"><div class="core-idea-label">الفكرة المحورية</div><p>في أشد لحظات الأزمة — كانت أم سلمة هي صاحبة الرأي الذي أنقذ صلح الحديبية</p></div>
+        <div class="timeline-label">هيكل الدرس</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">من هي أم سلمة</div><div class="timeline-desc">شخصيتها وقصة هجرتها وصبرها</div></div><div class="timeline-time">١٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">يوم الحديبية</div><div class="timeline-desc">الصحابة رفضوا الأمر — فاستشار النبي ﷺ أم سلمة</div></div><div class="timeline-time">٢٠ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">رأيها الذي حل الأزمة</div><div class="timeline-desc">اخرج واحلق رأسك — وتفسير الخطوة النفسية</div></div><div class="timeline-time">١٥ د</div></div>
+          <div class="timeline-item"><div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div><div class="timeline-body"><div class="timeline-title">الدرس والتطبيق</div><div class="timeline-desc">الذكاء العاطفي في إدارة الأزمات</div></div><div class="timeline-time">١٥ د</div></div>
+        </div>
+        <div class="lesson-quote"><div class="quote-label">النقطة التربوية</div><div class="quote-text">الرأي الصح لا يُقاس بجنس صاحبه — بل بعمق فهمه للنفس البشرية</div></div>
+      </div></div>
+    </div>
+
+  </div><!-- /grid-3 -->
+</div>
+
+<script>
+  const openLessons = new Set();
+
+  function toggleLesson(card) {
+    const content = card.querySelector('.lesson-content');
+    const isOpen = card.classList.contains('open');
+    if (isOpen) { card.classList.remove('open'); content.classList.remove('open'); openLessons.delete(card); }
+    else { card.classList.add('open'); content.classList.add('open'); openLessons.add(card); }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.lesson-card').length;
+    const opened = openLessons.size;
+    const pct = Math.round((opened/total)*100);
+    document.getElementById('progressFill').style.width = pct+'%';
+    if (opened===0) document.getElementById('progressText').textContent='لم تفتحي أي درس بعد 🌱';
+    else if (opened===total) document.getElementById('progressText').textContent='أحسنتِ! استعرضتِ المنهج كاملًا 🌟';
+    else document.getElementById('progressText').textContent=`استعرضتِ ${opened} من ${total} دروس ✨`;
+  }
+
+  const activeClasses = { all:'active-all','1':'active-1','2':'active-2','3':'active-3' };
+
+  function filterUnit(unit, btn) {
+    document.querySelectorAll('.unit-btn').forEach(b => b.className='unit-btn');
+    btn.classList.add(activeClasses[unit]);
+    document.querySelectorAll('.lesson-card').forEach(card => {
+      card.classList.toggle('visible', unit==='all' || card.dataset.unit===unit);
+    });
+    document.querySelectorAll('.unit-label').forEach(label => {
+      label.classList.toggle('visible', unit==='all' || label.dataset.unit===unit);
+    });
+  }
+</script>
+</body>
+</html>
