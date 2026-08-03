@@ -91,6 +91,16 @@ h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;c
 
 .rank-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:13px;}
 .chart-wrap{position:relative;height:220px;margin-bottom:6px;}
+@media print {
+  .tabs, #no-print { display: none !important; }
+  #evaluateView, #setupView, #archiveView { display: none !important; }
+  #reportsView { display: block !important; }
+  body { background: #fff; }
+  .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .member-report-section { display: none; }
+  body.print-member-only .report-main-section { display: none !important; }
+  body.print-member-only .member-report-section { display: block !important; }
+}
 </style>
 </head>
 <body>
@@ -177,7 +187,7 @@ h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;c
     catch(e){ return []; }
   }
   // رابط Google Apps Script Web App - متثبت جوّه الكود، مفيش داعي لأي إعداد يدوي
-  const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzZMsgwnTgUzBPVVzooH-UKH0-WCtWziu38ZcyeoiQ_-HEzu_d4jmihtrzF5KaLO3U/exec';
+  const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwsuJINdzwzb7fKsDgGkbkhpihooko-QuTP9iEcdmfK4b54FVgkWeCR7DZ_HTpfLw/exec';
 
   function getEvalRecord(id){
     try{ const v = localStorage.getItem('evaluation:'+id); return v ? JSON.parse(v) : null; }
@@ -185,6 +195,46 @@ h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;c
   }
   async function getWebAppUrl(){
     return SHEET_WEBAPP_URL;
+  }
+
+  // ============ قراءة البيانات من الشيت (المصدر الحقيقي، بيتغلب على أي فقدان محلي) ============
+  function jsonpFetch(url){
+    return new Promise((resolve, reject)=>{
+      const cbName = 'cb_' + Date.now() + Math.random().toString(36).slice(2,7);
+      const script = document.createElement('script');
+      const cleanup = ()=>{ delete window[cbName]; script.remove(); };
+      window[cbName] = function(data){ resolve(data); cleanup(); };
+      script.src = url + (url.includes('?')?'&':'?') + 'callback=' + cbName;
+      script.onerror = ()=>{ reject(new Error('jsonp failed')); cleanup(); };
+      setTimeout(()=>{ if(window[cbName]){ reject(new Error('jsonp timeout')); cleanup(); } }, 12000);
+      document.body.appendChild(script);
+    });
+  }
+
+  async function loadAllFromSheet(){
+    try{
+      const data = await jsonpFetch(SHEET_WEBAPP_URL);
+      if(data.error) throw new Error(data.error);
+
+      committees = (data.committees||[]).filter(c=>c.id).map(c=>({id:c.id, name:c.name, leaderName:c.leaderName||''}));
+      members = (data.members||[]).filter(m=>m.id).map(m=>({id:m.id, name:m.name, committeeId:m.committeeId||'', committeeName:m.committeeName||''}));
+      localStorage.setItem('committees', JSON.stringify(committees));
+      localStorage.setItem('members', JSON.stringify(members));
+
+      const evalIndex = [];
+      (data.evaluations||[]).forEach(ev=>{
+        if(!ev.id) return;
+        evalIndex.push(ev.id);
+        localStorage.setItem('evaluation:'+ev.id, JSON.stringify({id:ev.id, date:ev.date, data:ev}));
+      });
+      localStorage.setItem('eval-index', JSON.stringify(evalIndex));
+      showToast('✅ اتحدّث من الشيت (' + committees.length + ' لجنة، ' + members.length + ' عضو، ' + evalIndex.length + ' تقييم)');
+      return true;
+    }catch(e){
+      console.error('فشلت قراءة الشيت، هنستخدم النسخة المحلية', e);
+      showToast('⚠️ فشلت القراءة من الشيت - هيظهر النسخة المحلية بس. تأكدي إن كود Apps Script فيه function doGet ومعمول Deploy جديد');
+      return false;
+    }
   }
 
   // ============ تبويب: تقييم جديد ============
@@ -407,7 +457,7 @@ h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;c
     members.push(newMember);
     await saveMembers();
     const committee = committees.find(c=>c.id===committeeId);
-    sendToSheet('member', {id: newMember.id, name, committeeName: committee?committee.name:''});
+    sendToSheet('member', {id: newMember.id, name, committeeId, committeeName: committee?committee.name:''});
     showToast('✅ اتضاف العضو وانبعت للشيت');
     renderSetupView(); renderEvaluateView();
   };
@@ -421,105 +471,6 @@ h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;c
   };
 
   // ============ تبويب: الأرشيف ============
-  const APPS_SCRIPT_CODE = `/**
- * كود ربط "نظام متابعة اللجان" بجوجل شيت.
- * بيوزّع البيانات على 3 شيتات: التقييمات / اللجان / الأعضاء.
- * بيدعم الحذف: أي حذف من النظام بيمسح نفس الصف من الشيت (بالـ ID).
- */
-
-function getOrCreateSheet(name, headers) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(name);
-  if (!sheet) {
-    sheet = ss.insertSheet(name);
-  }
-  if (sheet.getMaxColumns() < headers.length) {
-    sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
-  }
-  if (sheet.getLastRow() === 0) {
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-    sheet.setRightToLeft(true);
-  }
-  return sheet;
-}
-
-function appendRowSafe(sheet, rowData) {
-  const targetRow = sheet.getLastRow() + 1;
-  sheet.getRange(targetRow, 1, 1, rowData.length).setValues([rowData]);
-}
-
-function deleteRowById(sheet, id) {
-  if (!id || sheet.getLastRow() < 2) return;
-  const ids = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
-  for (let i = 0; i < ids.length; i++) {
-    if (String(ids[i][0]) === String(id)) {
-      sheet.deleteRow(i + 2);
-      return;
-    }
-  }
-}
-
-function doPost(e) {
-  try {
-    const body = JSON.parse(e.postData.contents);
-    const type = body.type || 'evaluation';
-    const d = body.data || {};
-
-    if (type === 'committee') {
-      const sheet = getOrCreateSheet('اللجان', ['ID', 'تاريخ الإضافة', 'اسم اللجنة', 'الليدر']);
-      appendRowSafe(sheet, [d.id || '', body.date || new Date().toISOString(), d.name || '', d.leaderName || '']);
-
-    } else if (type === 'delete_committee') {
-      const sheet = getOrCreateSheet('اللجان', ['ID', 'تاريخ الإضافة', 'اسم اللجنة', 'الليدر']);
-      deleteRowById(sheet, d.id);
-
-    } else if (type === 'member') {
-      const sheet = getOrCreateSheet('الأعضاء', ['ID', 'تاريخ الإضافة', 'اسم العضو', 'اللجنة']);
-      appendRowSafe(sheet, [d.id || '', body.date || new Date().toISOString(), d.name || '', d.committeeName || '']);
-
-    } else if (type === 'delete_member') {
-      const sheet = getOrCreateSheet('الأعضاء', ['ID', 'تاريخ الإضافة', 'اسم العضو', 'اللجنة']);
-      deleteRowById(sheet, d.id);
-
-    } else if (type === 'delete_evaluation') {
-      const sheet = getOrCreateSheet('التقييمات', [
-        'ID', 'تاريخ الحفظ', 'الليدر', 'اللجنة', 'العضو', 'تاريخ التقييم',
-        'الحضور والمشاركة', 'الالتزام بالمواعيد', 'الجاهزية',
-        'المهام المنفذة', 'جودة التنفيذ', 'المبادرة', 'مستوى النشاط',
-        'التعاون', 'القيم', 'تقبل الملاحظات',
-        'لحظة فارقة', 'محتاجة دعم', 'نقاط قوة', 'نقاط ضعف',
-        'ملاحظات الليدر', 'تقييم الأسبوع', 'المتوسط العام'
-      ]);
-      deleteRowById(sheet, d.id);
-
-    } else {
-      const sheet = getOrCreateSheet('التقييمات', [
-        'ID', 'تاريخ الحفظ', 'الليدر', 'اللجنة', 'العضو', 'تاريخ التقييم',
-        'الحضور والمشاركة', 'الالتزام بالمواعيد', 'الجاهزية',
-        'المهام المنفذة', 'جودة التنفيذ', 'المبادرة', 'مستوى النشاط',
-        'التعاون', 'القيم', 'تقبل الملاحظات',
-        'لحظة فارقة', 'محتاجة دعم', 'نقاط قوة', 'نقاط ضعف',
-        'ملاحظات الليدر', 'تقييم الأسبوع', 'المتوسط العام'
-      ]);
-      appendRowSafe(sheet, [
-        d.id || '', body.date || new Date().toISOString(),
-        d.leaderName || '', d.committeeName || '', d.memberName || '', d.weekOf || '',
-        d.attendance || '', d.deadlines || '', d.readiness || '',
-        d.tasksDone || '', d.quality || '', d.initiative || '', d.activityLevel || '',
-        d.teamwork || '', d.values || '', d.feedbackAccept || '',
-        d.diffMoment || '', d.needsSupport || '', d.strengths || '', d.weaknesses || '',
-        d.leaderGeneral || '', d.weekRating || '', d.overallScore || ''
-      ]);
-    }
-
-    return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message, stack: err.stack }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}`;
 
   window.copyRow = async function(id){
     const rec = await getEvalRecord(id);
@@ -567,12 +518,12 @@ function doPost(e) {
       </div>`;
     }
     document.getElementById('archiveView').innerHTML = `
-      <div class="banner">لو الربط التلقائي شغال (من تبويب "⚙️ الربط بجوجل شيت") مش محتاجة تعملي حاجة تانية. لو مش مربوطة: انسخي كل تقييم كصف والصقيه في الشيت.</div>
       ${items}`;
   }
 
   // ============ تبويب: التقارير ============
-  let committeeChart, memberTrendChart;
+  let committeeChart, trendChart;
+  let reportsRange = 'all';
   async function collectAllEvaluations(){
     const idx = await getEvalIndex();
     const recs = [];
@@ -580,10 +531,57 @@ function doPost(e) {
     return recs;
   }
 
+  function filterByRange(evals, range){
+    if(range==='all') return evals;
+    const months = {'1m':1,'2m':2,'3m':3}[range] || 0;
+    if(!months) return evals;
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - months);
+    return evals.filter(d => d.weekOf && new Date(d.weekOf) >= cutoff);
+  }
+
+  window.onReportsRangeChange = function(val){ reportsRange = val; renderReportsView(); };
+  window.downloadReportsPdf = function(){ window.print(); };
+
   async function renderReportsView(){
-    const evals = await collectAllEvaluations();
-    if(evals.length===0){
+    const allEvals = await collectAllEvaluations();
+    if(allEvals.length===0){
       document.getElementById('reportsView').innerHTML = `<div class="card empty-state"><div class="big">📊</div>هيظهر هنا تقرير احترافي أول ما تتسجل تقييمات</div>`;
+      return;
+    }
+    const evals = filterByRange(allEvals, reportsRange);
+
+    const rangeSelector = `
+      <div class="card" id="no-print">
+        <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+          <div style="flex:1;min-width:160px;">
+            <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;">المدى الزمني</label>
+            <select onchange="onReportsRangeChange(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 10px;font-family:'Tajawal',sans-serif;font-size:13px;">
+              <option value="all" ${reportsRange==='all'?'selected':''}>كل الفترة</option>
+              <option value="1m" ${reportsRange==='1m'?'selected':''}>آخر شهر</option>
+              <option value="2m" ${reportsRange==='2m'?'selected':''}>آخر شهرين</option>
+              <option value="3m" ${reportsRange==='3m'?'selected':''}>آخر 3 شهور</option>
+            </select>
+          </div>
+          <button class="mini-btn" onclick="downloadReportsPdf()">🖨️ تحميل / طباعة PDF</button>
+        </div>
+      </div>`;
+
+    if(evals.length===0){
+      document.getElementById('reportsView').innerHTML = `${rangeSelector}<div class="card empty-state"><div class="big">📊</div>مفيش تقييمات في المدى الزمني ده</div>
+      <div class="member-report-section">
+        <div class="card" id="no-print">
+          <h3 class="section-title">📄 تقرير عضو كامل</h3>
+          <div class="field" style="margin-bottom:10px;">
+            <label>اختاري العضو</label>
+            <select id="memberReportSelect" onchange="renderMemberReport(this.value)">
+              <option value="">-- اختاري --</option>
+              ${members.slice().sort((a,b)=>a.name.localeCompare(b.name,'ar')).map(m=>`<option value="${m.name}||${m.committeeName}">${escapeHtml(m.name)} (${escapeHtml(m.committeeName)})</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div id="memberReportContent"></div>
+      </div>`;
       return;
     }
 
@@ -614,26 +612,66 @@ function doPost(e) {
     const top5 = memberRanking.slice(0,5);
     const bottom5 = [...memberRanking].sort((a,b)=>a.avg-b.avg).slice(0,5);
 
+    // كيرف الأداء عبر الوقت: متوسط كل أسبوع (كل الأعضاء مجمّعين)
+    const byWeek = {};
+    evals.forEach(d=>{
+      if(!d.weekOf) return;
+      byWeek[d.weekOf] = byWeek[d.weekOf] || [];
+      byWeek[d.weekOf].push(d.overallScore);
+    });
+    const weekKeys = Object.keys(byWeek).sort();
+    const weekLabels = weekKeys.map(w=>new Date(w).toLocaleDateString('ar-EG',{month:'short',day:'numeric'}));
+    const weekAvgs = weekKeys.map(w=>Math.round((byWeek[w].reduce((a,b)=>a+b,0)/byWeek[w].length)*10)/10);
+
     document.getElementById('reportsView').innerHTML = `
-      <div class="stat-grid">
-        <div class="stat-card"><div class="num">${committees.length}</div><div class="lbl">لجان</div></div>
-        <div class="stat-card"><div class="num">${members.length}</div><div class="lbl">أعضاء</div></div>
-        <div class="stat-card"><div class="num">${evals.length}</div><div class="lbl">تقييمات</div></div>
-        <div class="stat-card"><div class="num">${overallAvg}/10</div><div class="lbl">المتوسط العام</div></div>
+      <div class="report-main-section">
+        ${rangeSelector}
+        <div class="stat-grid">
+          <div class="stat-card"><div class="num">${committees.length}</div><div class="lbl">لجان</div></div>
+          <div class="stat-card"><div class="num">${members.length}</div><div class="lbl">أعضاء</div></div>
+          <div class="stat-card"><div class="num">${evals.length}</div><div class="lbl">تقييمات في المدى ده</div></div>
+          <div class="stat-card"><div class="num">${overallAvg}/10</div><div class="lbl">المتوسط العام</div></div>
+        </div>
+        <div class="card">
+          <h3 class="section-title">منحنى الأداء عبر الوقت</h3>
+          <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3 class="section-title">مقارنة أداء اللجان</h3>
+          <div class="chart-wrap"><canvas id="committeeChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3 class="section-title">🏆 الأفضل أداءً</h3>
+          ${top5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
+        </div>
+        <div class="card">
+          <h3 class="section-title">⚠️ محتاجين متابعة</h3>
+          ${bottom5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
+        </div>
       </div>
-      <div class="card">
-        <h3 class="section-title">مقارنة أداء اللجان</h3>
-        <div class="chart-wrap"><canvas id="committeeChart"></canvas></div>
-      </div>
-      <div class="card">
-        <h3 class="section-title">🏆 الأفضل أداءً</h3>
-        ${top5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
-      </div>
-      <div class="card">
-        <h3 class="section-title">⚠️ محتاجين متابعة</h3>
-        ${bottom5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
+
+      <div class="member-report-section">
+        <div class="card" id="no-print">
+          <h3 class="section-title">📄 تقرير عضو كامل</h3>
+          <div class="field" style="margin-bottom:10px;">
+            <label>اختاري العضو</label>
+            <select id="memberReportSelect" onchange="renderMemberReport(this.value)">
+              <option value="">-- اختاري --</option>
+              ${members.slice().sort((a,b)=>a.name.localeCompare(b.name,'ar')).map(m=>`<option value="${m.name}||${m.committeeName}">${escapeHtml(m.name)} (${escapeHtml(m.committeeName)})</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div id="memberReportContent"></div>
       </div>
     `;
+
+    if(trendChart) trendChart.destroy();
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    trendChart = new Chart(trendCtx, {
+      type: 'line',
+      data: { labels: weekLabels, datasets: [{ label: 'متوسط الأداء', data: weekAvgs, borderColor: '#C08A2E', backgroundColor: 'rgba(192,138,46,.15)', fill:true, tension:.3, pointBackgroundColor:'#C08A2E' }] },
+      options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:10 } }, plugins:{ legend:{display:false} } }
+    });
 
     if(committeeChart) committeeChart.destroy();
     const ctx = document.getElementById('committeeChart').getContext('2d');
@@ -644,13 +682,116 @@ function doPost(e) {
     });
   }
 
+  const MEMBER_REPORT_METRICS = [
+    {id:'attendance', label:'الحضور والمشاركة'},
+    {id:'deadlines', label:'الالتزام بالمواعيد'},
+    {id:'readiness', label:'الجاهزية'},
+    {id:'quality', label:'جودة التنفيذ'},
+    {id:'initiative', label:'المبادرة'},
+    {id:'activityLevel', label:'مستوى النشاط'},
+    {id:'teamwork', label:'التعاون'},
+    {id:'values', label:'القيم'},
+    {id:'feedbackAccept', label:'تقبل الملاحظات'},
+    {id:'weekRating', label:'تقييم الأسبوع'},
+  ];
+  let memberTrendChart;
+
+  window.renderMemberReport = async function(key){
+    const box = document.getElementById('memberReportContent');
+    if(!key){ box.innerHTML=''; return; }
+    const [memberName, committeeName] = key.split('||');
+
+    const allEvals = await collectAllEvaluations();
+    const memberEvals = allEvals
+      .filter(d=>d.memberName===memberName && d.committeeName===committeeName)
+      .sort((a,b)=> new Date(a.weekOf||a.date) - new Date(b.weekOf||b.date));
+
+    if(memberEvals.length===0){
+      box.innerHTML = `<div class="card empty-state">مفيش تقييمات مسجلة للعضو ده لسه</div>`;
+      return;
+    }
+
+    const overallAvg = Math.round((memberEvals.reduce((s,d)=>s+Number(d.overallScore||0),0)/memberEvals.length)*10)/10;
+    const metricAvgs = MEMBER_REPORT_METRICS.map(m=>{
+      const vals = memberEvals.map(d=>Number(d[m.id]||0));
+      return {label:m.label, avg: Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10};
+    });
+    const firstDate = new Date(memberEvals[0].weekOf||memberEvals[0].date).toLocaleDateString('ar-EG');
+    const lastDate = new Date(memberEvals[memberEvals.length-1].weekOf||memberEvals[memberEvals.length-1].date).toLocaleDateString('ar-EG');
+
+    const timelineHtml = memberEvals.slice().reverse().map(d=>{
+      const dateStr = new Date(d.weekOf||d.date).toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});
+      return `<div class="list-item">
+        <div class="list-head">
+          <span class="list-name">${dateStr}</span>
+          <span class="score-badge ${scoreClass(d.overallScore)}">${d.overallScore}/10</span>
+        </div>
+        <div style="font-size:13px;line-height:1.8;margin-top:8px;">
+          <div><b>المهام:</b> ${escapeHtml(d.tasksDone||'-')}</div>
+          ${d.strengths?`<div><b>نقاط قوة:</b> ${escapeHtml(d.strengths)}</div>`:''}
+          ${d.weaknesses?`<div><b>نقاط ضعف:</b> ${escapeHtml(d.weaknesses)}</div>`:''}
+          ${d.needsSupport?`<div><b>محتاجة دعم:</b> ${escapeHtml(d.needsSupport)}</div>`:''}
+          ${d.diffMoment?`<div><b>لحظة فارقة:</b> ${escapeHtml(d.diffMoment)}</div>`:''}
+          <div><b>ملاحظات الليدر:</b> ${escapeHtml(d.leaderGeneral||'-')}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    box.innerHTML = `
+      <div class="card" id="no-print">
+        <button class="btn btn-primary" onclick="downloadMemberReportPdf()">🖨️ تحميل تقرير ${escapeHtml(memberName)} PDF</button>
+      </div>
+      <div class="card">
+        <h3 class="section-title">${escapeHtml(memberName)} — ${escapeHtml(committeeName)}</h3>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="num">${memberEvals.length}</div><div class="lbl">عدد التقييمات</div></div>
+          <div class="stat-card"><div class="num">${overallAvg}/10</div><div class="lbl">المتوسط العام</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">من ${firstDate} إلى ${lastDate}</div>
+        <div class="chart-wrap"><canvas id="memberTrendChart"></canvas></div>
+      </div>
+      <div class="card">
+        <h3 class="section-title">متوسط كل معيار</h3>
+        ${metricAvgs.map(m=>`<div class="rank-row"><span>${m.label}</span><b>${m.avg}/10</b></div>`).join('')}
+      </div>
+      <div class="card">
+        <h3 class="section-title">سجل التقييمات الكامل</h3>
+        ${timelineHtml}
+      </div>
+    `;
+
+    if(memberTrendChart) memberTrendChart.destroy();
+    const mctx = document.getElementById('memberTrendChart').getContext('2d');
+    memberTrendChart = new Chart(mctx, {
+      type: 'line',
+      data: {
+        labels: memberEvals.map(d=>new Date(d.weekOf||d.date).toLocaleDateString('ar-EG',{month:'short',day:'numeric'})),
+        datasets: [{ label:'الأداء العام', data: memberEvals.map(d=>Number(d.overallScore||0)), borderColor:'#1F5C4C', backgroundColor:'rgba(31,92,76,.15)', fill:true, tension:.3, pointBackgroundColor:'#1F5C4C' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:10 } }, plugins:{ legend:{display:false} } }
+    });
+  };
+
+  window.downloadMemberReportPdf = function(){
+    document.body.classList.add('print-member-only');
+    window.print();
+  };
+  window.addEventListener('afterprint', function(){
+    document.body.classList.remove('print-member-only');
+  });
+
   // ============ التبويبات ============
-  window.switchTab = function(tab){
+  window.switchTab = async function(tab){
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
     document.getElementById('evaluateView').style.display = tab==='evaluate'?'block':'none';
     document.getElementById('setupView').style.display = tab==='setup'?'block':'none';
     document.getElementById('archiveView').style.display = tab==='archive'?'block':'none';
     document.getElementById('reportsView').style.display = tab==='reports'?'block':'none';
+
+    showToast('🔄 بيتحدّث من الشيت...');
+    await loadAllFromSheet();
+
+    if(tab==='evaluate') renderEvaluateView();
     if(tab==='setup') renderSetupView();
     if(tab==='archive') renderArchiveView();
     if(tab==='reports') renderReportsView();
@@ -658,9 +799,11 @@ function doPost(e) {
 
   // ============ تشغيل ============
   (async function init(){
-    await loadCommittees();
-    await loadMembers();
+    loadCommittees();
+    loadMembers();
     renderEvaluateView();
+    const ok = await loadAllFromSheet();
+    if(ok) renderEvaluateView();
   })();
 })();
 </script>
