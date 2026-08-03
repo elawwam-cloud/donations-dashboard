@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام متابعة اللجان</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F5F6F1; --surface:#FFFFFF; --ink:#17241D;
+  --primary:#1F5C4C; --primary-dark:#15453A; --primary-light:#E6F0EA;
+  --accent:#C08A2E; --accent-light:#F6ECD8;
+  --muted:#6B7A72; --danger:#B3492B; --danger-light:#F6E7E1; --border:#DEE5DF;
+}
+*{box-sizing:border-box;}
+body{margin:0;}
+.app{direction:rtl;font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding:24px 14px 60px;}
+.wrap{max-width:760px;margin:0 auto;}
+.title{font-family:'Cairo',sans-serif;font-weight:800;font-size:24px;color:var(--primary-dark);margin:0 0 4px;}
+.subtitle{color:var(--muted);font-size:13px;margin:0 0 20px;}
+
+.tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--surface);padding:6px;border-radius:14px;border:1px solid var(--border);overflow-x:auto;}
+.tab-btn{flex:1;padding:10px 6px;border:none;background:transparent;border-radius:10px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;transition:.15s;}
+.tab-btn.active{background:var(--primary);color:#fff;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:0 1px 2px rgba(23,36,29,.04);margin-bottom:16px;}
+
+h3.section-title{font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;color:var(--primary-dark);margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid var(--primary-light);}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:14px;font-weight:700;margin-bottom:8px;color:var(--ink);}
+.field .hint{font-size:12px;color:var(--muted);font-weight:400;margin-top:4px;}
+.field input[type=text], .field input[type=date], .field textarea, .field select{
+  width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 12px;
+  font-family:'Tajawal',sans-serif;font-size:14px;color:var(--ink);background:#fff;resize:vertical;
+}
+.field textarea{min-height:64px;}
+.field input:focus, .field textarea:focus, .field select:focus{outline:none;border-color:var(--primary);}
+
+.slider-row{display:flex;align-items:center;gap:10px;}
+.slider-row .rating-value{min-width:28px;text-align:center;font-weight:800;color:var(--primary-dark);}
+.slider{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:4px;background:linear-gradient(to left, var(--accent) var(--v,0%), var(--border) var(--v,0%));}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 1.5px var(--accent);cursor:pointer;}
+.slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 1.5px var(--accent);cursor:pointer;}
+
+.nav-row{display:flex;gap:10px;margin-top:20px;}
+.btn{flex:1;padding:13px 10px;border-radius:12px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-weight:700;font-size:14px;transition:.15s;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-ghost{background:var(--primary-light);color:var(--primary-dark);}
+.btn-ghost:hover{background:#d9e8e0;}
+.btn-danger{background:var(--danger-light);color:var(--danger);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-sm{flex:none;padding:9px 14px;font-size:12px;border-radius:9px;}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--primary-dark);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:50;opacity:0;pointer-events:none;transition:.25s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+
+.list-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.list-head{display:flex;justify-content:space-between;align-items:center;}
+.list-name{font-family:'Cairo',sans-serif;font-weight:700;color:var(--primary-dark);font-size:15px;}
+.list-meta{font-size:12px;color:var(--muted);margin-top:4px;}
+.list-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.mini-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);}
+.mini-btn.danger{color:var(--danger);border-color:var(--danger-light);background:var(--danger-light);}
+
+.chip{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;margin-inline-end:6px;}
+.score-badge{display:inline-block;font-weight:800;font-size:13px;padding:4px 10px;border-radius:8px;}
+.score-good{background:var(--primary-light);color:var(--primary-dark);}
+.score-mid{background:var(--accent-light);color:var(--accent);}
+.score-low{background:var(--danger-light);color:var(--danger);}
+
+.empty-state{text-align:center;padding:44px 20px;color:var(--muted);}
+.empty-state .big{font-size:38px;margin-bottom:10px;}
+
+.banner{background:var(--accent-light);border:1px solid var(--accent);border-radius:12px;padding:12px 14px;font-size:13px;color:#5a4419;margin-bottom:16px;line-height:1.7;}
+
+.settings-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:14px;padding:14px 16px;margin-bottom:16px;}
+.settings-box .row{display:flex;gap:8px;margin-top:10px;}
+.settings-box input[type=text]{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:9px 10px;font-family:'Tajawal',sans-serif;font-size:13px;}
+.settings-box .status{font-size:12px;margin-top:8px;font-weight:700;}
+.status.on{color:var(--primary-dark);}
+.status.off{color:var(--muted);}
+.settings-toggle{background:none;border:none;color:var(--primary-dark);font-weight:700;font-size:13px;cursor:pointer;padding:0;margin-bottom:10px;text-decoration:underline;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+.stat-card .num{font-family:'Cairo',sans-serif;font-size:24px;font-weight:800;color:var(--primary-dark);}
+.stat-card .lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+
+.rank-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:13px;}
+.chart-wrap{position:relative;height:220px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<div class="app"><div class="wrap">
+  <div class="title">📋 نظام متابعة اللجان</div>
+  <div class="subtitle">تقييم أسبوعي سريع للأعضاء + تقارير أداء اللجان أوتوماتيك</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="evaluate" onclick="switchTab('evaluate')">📝 تقييم</button>
+    <button class="tab-btn" data-tab="setup" onclick="switchTab('setup')">🏛️ اللجان والأعضاء</button>
+    <button class="tab-btn" data-tab="archive" onclick="switchTab('archive')">🗂️ الأرشيف</button>
+    <button class="tab-btn" data-tab="reports" onclick="switchTab('reports')">📊 التقارير</button>
+  </div>
+
+  <div id="evaluateView"></div>
+  <div id="setupView" style="display:none;"></div>
+  <div id="archiveView" style="display:none;"></div>
+  <div id="reportsView" style="display:none;"></div>
+
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  // ============ حالة عامة ============
+  let committees = [];
+  let members = [];
+  let formData = {};
+  const PERSIST_IDS = ['leaderName','committeeId'];
+
+  const RATING_FIELDS = [
+    {id:'attendance', label:'الانتظام في الحضور والمشاركة', section:'الالتزام'},
+    {id:'deadlines', label:'الالتزام بالمواعيد وتسليم المهام', section:'الالتزام'},
+    {id:'readiness', label:'الجاهزية قبل الاجتماعات أو المهام', section:'الالتزام'},
+    {id:'quality', label:'جودة تنفيذ المهام', section:'الأداء'},
+    {id:'initiative', label:'المبادرة في العمل', section:'الأداء'},
+    {id:'activityLevel', label:'مستوى النشاط في اللجنة', section:'الأداء'},
+    {id:'teamwork', label:'التعاون مع باقي الفريق', section:'التعاون والقيم'},
+    {id:'values', label:'الالتزام بالقيم والسلوك العام', section:'التعاون والقيم'},
+    {id:'feedbackAccept', label:'تقبل الملاحظات والتوجيه', section:'التعاون والقيم'},
+    {id:'weekRating', label:'تقييم الأسبوع بشكل عام', section:'التقييم النهائي'},
+  ];
+  const TEXT_FIELDS = ['tasksDone','diffMoment','needsSupport','strengths','weaknesses','leaderGeneral'];
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function uid(prefix){ return prefix + Date.now() + Math.random().toString(36).slice(2,7); }
+  function todayISO(){ return new Date().toISOString().slice(0,10); }
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2600);
+  }
+  function scoreClass(score){
+    if(score>=8) return 'score-good';
+    if(score>=5) return 'score-mid';
+    return 'score-low';
+  }
+  function computeOverall(d){
+    const vals = RATING_FIELDS.map(f=>Number(d[f.id]||0));
+    return Math.round((vals.reduce((a,b)=>a+b,0)/vals.length)*10)/10;
+  }
+
+  // ============ تخزين محلي (شغال جوّه أي متصفح، من غير أي اعتماد على Claude) ============
+  function loadCommittees(){
+    try{ const v = localStorage.getItem('committees'); committees = v ? JSON.parse(v) : []; }
+    catch(e){ committees = []; }
+  }
+  function saveCommittees(){
+    try{ localStorage.setItem('committees', JSON.stringify(committees)); }
+    catch(e){ showToast('⚠️ فشل الحفظ المحلي'); }
+  }
+
+  function loadMembers(){
+    try{ const v = localStorage.getItem('members'); members = v ? JSON.parse(v) : []; }
+    catch(e){ members = []; }
+  }
+  function saveMembers(){
+    try{ localStorage.setItem('members', JSON.stringify(members)); }
+    catch(e){ showToast('⚠️ فشل الحفظ المحلي'); }
+  }
+
+  function getEvalIndex(){
+    try{ const v = localStorage.getItem('eval-index'); return v ? JSON.parse(v) : []; }
+    catch(e){ return []; }
+  }
+  // رابط Google Apps Script Web App - متثبت جوّه الكود، مفيش داعي لأي إعداد يدوي
+  const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzZMsgwnTgUzBPVVzooH-UKH0-WCtWziu38ZcyeoiQ_-HEzu_d4jmihtrzF5KaLO3U/exec';
+
+  function getEvalRecord(id){
+    try{ const v = localStorage.getItem('evaluation:'+id); return v ? JSON.parse(v) : null; }
+    catch(e){ return null; }
+  }
+  async function getWebAppUrl(){
+    return SHEET_WEBAPP_URL;
+  }
+
+  // ============ تبويب: تقييم جديد ============
+  function renderRatingField(f){
+    const v = formData[f.id]!==undefined ? formData[f.id] : 5;
+    return `<div class="field" id="field-${f.id}">
+      <label>${f.label} *</label>
+      <div class="slider-row">
+        <input type="range" min="0" max="10" step="1" value="${v}" data-id="${f.id}" style="--v:${v*10}%;"
+          oninput="onRatingInput('${f.id}', this.value)" class="slider">
+        <span class="rating-value">${v}</span>
+      </div>
+    </div>`;
+  }
+  function renderTextField(id, label, required){
+    const v = formData[id] || '';
+    return `<div class="field" id="field-${id}"><label>${label}${required?' *':''}</label>
+      <textarea data-id="${id}" oninput="onTextInput('${id}', this.value)">${escapeHtml(v)}</textarea></div>`;
+  }
+
+  function renderEvaluateView(){
+    const committeeOptions = committees.map(c=>`<option value="${c.id}" ${formData.committeeId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('');
+    const filteredMembers = members.filter(m=>m.committeeId===formData.committeeId);
+    const memberOptions = filteredMembers.map(m=>`<option value="${m.id}" ${formData.memberId===m.id?'selected':''}>${escapeHtml(m.name)}</option>`).join('');
+
+    if(committees.length===0){
+      document.getElementById('evaluateView').innerHTML = `<div class="card empty-state">
+        <div class="big">🏛️</div>لسه مفيش لجان مضافة<br>
+        روحي تبويب "اللجان والأعضاء" وضيفي لجنة وأعضاءها الأول</div>`;
+      return;
+    }
+
+    const sections = {};
+    RATING_FIELDS.forEach(f=>{ (sections[f.section] = sections[f.section]||[]).push(f); });
+
+    let ratingsHtml = '';
+    ratingsHtml += `<h3 class="section-title">الالتزام</h3>` + sections['الالتزام'].map(renderRatingField).join('');
+    ratingsHtml += `<h3 class="section-title">الأداء</h3>` + renderTextField('tasksDone','إيه المهام اللي اشتغلت عليها الأسبوع ده؟', true) + sections['الأداء'].map(renderRatingField).join('');
+    ratingsHtml += `<h3 class="section-title">التعاون والقيم</h3>` + sections['التعاون والقيم'].map(renderRatingField).join('');
+    ratingsHtml += `<h3 class="section-title">ملاحظات إضافية</h3>`
+      + renderTextField('diffMoment','هل فيه حاجة حسّيتي إنها فرقت الأسبوع ده؟', false)
+      + renderTextField('needsSupport','هل بتمر بظرف أو محتاجة دعم في أمر ما؟', false)
+      + renderTextField('strengths','نقاط قوة لاحظتيها عندها', false)
+      + renderTextField('weaknesses','نقاط ضعف لاحظتيها عندها', false);
+    ratingsHtml += `<h3 class="section-title">ملاحظات الليدر</h3>`
+      + renderTextField('leaderGeneral','تقييمك بشكل عام كان إيه الأسبوع ده؟', true)
+      + sections['التقييم النهائي'].map(renderRatingField).join('');
+
+    const selectedCommittee = committees.find(c=>c.id===formData.committeeId);
+    const leaderDisplay = formData.committeeId
+      ? (selectedCommittee && selectedCommittee.leaderName
+          ? `<div class="field"><label>الليدر</label>
+              <div style="background:var(--primary-light);color:var(--primary-dark);border-radius:10px;padding:11px 12px;font-weight:700;font-size:14px;">${escapeHtml(selectedCommittee.leaderName)}</div></div>`
+          : `<div class="field"><div class="banner" style="margin:0;">اللجنة دي مفيش ليها ليدر متسجل. روحي تبويب "اللجان والأعضاء" وضيفيه هناك الأول.</div></div>`)
+      : '';
+
+    document.getElementById('evaluateView').innerHTML = `
+      <div class="card">
+        <h3 class="section-title">البيانات الأساسية</h3>
+        <div class="field" id="field-committeeId"><label>اللجنة *</label>
+          <select data-id="committeeId" onchange="onCommitteeChange(this.value)">
+            <option value="">اختاري اللجنة</option>${committeeOptions}
+          </select></div>
+        ${leaderDisplay}
+        <div class="field" id="field-memberId"><label>العضو *</label>
+          <select data-id="memberId" onchange="onTextInput('memberId', this.value)" ${!formData.committeeId?'disabled':''}>
+            <option value="">${formData.committeeId?'اختاري العضو':'اختاري اللجنة الأول'}</option>${memberOptions}
+          </select></div>
+        <div class="field" id="field-weekOf"><label>تاريخ التقييم *</label>
+          <input type="date" data-id="weekOf" value="${formData.weekOf||todayISO()}" oninput="onTextInput('weekOf', this.value)"></div>
+        ${ratingsHtml}
+        <div class="nav-row"><button class="btn btn-primary" onclick="saveEvaluation()">💾 حفظ ومتابعة لعضو تاني</button></div>
+      </div>`;
+  }
+
+  window.onCommitteeChange = function(val){
+    formData.committeeId = val; formData.memberId='';
+    const c = committees.find(x=>x.id===val);
+    formData.leaderName = c ? (c.leaderName||'') : '';
+    renderEvaluateView();
+  };
+  window.onTextInput = function(id, val){ formData[id] = val; };
+  window.onRatingInput = function(id, val){
+    formData[id] = Number(val);
+    const wrap = document.querySelector(`#field-${id} .slider-row`);
+    wrap.querySelector('.slider').style.setProperty('--v', (val*10)+'%');
+    wrap.querySelector('.rating-value').textContent = val;
+  };
+
+  window.saveEvaluation = async function(){
+    if(!formData.leaderName){
+      showToast('⚠️ اللجنة دي مفيش ليها ليدر متسجل - ضيفيه من تبويب "اللجان والأعضاء" الأول');
+      return;
+    }
+    const required = ['committeeId','memberId','weekOf','tasksDone','leaderGeneral'];
+    RATING_FIELDS.forEach(f=>required.push(f.id));
+    const missing = required.filter(id => formData[id]===undefined || formData[id]==='');
+    if(missing.length){
+      showToast('⚠️ في حقول مطلوبة لسه فاضية');
+      const el = document.getElementById('field-'+missing[0]);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); }
+      return;
+    }
+    const committee = committees.find(c=>c.id===formData.committeeId);
+    const member = members.find(m=>m.id===formData.memberId);
+    const id = uid('e');
+    const record = {
+      id, date: new Date().toISOString(),
+      data: {
+        leaderName: formData.leaderName, committeeId: formData.committeeId, committeeName: committee?committee.name:'',
+        memberId: formData.memberId, memberName: member?member.name:'', weekOf: formData.weekOf,
+        attendance: formData.attendance, deadlines: formData.deadlines, readiness: formData.readiness,
+        tasksDone: formData.tasksDone, quality: formData.quality, initiative: formData.initiative, activityLevel: formData.activityLevel,
+        teamwork: formData.teamwork, values: formData.values, feedbackAccept: formData.feedbackAccept,
+        diffMoment: formData.diffMoment||'', needsSupport: formData.needsSupport||'', strengths: formData.strengths||'', weaknesses: formData.weaknesses||'',
+        leaderGeneral: formData.leaderGeneral, weekRating: formData.weekRating,
+      }
+    };
+    record.data.overallScore = computeOverall(record.data);
+    record.data.id = id;
+    record.type = 'evaluation';
+
+    try{
+      localStorage.setItem('evaluation:'+id, JSON.stringify(record));
+      let idx = getEvalIndex();
+      idx.unshift(id);
+      localStorage.setItem('eval-index', JSON.stringify(idx));
+
+      const webAppUrl = await getWebAppUrl();
+      if(webAppUrl){
+        try{
+          await fetch(webAppUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(record)});
+          showToast('✅ اتحفظ التقييم وانبعت أوتوماتيك للشيت 🌐');
+        }catch(sendErr){
+          showToast('✅ اتحفظ، بس فشل الإرسال للشيت - جربي "تجربة الإرسال" من الأرشيف');
+        }
+      } else {
+        showToast('✅ اتحفظ التقييم بنجاح');
+      }
+      const keep = {}; PERSIST_IDS.forEach(k=>{ if(formData[k]!==undefined) keep[k]=formData[k]; });
+      formData = keep;
+      renderEvaluateView();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }catch(err){
+      showToast('⚠️ حصل خطأ في الحفظ، جربي تاني');
+      console.error(err);
+    }
+  };
+
+  // ============ تبويب: اللجان والأعضاء ============
+  function renderSetupView(){
+    let committeesHtml = committees.map(c=>{
+      const cMembers = members.filter(m=>m.committeeId===c.id);
+      const membersHtml = cMembers.map(m=>`<span class="chip">${escapeHtml(m.name)} <a href="#" onclick="deleteMember('${m.id}');return false;" style="color:var(--danger);text-decoration:none;">✕</a></span>`).join(' ') || '<span style="color:var(--muted);font-size:12px;">مفيش أعضاء لسه</span>';
+      return `<div class="list-item">
+        <div class="list-head">
+          <div>
+            <div class="list-name">${escapeHtml(c.name)}</div>
+            ${c.leaderName ? `<div class="list-meta">الليدر: ${escapeHtml(c.leaderName)}</div>` : ''}
+          </div>
+          <button class="mini-btn danger" onclick="deleteCommittee('${c.id}')">حذف اللجنة</button>
+        </div>
+        <div style="margin-top:10px;">${membersHtml}</div>
+        <div class="list-actions">
+          <input type="text" id="newMember-${c.id}" placeholder="اسم عضو جديد" style="flex:1;min-width:120px;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:13px;">
+          <button class="mini-btn" onclick="addMember('${c.id}')">➕ إضافة عضو</button>
+        </div>
+      </div>`;
+    }).join('') || `<div class="card empty-state"><div class="big">🏛️</div>لسه مفيش لجان مضافة</div>`;
+
+    document.getElementById('setupView').innerHTML = `
+      <div class="card">
+        <h3 class="section-title">إضافة لجنة جديدة</h3>
+        <div class="field"><label>اسم اللجنة *</label><input type="text" id="newCommitteeName" placeholder="مثال: ميديا"></div>
+        <div class="field"><label>اسم الليدر (اختياري)</label><input type="text" id="newCommitteeLeader"></div>
+        <button class="btn btn-primary" onclick="addCommittee()">➕ إضافة اللجنة</button>
+      </div>
+      <h3 class="section-title" style="margin-top:6px;">اللجان الحالية</h3>
+      ${committeesHtml}
+    `;
+  }
+
+  async function sendToSheet(type, payload){
+    try{
+      await fetch(SHEET_WEBAPP_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({type, date:new Date().toISOString(), data:payload})});
+    }catch(e){ /* هيتحفظ محليًا برضه حتى لو فشل الإرسال */ }
+  }
+
+  window.addCommittee = async function(){
+    const nameEl = document.getElementById('newCommitteeName');
+    const leaderEl = document.getElementById('newCommitteeLeader');
+    const name = nameEl.value.trim();
+    if(!name){ showToast('⚠️ اكتبي اسم اللجنة'); return; }
+    if(committees.some(c=>c.name===name)){ showToast('⚠️ اللجنة دي موجودة بالفعل'); return; }
+    const leaderName = leaderEl.value.trim();
+    const newCommittee = {id: uid('c'), name, leaderName};
+    committees.push(newCommittee);
+    await saveCommittees();
+    sendToSheet('committee', newCommittee);
+    showToast('✅ اتضافت اللجنة وانبعتت للشيت');
+    renderSetupView(); renderEvaluateView();
+  };
+  window.deleteCommittee = async function(id){
+    const hasMembers = members.some(m=>m.committeeId===id);
+    const msg = hasMembers ? 'اللجنة دي فيها أعضاء، حذفها هيمسح ربطهم بيها (بيانات التقييمات القديمة هتفضل محفوظة). متأكدة؟' : 'متأكدة إنك عايزة تحذفي اللجنة دي؟';
+    if(!confirm(msg)) return;
+    committees = committees.filter(c=>c.id!==id);
+    members = members.filter(m=>m.committeeId!==id);
+    await saveCommittees(); await saveMembers();
+    sendToSheet('delete_committee', {id});
+    showToast('🗑️ اتحذفت اللجنة ومن الشيت كمان');
+    renderSetupView(); renderEvaluateView();
+  };
+  window.addMember = async function(committeeId){
+    const input = document.getElementById('newMember-'+committeeId);
+    const name = input.value.trim();
+    if(!name){ showToast('⚠️ اكتبي اسم العضو'); return; }
+    const newMember = {id: uid('m'), name, committeeId};
+    members.push(newMember);
+    await saveMembers();
+    const committee = committees.find(c=>c.id===committeeId);
+    sendToSheet('member', {id: newMember.id, name, committeeName: committee?committee.name:''});
+    showToast('✅ اتضاف العضو وانبعت للشيت');
+    renderSetupView(); renderEvaluateView();
+  };
+  window.deleteMember = async function(id){
+    if(!confirm('متأكدة إنك عايزة تحذفي العضو ده؟')) return;
+    members = members.filter(m=>m.id!==id);
+    await saveMembers();
+    sendToSheet('delete_member', {id});
+    showToast('🗑️ اتحذف العضو ومن الشيت كمان');
+    renderSetupView(); renderEvaluateView();
+  };
+
+  // ============ تبويب: الأرشيف ============
+  const APPS_SCRIPT_CODE = `/**
+ * كود ربط "نظام متابعة اللجان" بجوجل شيت.
+ * بيوزّع البيانات على 3 شيتات: التقييمات / اللجان / الأعضاء.
+ * بيدعم الحذف: أي حذف من النظام بيمسح نفس الصف من الشيت (بالـ ID).
+ */
+
+function getOrCreateSheet(name, headers) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+  }
+  if (sheet.getMaxColumns() < headers.length) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+    sheet.setRightToLeft(true);
+  }
+  return sheet;
+}
+
+function appendRowSafe(sheet, rowData) {
+  const targetRow = sheet.getLastRow() + 1;
+  sheet.getRange(targetRow, 1, 1, rowData.length).setValues([rowData]);
+}
+
+function deleteRowById(sheet, id) {
+  if (!id || sheet.getLastRow() < 2) return;
+  const ids = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+  for (let i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]) === String(id)) {
+      sheet.deleteRow(i + 2);
+      return;
+    }
+  }
+}
+
+function doPost(e) {
+  try {
+    const body = JSON.parse(e.postData.contents);
+    const type = body.type || 'evaluation';
+    const d = body.data || {};
+
+    if (type === 'committee') {
+      const sheet = getOrCreateSheet('اللجان', ['ID', 'تاريخ الإضافة', 'اسم اللجنة', 'الليدر']);
+      appendRowSafe(sheet, [d.id || '', body.date || new Date().toISOString(), d.name || '', d.leaderName || '']);
+
+    } else if (type === 'delete_committee') {
+      const sheet = getOrCreateSheet('اللجان', ['ID', 'تاريخ الإضافة', 'اسم اللجنة', 'الليدر']);
+      deleteRowById(sheet, d.id);
+
+    } else if (type === 'member') {
+      const sheet = getOrCreateSheet('الأعضاء', ['ID', 'تاريخ الإضافة', 'اسم العضو', 'اللجنة']);
+      appendRowSafe(sheet, [d.id || '', body.date || new Date().toISOString(), d.name || '', d.committeeName || '']);
+
+    } else if (type === 'delete_member') {
+      const sheet = getOrCreateSheet('الأعضاء', ['ID', 'تاريخ الإضافة', 'اسم العضو', 'اللجنة']);
+      deleteRowById(sheet, d.id);
+
+    } else if (type === 'delete_evaluation') {
+      const sheet = getOrCreateSheet('التقييمات', [
+        'ID', 'تاريخ الحفظ', 'الليدر', 'اللجنة', 'العضو', 'تاريخ التقييم',
+        'الحضور والمشاركة', 'الالتزام بالمواعيد', 'الجاهزية',
+        'المهام المنفذة', 'جودة التنفيذ', 'المبادرة', 'مستوى النشاط',
+        'التعاون', 'القيم', 'تقبل الملاحظات',
+        'لحظة فارقة', 'محتاجة دعم', 'نقاط قوة', 'نقاط ضعف',
+        'ملاحظات الليدر', 'تقييم الأسبوع', 'المتوسط العام'
+      ]);
+      deleteRowById(sheet, d.id);
+
+    } else {
+      const sheet = getOrCreateSheet('التقييمات', [
+        'ID', 'تاريخ الحفظ', 'الليدر', 'اللجنة', 'العضو', 'تاريخ التقييم',
+        'الحضور والمشاركة', 'الالتزام بالمواعيد', 'الجاهزية',
+        'المهام المنفذة', 'جودة التنفيذ', 'المبادرة', 'مستوى النشاط',
+        'التعاون', 'القيم', 'تقبل الملاحظات',
+        'لحظة فارقة', 'محتاجة دعم', 'نقاط قوة', 'نقاط ضعف',
+        'ملاحظات الليدر', 'تقييم الأسبوع', 'المتوسط العام'
+      ]);
+      appendRowSafe(sheet, [
+        d.id || '', body.date || new Date().toISOString(),
+        d.leaderName || '', d.committeeName || '', d.memberName || '', d.weekOf || '',
+        d.attendance || '', d.deadlines || '', d.readiness || '',
+        d.tasksDone || '', d.quality || '', d.initiative || '', d.activityLevel || '',
+        d.teamwork || '', d.values || '', d.feedbackAccept || '',
+        d.diffMoment || '', d.needsSupport || '', d.strengths || '', d.weaknesses || '',
+        d.leaderGeneral || '', d.weekRating || '', d.overallScore || ''
+      ]);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: err.message, stack: err.stack }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+
+  window.copyRow = async function(id){
+    const rec = await getEvalRecord(id);
+    if(!rec) return;
+    const d = rec.data;
+    const row = [d.leaderName,d.committeeName,d.memberName,d.weekOf,d.attendance,d.deadlines,d.readiness,d.tasksDone,d.quality,d.initiative,d.activityLevel,d.teamwork,d.values,d.feedbackAccept,d.diffMoment,d.needsSupport,d.strengths,d.weaknesses,d.leaderGeneral,d.weekRating,d.overallScore]
+      .map(v=>String(v==null?'':v).replace(/\t/g,' ').replace(/\n/g,' / '));
+    navigator.clipboard.writeText(row.join('\t')).then(()=>showToast('📋 اتنسخ الصف'));
+  };
+  window.deleteEvaluation = async function(id){
+    if(!confirm('متأكدة إنك عايزة تمسحي التقييم ده؟')) return;
+    localStorage.removeItem('evaluation:'+id);
+    let idx = getEvalIndex();
+    idx = idx.filter(x=>x!==id);
+    localStorage.setItem('eval-index', JSON.stringify(idx));
+    sendToSheet('delete_evaluation', {id});
+    showToast('🗑️ اتمسح من هنا ومن الشيت');
+    renderArchiveView();
+  };
+
+  async function renderArchiveView(){
+    const idx = await getEvalIndex();
+    if(idx.length===0){
+      document.getElementById('archiveView').innerHTML = `<div class="card empty-state"><div class="big">🗂️</div>لسه مفيش تقييمات محفوظة</div>`;
+      return;
+    }
+    let items = '';
+    for(const id of idx){
+      const rec = await getEvalRecord(id);
+      if(!rec) continue;
+      const d = rec.data;
+      const dateStr = new Date(rec.date).toLocaleDateString('ar-EG', {year:'numeric',month:'long',day:'numeric'});
+      items += `<div class="list-item">
+        <div class="list-head">
+          <div>
+            <div class="list-name">${escapeHtml(d.memberName)} — ${escapeHtml(d.committeeName)}</div>
+            <div class="list-meta">${dateStr} • الليدر: ${escapeHtml(d.leaderName)}</div>
+          </div>
+          <span class="score-badge ${scoreClass(d.overallScore)}">${d.overallScore}/10</span>
+        </div>
+        <div class="list-actions">
+          <button class="mini-btn" onclick="copyRow('${id}')">📋 نسخ كصف</button>
+          <button class="mini-btn danger" onclick="deleteEvaluation('${id}')">🗑 حذف</button>
+        </div>
+      </div>`;
+    }
+    document.getElementById('archiveView').innerHTML = `
+      <div class="banner">لو الربط التلقائي شغال (من تبويب "⚙️ الربط بجوجل شيت") مش محتاجة تعملي حاجة تانية. لو مش مربوطة: انسخي كل تقييم كصف والصقيه في الشيت.</div>
+      ${items}`;
+  }
+
+  // ============ تبويب: التقارير ============
+  let committeeChart, memberTrendChart;
+  async function collectAllEvaluations(){
+    const idx = await getEvalIndex();
+    const recs = [];
+    for(const id of idx){ const r = await getEvalRecord(id); if(r) recs.push(r.data); }
+    return recs;
+  }
+
+  async function renderReportsView(){
+    const evals = await collectAllEvaluations();
+    if(evals.length===0){
+      document.getElementById('reportsView').innerHTML = `<div class="card empty-state"><div class="big">📊</div>هيظهر هنا تقرير احترافي أول ما تتسجل تقييمات</div>`;
+      return;
+    }
+
+    const overallAvg = Math.round((evals.reduce((s,d)=>s+d.overallScore,0)/evals.length)*10)/10;
+
+    // متوسط لكل لجنة
+    const byCommittee = {};
+    evals.forEach(d=>{
+      byCommittee[d.committeeName] = byCommittee[d.committeeName] || [];
+      byCommittee[d.committeeName].push(d.overallScore);
+    });
+    const committeeNames = Object.keys(byCommittee);
+    const committeeAvgs = committeeNames.map(n=>Math.round((byCommittee[n].reduce((a,b)=>a+b,0)/byCommittee[n].length)*10)/10);
+
+    // متوسط لكل عضو
+    const byMember = {};
+    evals.forEach(d=>{
+      const key = d.memberName+'||'+d.committeeName;
+      byMember[key] = byMember[key] || [];
+      byMember[key].push(d.overallScore);
+    });
+    const memberRanking = Object.keys(byMember).map(key=>{
+      const [name, committeeName] = key.split('||');
+      const scores = byMember[key];
+      return {name, committeeName, avg: Math.round((scores.reduce((a,b)=>a+b,0)/scores.length)*10)/10, count: scores.length};
+    }).sort((a,b)=>b.avg-a.avg);
+
+    const top5 = memberRanking.slice(0,5);
+    const bottom5 = [...memberRanking].sort((a,b)=>a.avg-b.avg).slice(0,5);
+
+    document.getElementById('reportsView').innerHTML = `
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">${committees.length}</div><div class="lbl">لجان</div></div>
+        <div class="stat-card"><div class="num">${members.length}</div><div class="lbl">أعضاء</div></div>
+        <div class="stat-card"><div class="num">${evals.length}</div><div class="lbl">تقييمات</div></div>
+        <div class="stat-card"><div class="num">${overallAvg}/10</div><div class="lbl">المتوسط العام</div></div>
+      </div>
+      <div class="card">
+        <h3 class="section-title">مقارنة أداء اللجان</h3>
+        <div class="chart-wrap"><canvas id="committeeChart"></canvas></div>
+      </div>
+      <div class="card">
+        <h3 class="section-title">🏆 الأفضل أداءً</h3>
+        ${top5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
+      </div>
+      <div class="card">
+        <h3 class="section-title">⚠️ محتاجين متابعة</h3>
+        ${bottom5.map(m=>`<div class="rank-row"><span>${escapeHtml(m.name)} <span style="color:var(--muted);font-size:11px;">(${escapeHtml(m.committeeName)})</span></span><b>${m.avg}/10</b></div>`).join('')}
+      </div>
+    `;
+
+    if(committeeChart) committeeChart.destroy();
+    const ctx = document.getElementById('committeeChart').getContext('2d');
+    committeeChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: committeeNames, datasets: [{ label: 'المتوسط', data: committeeAvgs, backgroundColor: '#1F5C4C', borderRadius: 6 }] },
+      options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:10 } }, plugins:{ legend:{display:false} } }
+    });
+  }
+
+  // ============ التبويبات ============
+  window.switchTab = function(tab){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+    document.getElementById('evaluateView').style.display = tab==='evaluate'?'block':'none';
+    document.getElementById('setupView').style.display = tab==='setup'?'block':'none';
+    document.getElementById('archiveView').style.display = tab==='archive'?'block':'none';
+    document.getElementById('reportsView').style.display = tab==='reports'?'block':'none';
+    if(tab==='setup') renderSetupView();
+    if(tab==='archive') renderArchiveView();
+    if(tab==='reports') renderReportsView();
+  };
+
+  // ============ تشغيل ============
+  (async function init(){
+    await loadCommittees();
+    await loadMembers();
+    renderEvaluateView();
+  })();
+})();
+</script>
+</body>
+</html>
