@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مفاتيح تربية الأبناء — الخطة التسويقية الشاملة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F2E8;
+    --paper-2:#EFEADA;
+    --ink:#232E28;
+    --ink-soft:#4B564E;
+    --forest:#3B5943;
+    --forest-deep:#28402F;
+    --gold:#B4863C;
+    --gold-soft:#DEC38C;
+    --clay:#A85D4C;
+    --line:#DBD4BF;
+    --card:#FFFFFF;
+    --radius:14px;
+    --shadow: 0 2px 18px rgba(35,46,40,.07);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    line-height:1.7;
+  }
+  h1,h2,h3,.display{
+    font-family:'Aref Ruqaa', serif;
+    font-weight:700;
+    color:var(--forest-deep);
+    margin:0;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,242,232,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navrow{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 24px; max-width:1180px; margin:0 auto; gap:12px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Aref Ruqaa',serif; font-size:20px; color:var(--forest-deep); white-space:nowrap;}
+  .brand .key{font-size:22px;}
+  nav.links{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none;}
+  nav.links::-webkit-scrollbar{display:none;}
+  nav.links a{
+    font-size:13.5px; padding:8px 12px; border-radius:20px; white-space:nowrap;
+    color:var(--ink-soft); text-decoration:none; transition:.15s;
+  }
+  nav.links a:hover{background:var(--paper-2); color:var(--forest-deep);}
+  /* ---------- HERO ---------- */
+  .hero{padding:64px 0 40px; position:relative; overflow:hidden;}
+  .hero .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--forest); color:var(--paper); font-size:13px;
+    padding:6px 14px; border-radius:20px; margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(34px,5vw,58px); line-height:1.15; max-width:820px;}
+  .hero p.lead{font-size:17px; color:var(--ink-soft); max-width:640px; margin-top:16px;}
+  .stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px; margin-top:38px;}
+  .stat{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 16px; box-shadow:var(--shadow);
+  }
+  .stat .num{font-family:'Aref Ruqaa',serif; font-size:30px; color:var(--gold); display:block;}
+  .stat .lbl{font-size:12.5px; color:var(--ink-soft);}
+  /* ---------- SECTION shell ---------- */
+  section{padding:54px 0; border-top:1px solid var(--line);}
+  .kicker{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .kicker .key{color:var(--gold); font-size:20px;}
+  .kicker span.txt{font-size:13px; letter-spacing:.5px; color:var(--ink-soft); text-transform:uppercase;}
+  section h2{font-size:clamp(24px,3vw,34px); margin-bottom:10px;}
+  section .sub{color:var(--ink-soft); max-width:680px; margin-bottom:30px; font-size:15px;}
+  /* ---------- rings hero visual ---------- */
+  .rings-wrap{display:flex; justify-content:center; margin:30px 0 10px;}
+  .rings-wrap svg{width:100%; max-width:520px; height:auto;}
+  .ring-label{font-family:'Tajawal',sans-serif; font-size:12px; fill:var(--ink);}
+  /* ---------- cards / grids ---------- */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media(max-width:860px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; box-shadow:var(--shadow);
+  }
+  .card h3{font-size:18px; margin-bottom:10px;}
+  .card ul{margin:0; padding-inline-start:20px; font-size:14.5px; color:var(--ink-soft);}
+  .card li{margin-bottom:6px;}
+  .tag{
+    display:inline-block; font-size:11.5px; background:var(--paper-2); color:var(--forest-deep);
+    padding:3px 10px; border-radius:20px; margin-bottom:10px;
+  }
+  .callout{
+    background:linear-gradient(135deg,var(--forest) 0%, var(--forest-deep) 100%);
+    color:var(--paper); border-radius:var(--radius); padding:22px 26px; font-size:15px;
+  }
+  .callout b{color:var(--gold-soft);}
+  .callout.gold{background:linear-gradient(135deg,#C99A4B 0%, var(--gold) 100%); color:#2b2109;}
+  .callout.gold b{color:#fff;}
+  /* ---------- table ---------- */
+  table{width:100%; border-collapse:collapse; font-size:14px; background:var(--card); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);}
+  th,td{padding:11px 14px; text-align:right; border-bottom:1px solid var(--line);}
+  th{background:var(--forest); color:var(--paper); font-weight:600; font-size:13px;}
+  tr:last-child td{border-bottom:none;}
+  tr:nth-child(even) td{background:var(--paper-2);}
+  .table-wrap{overflow-x:auto; margin-top:16px;}
+  /* ---------- tabs (platforms) ---------- */
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;}
+  .tab-btn{
+    border:1px solid var(--line); background:var(--card); padding:10px 18px; border-radius:24px;
+    font-family:'Tajawal',sans-serif; font-size:14px; cursor:pointer; color:var(--ink-soft); transition:.15s;
+  }
+  .tab-btn.active{background:var(--forest); color:var(--paper); border-color:var(--forest);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .plat-head{display:flex; align-items:center; gap:14px; margin-bottom:6px;}
+  .plat-head .icon{font-size:30px;}
+  .plat-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; margin:18px 0 26px;}
+  .plat-stats .box{background:var(--paper-2); border-radius:10px; padding:12px 14px;}
+  .plat-stats .box b{display:block; font-family:'Aref Ruqaa',serif; font-size:20px; color:var(--forest-deep);}
+  .plat-stats .box span{font-size:12px; color:var(--ink-soft);}
+  /* ---------- calculator ---------- */
+  .calc{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);}
+  .calc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:22px;}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr;}}
+  .field label{display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px;}
+  .field input{
+    width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--line);
+    font-family:'Tajawal',sans-serif; font-size:15px; background:var(--paper);
+  }
+  .calc-result{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:4px;}
+  @media(max-width:760px){.calc-result{grid-template-columns:1fr 1fr;}}
+  .calc-result .box{background:var(--forest-deep); color:var(--paper); border-radius:10px; padding:16px; text-align:center;}
+  .calc-result .box b{font-family:'Aref Ruqaa',serif; font-size:22px; color:var(--gold-soft); display:block;}
+  .calc-result .box span{font-size:12px; opacity:.85;}
+  /* ---------- reel scripts ---------- */
+  .reel{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:16px; overflow:hidden;}
+  .reel-head{display:flex; align-items:center; gap:14px; padding:16px 20px; cursor:pointer; background:var(--paper-2);}
+  .reel-head .num{font-family:'Aref Ruqaa',serif; font-size:22px; color:var(--gold); min-width:28px;}
+  .reel-head h4{margin:0; font-size:15.5px; color:var(--forest-deep); font-family:'Tajawal',sans-serif; font-weight:700;}
+  .reel-head .meta{font-size:12px; color:var(--ink-soft); margin-inline-start:auto; white-space:nowrap;}
+  .reel-body{display:none; padding:4px 20px 20px;}
+  .reel.open .reel-body{display:block;}
+  .reel.open .reel-head{background:var(--forest); }
+  .reel.open .reel-head h4, .reel.open .reel-head .meta{color:var(--paper);}
+  .reel.open .reel-head .num{color:var(--gold-soft);}
+  .beat{display:flex; gap:12px; padding:12px 0; border-bottom:1px dashed var(--line);}
+  .beat:last-child{border-bottom:none;}
+  .beat .time{font-size:12px; color:var(--gold); min-width:64px; font-weight:700;}
+  .beat .txt b{display:block; font-size:12.5px; color:var(--ink-soft); margin-bottom:3px;}
+  /* ---------- lecture bank ---------- */
+  .lec-filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;}
+  .lec-filter{border:1px solid var(--line); background:var(--card); padding:8px 16px; border-radius:20px; font-family:'Tajawal',sans-serif; font-size:13.5px; cursor:pointer; color:var(--ink-soft);}
+  .lec-filter.active{background:var(--forest); color:var(--paper); border-color:var(--forest);}
+  .lec{background:var(--card); border:1px solid var(--line); border-inline-start:5px solid var(--forest); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden;}
+  .lec-head{display:flex; align-items:center; gap:12px; padding:16px 20px; cursor:pointer; flex-wrap:wrap;}
+  .lec-head .lnum{font-family:'Aref Ruqaa',serif; font-size:20px; color:var(--gold); min-width:34px;}
+  .lec-head h4{margin:0; font-size:15.5px; color:var(--forest-deep); font-family:'Tajawal',sans-serif; font-weight:700;}
+  .lec-head .phase{font-size:11px; padding:3px 10px; border-radius:20px; background:var(--paper-2); color:var(--forest-deep); margin-inline-start:auto; white-space:nowrap;}
+  .lec-head .phase.direct{background:#F3E0D6; color:var(--clay);}
+  .lec-body{display:none; padding:6px 20px 22px;}
+  .lec.open .lec-body{display:block;}
+  .lec-sub{margin:14px 0 6px; font-size:13px; font-weight:700; color:var(--forest-deep);}
+  .lec ul{margin:0; padding-inline-start:20px; font-size:14px; color:var(--ink-soft);}
+  .lec li{margin-bottom:5px;}
+  .lec .quote-box{background:var(--paper-2); border-radius:10px; padding:12px 14px; margin-bottom:8px; font-size:13.5px;}
+  .lec .quote-box .src{display:block; font-size:11px; color:var(--gold); margin-top:4px;}
+  .lec .content-idea{background:#EFF3EA; border-radius:10px; padding:10px 14px; margin-bottom:8px; font-size:13.5px;}
+  .lec .content-idea b{color:var(--forest-deep);}
+  .lec .ready-copy{background:#FFF9EE; border:1px dashed var(--gold); border-radius:10px; padding:12px 14px; margin-bottom:8px; font-size:13.5px;}
+  .lec .ready-copy .rhook{font-weight:700; color:var(--forest-deep); display:block; margin-bottom:4px;}
+  /* ---------- footer ---------- */
+  footer{padding:40px 0; text-align:center; color:var(--ink-soft); font-size:13px; border-top:1px solid var(--line);}
+  .note{font-size:12.5px; color:var(--clay); background:#F7EAE6; border:1px solid #EBD1CA; padding:10px 14px; border-radius:10px; margin-top:14px;}
+  .ph{color:var(--clay); font-weight:700;}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="navrow">
+    <div class="brand"><span class="key">🔑</span> مفاتيح تربية الأبناء</div>
+    <nav class="links">
+      <a href="#strategy">الاستراتيجية</a>
+      <a href="#pillars">المحاور والشيخ</a>
+      <a href="#bank">بنك المحتوى</a>
+      <a href="#funnel">القمع</a>
+      <a href="#platforms">خطط المنصات</a>
+      <a href="#weekly-matrix">الخطة الأسبوعية</a>
+      <a href="#competitors">المنافسين</a>
+      <a href="#budget">الميزانية والاستهداف</a>
+      <a href="#readiness">بوابة الجاهزية</a>
+      <a href="#gaps">الفجوات</a>
+      <a href="#ideas">أفكار إضافية</a>
+      <a href="#calendar">Content Calendar</a>
+      <a href="#sops">SOPs</a>
+      <a href="#team">الفريق</a>
+      <a href="#kpi">لوحة القياس</a>
+      <a href="#reels">سكريبتات الريلز</a>
+      <a href="#pricing">الأسعار</a>
+      <a href="#escalation">مصفوفة التصعيد</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap" id="top">
+  <span class="eyebrow">🔑 أبجديات أونلاين · الخطة الشاملة v1.0</span>
+  <h1>مفاتيح تربية الأبناء<br>الخطة التسويقية الكاملة</h1>
+  <p class="lead">خطة إطلاق من ستة أسابيع تحوّل الثقة الموجودة حول الشيخ إلى تسجيلات قابلة للقياس: رسالة واحدة واضحة، عرض متدرج، محتوى يخدم كل مرحلة، وقياس يومي من أول مشاهدة حتى إتمام الدفع — من غير تخويف أو وعود مبالغ فيها.</p>
+  <div class="stat-row">
+    <div class="stat"><span class="num">14</span><span class="lbl">درسًا في 4 محاور</span></div>
+    <div class="stat"><span class="num">6</span><span class="lbl">أسابيع: اختبار ثم طلب ثم إغلاق</span></div>
+    <div class="stat"><span class="num">3</span><span class="lbl">خطوات عرض: مجاني، تمهيدي، مدفوع</span></div>
+    <div class="stat"><span class="num">3.8M</span><span class="lbl">متابع الشيخ الغليظ</span></div>
+    <div class="stat"><span class="num">343K</span><span class="lbl">متابع أبجديات أونلاين</span></div>
+  </div>
+  <div class="callout" style="margin-top:22px;"><b>القرار الاستراتيجي:</b> لن نبيع دورة عامة عن التربية؛ سنبيع للأب والأم خريطة عملية تساعدهما على فهم الطفل، حماية بيئته، تعديل سلوكه، واستثمار طاقته — في منهج شرعي منظم يمكن تطبيقه أسبوعيًا.</div>
+</section>
+
+<!-- ================= STRATEGY ================= -->
+<section class="wrap" id="strategy">
+  <div class="kicker"><span class="key">🎯</span><span class="txt">Strategic Core</span></div>
+  <h2>الاستراتيجية التي سنبني عليها كل قرار</h2>
+  <p class="sub">الخطة لا تبدأ من المنصات، بل من الشخص الذي نريد مساعدته، والمشكلة التي يشعر بها، والنتيجة التي يستطيع أن يلمسها بعد التسجيل.</p>
+  <div class="grid-2">
+    <div class="card"><div class="tag">التموضع</div><h3>منهج شرعي يتحول إلى سلوك يومي</h3><p style="font-size:14.5px;color:var(--ink-soft);">«مفاتيح» ليست محتوى وعظيًا متفرقًا ولا وصفة سلوكية مستوردة؛ إنها برنامج مرتب يربط المعنى الشرعي بالموقف اليومي، ويعطي الوالد خطوة قابلة للتجربة بدل نصيحة عامة.</p></div>
+    <div class="card"><div class="tag">الوعد التسويقي</div><h3>افهم قبل أن تعاقب، وطبّق قبل أن تحكم</h3><p style="font-size:14.5px;color:var(--ink-soft);">الوعد ليس أن يصبح الطفل مثاليًا، بل أن يمتلك الوالد إطارًا أوضح لفهم احتياجاته، وتقليل ردود الفعل المرتجلة، وبناء عادات تربوية ثابتة.</p></div>
+  </div>
+  <div class="table-wrap"><table>
+    <tr><th>الشريحة</th><th>ماذا تقول لنفسها؟</th><th>زاوية الرسالة</th><th>الدعوة المناسبة</th></tr>
+    <tr><td>الأم أو الأب المرهق</td><td>«أنا بكرر نفس الكلام ومفيش تغيير»</td><td>بدل رد الفعل، افهم أصل السلوك وخد خطوة واحدة</td><td>الدليل المجاني</td></tr>
+    <tr><td>الوالد الحريص على المنهج</td><td>«عايز تربية عملية من مرجعية موثوقة»</td><td>تأصيل شرعي مرتب مع تطبيق أسبوعي</td><td>الندوة أو الدرس التمهيدي</td></tr>
+    <tr><td>أسرة لديها ولد وبنت</td><td>«مش كل طفل ينفع معاه نفس الأسلوب»</td><td>فهم الفروق الفردية والاحتياجات دون تنميط أو تعميم</td><td>صفحة الدورة</td></tr>
+    <tr><td>العائلة خارج مصر</td><td>«أحتاج محتوى عربيًا مناسبًا لبيتي»</td><td>نفس المنهج مع دفع وسعر ورسالة مناسبة للسوق</td><td>صفحة دفع دولية</td></tr>
+  </table></div>
+  <div class="grid-3" style="margin-top:18px;">
+    <div class="card"><div class="tag">عرض 1 · مجاني</div><h3>دليل «قبل ما ترد»</h3><p style="font-size:14px;color:var(--ink-soft);">ملف قصير أو اختبار تفاعلي يجمع الإذن بالتواصل ويكشف مشكلة الوالد الأساسية.</p></div>
+    <div class="card"><div class="tag">عرض 2 · تمهيدي</div><h3>تحدي 5 أيام</h3><p style="font-size:14px;color:var(--ink-soft);">رسالة أو تطبيق يومي قصير يبرهن على أسلوب الدورة ويهيئ قرار الشراء.</p></div>
+    <div class="card"><div class="tag">عرض 3 · مدفوع</div><h3>دورة مفاتيح</h3><p style="font-size:14px;color:var(--ink-soft);">14 درسًا، 4 محاور، واجبات تطبيق، متابعة، ومجتمع أسئلة؛ هذه هي قيمة العرض وليست عدد الدروس فقط.</p></div>
+  </div>
+  <div class="note"><b>قواعد الرسالة:</b> لا تخويف، لا تشخيص للطفل من مقطع، لا وعود من نوع «غيّر ابنك في أيام»، ولا استخدام للولد والبنت كقالبين ثابتين. كل مادة تمر على المراجعة الشرعية والتحريرية قبل النشر.</div>
+</section>
+
+<!-- ================= PILLARS + SHEIKH POWER ================= -->
+<section class="wrap" id="pillars">
+  <div class="kicker"><span class="key">🌳</span><span class="txt">Course Pillars</span></div>
+  <h2>المحاور الأربعة — أساس كل قطعة محتوى</h2>
+  <p class="sub">أي فكرة أو ريل أو إعلان لازم يرجع لواحد من المحاور دي. مفيش محتوى "عام عن التربية" من غير ما يكون جزء من المنهج الفعلي. 👇 التفاصيل الكاملة لكل محاضرة (هوكس، اقتباسات، قصص، أفكار محتوى) في <a href="#bank" style="color:var(--forest); text-decoration:underline;">بنك المحتوى</a> تحت.</p>
+
+  <div class="rings-wrap">
+    <svg viewBox="0 0 440 440">
+      <circle cx="220" cy="220" r="180" fill="none" stroke="#DBD4BF" stroke-width="1"/>
+      <circle cx="220" cy="220" r="140" fill="none" stroke="#DBD4BF" stroke-width="1"/>
+      <circle cx="220" cy="220" r="100" fill="none" stroke="#DBD4BF" stroke-width="1"/>
+      <!-- 4 arcs -->
+      <path d="M220,40 A180,180 0 0 1 400,220" fill="none" stroke="#3B5943" stroke-width="26" stroke-linecap="round"/>
+      <path d="M400,220 A180,180 0 0 1 220,400" fill="none" stroke="#B4863C" stroke-width="26" stroke-linecap="round"/>
+      <path d="M220,400 A180,180 0 0 1 40,220" fill="none" stroke="#A85D4C" stroke-width="26" stroke-linecap="round"/>
+      <path d="M40,220 A180,180 0 0 1 220,40" fill="none" stroke="#7C8F55" stroke-width="26" stroke-linecap="round"/>
+      <text x="220" y="215" text-anchor="middle" class="ring-label" style="font-family:'Aref Ruqaa',serif; font-size:20px; fill:#28402F;">مفاتيح</text>
+      <text x="220" y="238" text-anchor="middle" class="ring-label">تربية الأبناء</text>
+      <text x="310" y="95" text-anchor="middle" class="ring-label">التأسيس</text>
+      <text x="352" y="330" text-anchor="middle" class="ring-label">الحماية</text>
+      <text x="130" y="360" text-anchor="middle" class="ring-label">السلوك والطباع</text>
+      <text x="95" y="95" text-anchor="middle" class="ring-label">الطاقات والمهارات</text>
+    </svg>
+  </div>
+
+  <div class="grid-4">
+    <div class="card"><div class="tag">المحور 1</div><h3>التأسيس والمسؤولية</h3><ul><li>مقدمة هامة في التربية</li><li>تربية الولد أمانة</li><li>أهم 4 مهام في التربية</li></ul></div>
+    <div class="card"><div class="tag">المحور 2</div><h3>الحماية من المشتتات</h3><ul><li>3 حاجات لازم تحمي ابنك منهم</li><li>الترف وأثره السيء</li><li>لباس الأولاد والموضة</li></ul></div>
+    <div class="card"><div class="tag">المحور 3</div><h3>السلوك والطباع والتزكية</h3><ul><li>علامات نجابة الولد والتزكية</li><li>تعزيز وتعديل السلوك</li><li>حفظ طباع الأولاد</li><li>طاعة الوالدين</li></ul></div>
+    <div class="card"><div class="tag">المحور 4</div><h3>الطاقات والمهارات</h3><ul><li>فيمَ أشغل ابني؟</li><li>أهمية الرياضة للأولاد</li><li>آداب الأولاد في المجالس</li><li>أهم ما تربي عليه ابنتك</li></ul></div>
+  </div>
+
+  <div style="height:26px"></div>
+
+  <div class="callout gold">
+    🌟 <b>صفحة الشيخ أصل توزيع ثمين، وليست ضمانًا للتحويل.</b> نستخدمها باختبارات موثقة: 3 منشورات تمهيدية، رابط وUTM مختلف لكل منشور، وكلمة مفتاحية واحدة للقياس. لا نبني التوقعات على عدد المتابعين؛ نبنيها على الوصول الفعلي، جودة المهتمين، والتسجيلات المنسوبة فعليًا.
+  </div>
+
+  <div class="grid-3" style="margin-top:18px;">
+    <div class="card"><h3>📌 Pin أول على صفحة الشيخ</h3><ul><li>بوست ثابت: "أهم حاجة هعملها للأهل السنادي"</li><li>فيديو شخصي 60 ث بدون ديكور</li><li>دعوة لكتابة "مفاتيح" في التعليق</li></ul></div>
+    <div class="card"><h3>🎥 سلسلة "وصية صغيرة"</h3><ul><li>الشيخ يسجل 60 ثانية بعد الفجر أو بين المحاضرات</li><li>وصية نبوية واحدة + تطبيق عملي</li><li>3 مرات أسبوعيًا من صفحته الشخصية</li></ul></div>
+    <div class="card"><h3>🔴 لايف أسبوعي من صفحة الشيخ</h3><ul><li>10 دقايق درس مصغر من محور واحد</li><li>ختام اللايف بدعوة هادئة للمتابعة</li><li>الـ3.8M بياخدوا إشعار تلقائي</li></ul></div>
+  </div>
+</section>
+
+<!-- ================= CONTENT BANK ================= -->
+<section class="wrap" id="bank">
+  <div class="kicker"><span class="key">🗂️</span><span class="txt">Full Content Bank</span></div>
+  <h2>بنك المحتوى الكامل — كل محاضرة بمادتها الخام</h2>
+  <p class="sub">كل المحاضرات اللي اتحللت لحد دلوقتي، بهوكسها واقتباساتها وقصص السيرة وأفكار المحتوى الجاهزة — مصنفة حسب المحور ومرحلة التسويق (غير مباشر/مباشر). اضغطي على أي محاضرة لفتح التفاصيل كاملة.</p>
+  <div class="lec-filters" id="lecFilters">
+    <button class="lec-filter active" data-f="all">الكل</button>
+    <button class="lec-filter" data-f="indirect">غير مباشر فقط</button>
+    <button class="lec-filter" data-f="direct">مباشر فقط</button>
+    <button class="lec-filter" data-f="1">المحور 1</button>
+    <button class="lec-filter" data-f="2">المحور 2</button>
+    <button class="lec-filter" data-f="3">المحور 3</button>
+    <button class="lec-filter" data-f="4">المحور 4</button>
+  </div>
+  <div id="lecList"></div>
+  <div class="card" id="masterHooksCard" style="margin-top:18px;"></div>
+</section>
+
+<!-- ================= FUNNEL ================= -->
+<section class="wrap" id="funnel">
+  <div class="kicker"><span class="key">🧭</span><span class="txt">Conversion Funnel</span></div>
+  <h2>قمع التحويل: من الثقة إلى التسجيل</h2>
+  <p class="sub">كل مرحلة لها أصل محتوى، دعوة واحدة، ومؤشر عبور. لا ننتقل إلى زيادة الإنفاق قبل أن نعرف أين يتسرب الجمهور.</p>
+  <div class="table-wrap"><table>
+    <tr><th>المرحلة</th><th>وظيفتها</th><th>الأصل المستخدم</th><th>CTA واحد</th><th>مؤشر العبور</th></tr>
+    <tr><td>اكتشاف</td><td>الوصول إلى والد جديد</td><td>ريلز قصيرة، Shorts، شراكات</td><td>احفظ وشارك</td><td>مشاهدة مؤهلة وتفاعل</td></tr>
+    <tr><td>اهتمام</td><td>تسمية المشكلة بلا لوم</td><td>كاروسيل، لايف قصير، اختبار</td><td>اكتب «مفاتيح»</td><td>تكلفة المهتم وجودة التعليق</td></tr>
+    <tr><td>تأهيل</td><td>فهم الاحتياج وبناء إذن التواصل</td><td>دليل مجاني، واتساب، تليجرام</td><td>استلم الدليل</td><td>نسبة إكمال النموذج والرد</td></tr>
+    <tr><td>رغبة</td><td>إثبات أن المنهج يناسبه</td><td>درس تمهيدي، عينة، شهادات موثقة</td><td>احضر التحدي</td><td>الحضور ونسبة مشاهدة العرض</td></tr>
+    <tr><td>قرار</td><td>إزالة آخر اعتراض وإتمام الدفع</td><td>صفحة بيع، FAQ، خدمة عملاء، إعادة استهداف</td><td>سجّل الآن</td><td>معدل الدفع وتكلفة التسجيل</td></tr>
+    <tr><td>تفعيل واحتفاظ</td><td>تحويل المشتري إلى نتيجة وسفير</td><td>ترحيب، واجب أسبوعي، متابعة الغياب</td><td>طبّق وشارك تجربتك</td><td>بدء الدورة، الإكمال، الإحالة</td></tr>
+  </table></div>
+  <div class="callout gold" style="margin-top:20px;"><b>قاعدة الميزانية:</b> نزيد الإنفاق على الإعلان الذي يحقق تسجيلات مدفوعة بجودة مقبولة، لا على الإعلان الأرخص في الـCPL فقط. المقياس النهائي هو <b>تكلفة التسجيل المدفوع + نسبة الإكمال</b>.</div>
+</section>
+
+<!-- ================= PLATFORMS ================= -->
+<section class="wrap" id="platforms">
+  <div class="kicker"><span class="key">📱</span><span class="txt">Channel Plans</span></div>
+  <h2>خطط المنصات الستة</h2>
+  <p class="sub">كل قناة لها دور مختلف — مفيش قناتين بتقول نفس الكلام بنفس الشكل.</p>
+
+  <div class="tabs" id="platTabs">
+    <button class="tab-btn active" data-tab="fb">📘 فيسبوك</button>
+    <button class="tab-btn" data-tab="ig">📸 انستجرام</button>
+    <button class="tab-btn" data-tab="tt">🎵 تيك توك</button>
+    <button class="tab-btn" data-tab="yt">▶ يوتيوب</button>
+    <button class="tab-btn" data-tab="tg">✈ تليجرام</button>
+    <button class="tab-btn" data-tab="wa">💬 واتساب</button>
+  </div>
+
+  <!-- FB -->
+  <div class="tab-panel active" id="panel-fb">
+    <div class="plat-head"><span class="icon">📘</span><h3>فيسبوك — محرك الـLead الأساسي</h3></div>
+    <p class="sub" style="margin-bottom:6px;">صفحة الشيخ (3.8M) + الأكاديمية (343K) = أكبر جمهور دافئ عندنا. أي إعلان Lead Gen يبدأ هنا أولًا.</p>
+    <div class="plat-stats">
+      <div class="box"><b>Warm-Up</b><span>وعي وريلز</span></div>
+      <div class="box"><b>بيع 1-2</b><span>Lead Gen</span></div>
+      <div class="box"><b>بيع 3-4</b><span>Retargeting</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>محتوى صفحة الشيخ — يومي</h3><ul><li>وصية "بعد الفجر" ثابتة</li><li>Story: سؤال أو تصويت تربوي</li><li>لايف أسبوعي "اسألني عن ابنك"</li><li>Pin أول: بوست الدورة الرسمي</li></ul></div>
+      <div class="card"><h3>محتوى الأكاديمية — أسبوعي</h3><ul><li>اثنين: ريلز من سكريبتات المحاور</li><li>أربعاء: كاروسيل تصحيح تصورات</li><li>جمعة: منشور تأملي هادئ</li><li>أحد: تذكير الدورة (شهر البيع فقط)</li></ul></div>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>الإعلان</th><th>الهدف</th><th>المرحلة</th></tr>
+      <tr><td>Lead Gen — دليل "3 أسئلة قبل ما ترد على ابنك"</td><td>جمع مهتمين دافئين</td><td>Warm-Up</td></tr>
+      <tr><td>Video Views — ريلز الحماية الثلاثية والترف</td><td>وصول ووعي واسع</td><td>Warm-Up</td></tr>
+      <tr><td>Conversion — لاند بيج التسجيل مباشر</td><td>تسجيلات فعلية</td><td>بيع 1-2</td></tr>
+      <tr><td>Retargeting — زاروا صفحة التسجيل ولم يشتروا</td><td>إغلاق قرار مؤجل</td><td>بيع 3-4</td></tr>
+    </table></div>
+    <p class="sub" style="margin-top:14px;"><b>KPIs:</b> نحدد CPL المستهدف من سعر الدورة ومعدل التحويل المتوقع، ثم نراجعه بعد أول 72 ساعة فعلية · CTR وLanding-page CVR · تكلفة التسجيل المدفوع (CAC)</p>
+  </div>
+
+  <!-- IG -->
+  <div class="tab-panel" id="panel-ig">
+    <div class="plat-head"><span class="icon">📸</span><h3>انستجرام — ريلز الاكتشاف + قصص التفاعل اليومي</h3></div>
+    <div class="plat-stats">
+      <div class="box"><b>5</b><span>ريلز أسبوعيًا</span></div>
+      <div class="box"><b>5+</b><span>ستوري يوميًا</span></div>
+      <div class="box"><b>4%+</b><span>Save Rate هدف</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>Reels Strategy</h3><ul><li>30–45 ثانية · Hook في أول 3 ث</li><li>Caption: أول سطر Hook + "...اكمل"</li><li>أفضل وقت: 8م–10م و6ص–8ص</li><li>3 عضوي + 2 Boost على الأفضل أداءً</li></ul></div>
+      <div class="card"><h3>Stories يومية</h3><ul><li>Poll: "الحزم أهم ولا الحنان؟"</li><li>Quiz: "إيه رد فعلك في الموقف ده؟"</li><li>Countdown لفتح باب التسجيل</li><li>Link Sticker دائم في شهر البيع</li></ul></div>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>نوع الإعلان</th><th>الهدف</th></tr>
+      <tr><td>Reels Boost — أفضل 3 ريلز أداءً</td><td>Awareness + Reach</td></tr>
+      <tr><td>Lead Gen Form مباشر</td><td>مهتمين جدد</td></tr>
+      <tr><td>Stories Ads — Countdown الإطلاق</td><td>CTA مباشر</td></tr>
+      <tr><td>Conversion — لاند بيج</td><td>تسجيل مباشر</td></tr>
+    </table></div>
+  </div>
+
+  <!-- TT -->
+  <div class="tab-panel" id="panel-tt">
+    <div class="plat-head"><span class="icon">🎵</span><h3>تيك توك — انتشار عضوي لجمهور بارد جديد</h3></div>
+    <div class="callout" style="margin-bottom:20px;">🎯 <b>تيك توك ما بيعتمدش على المتابعين — بيعتمد على Watch Time.</b> الهوك في أول 3 ثواني بيحدد كل حاجة، والدور هنا في الأسبوعين الأولين بس؛ مش قناة بيع مباشر.</div>
+    <div class="grid-2">
+      <div class="card"><h3>Format</h3><ul><li>النشر: 9ص و9م</li><li>عضوي: 15–30 ث فقط</li><li>Text Overlay كبير يملأ الشاشة (60% بيشوفوا بلا صوت)</li><li>صوت ترند خفيف في الخلفية</li></ul></div>
+      <div class="card"><h3>أنواع المحتوى</h3><ul><li>POV: "اكتشفت ليه ابني بيعاند"</li><li>Stitch: رد على تعليق أب/أم بفيديو</li><li>Green Screen: نص + خلفية معبّرة</li><li>Story Time: موقف تربوي في 30 ث</li></ul></div>
+    </div>
+  </div>
+
+  <!-- YT -->
+  <div class="tab-panel" id="panel-yt">
+    <div class="plat-head"><span class="icon">▶</span><h3>يوتيوب — محتوى دائم يبني ثقة طويلة المدى</h3></div>
+    <div class="grid-2">
+      <div class="card"><h3>Shorts — 3/أسبوع</h3><ul><li>نفس ريلز انستجرام بالضبط</li><li>Title: "لو ابنك بيعاند كل يوم — اسمع ده"</li><li>Description: Hook + رابط أول سطر</li></ul></div>
+      <div class="card"><h3>Long Form — شهريًا</h3><ul><li>درس كامل مجاني 10–15 دقيقة من محور واحد</li><li>Keyword: "تربية الأبناء تربية إسلامية"</li><li>Thumbnail: وجه الشيخ + نص واضح</li></ul></div>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>Keyword</th><th>نوع المحتوى</th></tr>
+      <tr><td>تربية الأبناء تربية إسلامية</td><td>Long Form + Shorts</td></tr>
+      <tr><td>الفرق بين تربية الولد والبنت</td><td>Short 30-45 ث</td></tr>
+      <tr><td>حل مشكلة العند عند الأطفال</td><td>Short + Long Form</td></tr>
+      <tr><td>دورة مفاتيح تربية الأبناء</td><td>Branded — كل الأنواع</td></tr>
+    </table></div>
+  </div>
+
+  <!-- TG -->
+  <div class="tab-panel" id="panel-tg">
+    <div class="plat-head"><span class="icon">✈</span><h3>تليجرام — التحويل والاحتفاظ، مش الاكتشاف</h3></div>
+    <div class="callout" style="margin-bottom:20px;">الجمهور جاي من المنصات التانية؛ هنا بنحوّله من مهتم لمشترك. مش المكان اللي ننتج فيه محتوى تسويقي أصيل.</div>
+    <div class="table-wrap"><table>
+      <tr><th>القائمة</th><th>من فيها</th><th>تكرار</th><th>نوع المحتوى</th></tr>
+      <tr><td>مهتم جدًا</td><td>كتب "مفاتيح" تحت الريلز</td><td>يوميًا</td><td>محتوى + تذكير هادئ</td></tr>
+      <tr><td>دافئ</td><td>تفاعل مع المحتوى</td><td>كل يومين</td><td>قيمة + تذكير خفيف</td></tr>
+      <tr><td>بارد — Lead جديد</td><td>استلم دليل مجاني فقط</td><td>أسبوعيًا</td><td>قيمة فقط — بلا بيع</td></tr>
+      <tr><td>مشترك</td><td>سجّل في الدورة</td><td>حسب الدورة</td><td>متابعة وتطبيق</td></tr>
+    </table></div>
+  </div>
+
+  <!-- WA -->
+  <div class="tab-panel" id="panel-wa">
+    <div class="plat-head"><span class="icon">💬</span><h3>واتساب — التواصل الشخصي وإغلاق القرار</h3></div>
+    <div class="grid-2">
+      <div class="card"><h3>Sequence بعد التسجيل بالاهتمام</h3><ul><li>يوم 1: ترحيب + دليل "3 أسئلة قبل الرد على ابنك"</li><li>يوم 3: وصية نبوية + سؤال تفاعلي</li><li>يوم 5: توضيح محاور الدورة</li><li>يوم 7: تفاصيل التسجيل والموعد</li></ul></div>
+      <div class="card"><h3>قناة "وصية الشيخ"</h3><ul><li>رسالة يومية 40-60 كلمة فقط</li><li>وصية تربوية عملية واحدة</li><li>كل إعلان يوجّه للانضمام للقناة</li><li>قاعدة بيانات مجانية مستمرة</li></ul></div>
+    </div>
+    <p class="sub" style="margin-top:14px;"><b>KPIs:</b> Open Rate 90%+ · معدل رد 25%+ · تحويل من مهتم لمشترك 20%+</p>
+  </div>
+</section>
+
+<!-- ================= WEEKLY MATRIX ================= -->
+<section class="wrap" id="weekly-matrix">
+  <div class="kicker"><span class="key">🗓️</span><span class="txt">Weekly Execution Matrix</span></div>
+  <h2>خطة الأسابيع الستة عبر القنوات — تنفيذي بالتفصيل</h2>
+  <p class="sub">مش وصف عام للقناة — ده اللي بينزل بالظبط كل أسبوع، على كل قناة، بالترتيب.</p>
+  <div class="table-wrap"><table>
+    <tr><th>الأسبوع</th><th>📘 فيسبوك/انستجرام</th><th>🎵 تيك توك</th><th>▶ يوتيوب</th><th>✈ تليجرام</th><th>💬 واتساب</th></tr>
+    <tr><td><b>تمهيد 1</b></td><td>ريلز + كاروسيل عضوي</td><td>نفس الريلز بقص أسرع</td><td>Short من نفس المادة</td><td>فتح القناة لاستقبال المهتمين</td><td>لسة — متابعة فقط</td></tr>
+    <tr><td><b>تمهيد 2</b></td><td>ريلز + إعلان تشويقي مدفوع خفيف (Engagement)</td><td>مقاطع أطول تشرح المنهج</td><td>فيديو طويل للشيخ يشرح محورًا</td><td>تفعيل رسائل البوت — ترحيب وتصنيف</td><td>لسة — متابعة فقط</td></tr>
+    <tr><td><b>بيع 1</b></td><td>حملة Lead تبدأ (جمهور بارد + Retargeting مشاهدي الفيديوهات)</td><td>إعلان مدفوع إن قررنا</td><td>فيديو إطلاق مثبت</td><td>رسالة إطلاق للقائمة + رابط تسجيل</td><td>بدء رسائل مجدولة للمهتمين</td></tr>
+    <tr><td><b>بيع 2</b></td><td>حملة Lead مستمرة + رسالة محتوى/قيمة</td><td>تكرار الريلز الأقوى أداءً</td><td>ثابت</td><td>متابعة يومية + أسئلة شائعة</td><td>معالجة اعتراضات الرد الأول</td></tr>
+    <tr><td><b>بيع 3</b></td><td>Retargeting قوي (زوار الصفحة + مشاهدي الريلز)</td><td>إعلان شهادات/أسئلة شائعة</td><td>ثابت</td><td>بث مباشر + ردود الاعتراضات</td><td>رسائل شخصية للمترددين</td></tr>
+    <tr><td><b>بيع 4</b></td><td>Retargeting أخير (أقوى إلحاح زمني)</td><td>تذكير أخير</td><td>ثابت</td><td>عدّاد + نداء أخير</td><td>رسالة إغلاق واقعية بموعد فعلي</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= COMPETITORS ================= -->
+<section class="wrap" id="competitors">
+  <div class="kicker"><span class="key">🔍</span><span class="txt">Competitive Landscape</span></div>
+  <h2>تحليل المنافسين — فين الفرصة؟</h2>
+  <p class="sub">تصنيف عام لأنواع المحتوى المنافس في سوق التربية الإسلامية، مش أسماء محددة — الهدف نفهم فجوة السوق مش نراقب صفحات بعينها.</p>
+  <div class="table-wrap"><table>
+    <tr><th>النوع</th><th>نقطة القوة</th><th>نقطة الضعف</th><th>فرصتنا</th></tr>
+    <tr><td>الوعظ التربوي الكلاسيكي</td><td>ثقة دينية راسخة</td><td>نصائح عامة بلا منهج مرتب أو متابعة</td><td>منهج مرقّم بـ14 درسًا + تطبيق أسبوعي</td></tr>
+    <tr><td>مؤثرات الأمومة (Parenting Influencers)</td><td>لغة عصرية قريبة من الأم</td><td>بلا مرجعية شرعية واضحة</td><td>نفس القرب + تأصيل شرعي من الشيخ</td></tr>
+    <tr><td>كورسات مترجمة عن الغرب</td><td>أدوات سلوكية حديثة منظمة</td><td>مقتطعة عن سياقنا الديني والثقافي</td><td>نفس العمق العملي + هوية إسلامية أصيلة</td></tr>
+    <tr><td>محتوى المدارس والحضانات</td><td>نصائح تنظيمية عملية</td><td>بلا عمق تربوي أو بعد إيماني</td><td>ربط السلوك اليومي بالمعنى الشرعي</td></tr>
+  </table></div>
+  <div class="callout" style="margin-top:20px;">💡 <b>الخلاصة:</b> محدش بيجمع المنهج الشرعي المرتب + التطبيق العملي الأسبوعي + الفرق الدقيق بين احتياج الولد والبنت في مكان واحد. دي الفجوة اللي الدورة بتسدها.</div>
+</section>
+
+<!-- ================= BUDGET CALCULATOR ================= -->
+<section class="wrap" id="budget">
+  <div class="kicker"><span class="key">💰</span><span class="txt">Budget Calculator</span></div>
+  <h2>كام هتدفع عشان توصل لعدد التسجيلات المستهدف؟</h2>
+  <p class="sub">غيّري الأرقام حسب الهدف الفعلي والميزانية المتاحة — الحساب بيتحدث لحظيًا.</p>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card"><h3>توزيع الميزانية عبر المراحل</h3>
+      <div class="table-wrap"><table>
+        <tr><th>المرحلة</th><th>هدف الحملة</th><th>% من الميزانية</th><th>الجمهور</th></tr>
+        <tr><td>التمهيد (أسبوعين)</td><td>Engagement/Traffic خفيف</td><td>15–20%</td><td>بارد (Lookalike + اهتمامات)</td></tr>
+        <tr><td>بيع 1–2</td><td>Lead Generation</td><td>45–50%</td><td>بارد + دافئ (متفاعلين التمهيد)</td></tr>
+        <tr><td>بيع 3–4</td><td>Conversion/Retargeting</td><td>30–35%</td><td>ساخن (زوار الصفحة، مشاهدي الفيديو الكامل)</td></tr>
+      </table></div>
+    </div>
+    <div class="card"><h3>طبقات الاستهداف</h3>
+      <div class="table-wrap"><table>
+        <tr><th>الطبقة</th><th>التعريف</th><th>متى تُستخدم</th></tr>
+        <tr><td>باردة</td><td>Lookalike من قاعدة العملاء + اهتمامات تربية/أبوة</td><td>التمهيد وبداية البيع</td></tr>
+        <tr><td>دافئة</td><td>متفاعلين مع محتوى التمهيد (فيديو 75%+، تعليقات، حفظ)</td><td>بيع الأسبوع 1-2</td></tr>
+        <tr><td>ساخنة</td><td>زوار صفحة التسجيل بلا إتمام، مشاهدي فيديو الإعلان كامل</td><td>بيع الأسبوع 3-4 (أعلى معدل تحويل)</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="calc">
+    <div class="calc-grid">
+      <div class="field"><label>عدد الطلاب المستهدف</label><input type="number" id="calcTarget" value="500"></div>
+      <div class="field"><label>سعر الدورة (جنيه)</label><input type="number" id="calcPrice" value="500"></div>
+      <div class="field"><label>متوسط تكلفة الـLead (جنيه)</label><input type="number" id="calcCPL" value="12"></div>
+      <div class="field"><label>معدل التحويل من مهتم لمشترك (%)</label><input type="number" id="calcConv" value="8"></div>
+      <div class="field"><label>نسبة الوصول العضوي المتوقعة من المستهدف (%)</label><input type="number" id="calcOrganic" value="20"></div>
+      <div class="field"><label>هامش أمان إضافي (%)</label><input type="number" id="calcSafety" value="10"></div>
+    </div>
+    <div class="calc-result">
+      <div class="box"><b id="rLeads">–</b><span>مهتم (Lead) مطلوب</span></div>
+      <div class="box"><b id="rPaidLeads">–</b><span>Leads مدفوعة مطلوبة</span></div>
+      <div class="box"><b id="rBudget">–</b><span>ميزانية اختبارية مقترحة (جنيه)</span></div>
+      <div class="box"><b id="rRevenue">–</b><span>الإيراد المتوقع (جنيه)</span></div>
+      <div class="box"><b id="rCAC">–</b><span>تكلفة التسجيل المختلطة (CAC)</span></div>
+      <div class="box"><b id="rROAS">–</b><span>ROAS تقريبي</span></div>
+    </div>
+    <p class="note">⚠️ الأرقام تقديرية للتخطيط فقط، وليست وعدًا بالنتيجة. بعد أول 72 ساعة نحدّثها بالـCPL الحقيقي، ثم بعد أول تسجيلات ننتقل من تخطيط الـLeads إلى تخطيط تكلفة التسجيل المدفوع فعليًا.</p>
+  </div>
+</section>
+
+<!-- ================= READINESS GATE ================= -->
+<section class="wrap" id="readiness">
+  <div class="kicker"><span class="key">🚦</span><span class="txt">Launch Readiness</span></div>
+  <h2>بوابة الإطلاق — لا يبدأ الإنفاق قبل اجتيازها</h2>
+  <p class="sub">خمس بنود، كل بند له مالك واضح. لو بند واحد ناقص، الإعلانات المدفوعة تتأجل مش تتوقف الحملة كلها.</p>
+  <div class="table-wrap"><table>
+    <tr><th>البند</th><th>شرط الجاهزية</th><th>المالك</th></tr>
+    <tr><td>العرض</td><td>سعر، موعد، ما يشمله البرنامج، سياسة استرجاع، وطريقة دفع واضحة</td><td>الإدارة</td></tr>
+    <tr><td>القياس</td><td>Pixel/CAPI أو بديله، UTMs، أحداث Lead وPurchase، واختبار تسجيل حقيقي</td><td>التقني + الإعلانات</td></tr>
+    <tr><td>الصفحة</td><td>عنوان، نتيجة متوقعة، محاور، عينة، أسئلة شائعة، شهادات بإذن أصحابها، وCTA واحد</td><td>المحتوى + التصميم</td></tr>
+    <tr><td>المتابعة</td><td>CRM بسيط بمراحل: جديد، تفاعل، مؤهل، عرض، دفع، لم يدفع، مشترك</td><td>خدمة العملاء</td></tr>
+    <tr><td>الامتثال</td><td>مراجعة شرعية وتحريرية، موافقات استخدام الشهادات، وعدم تشخيص الأطفال. محتوى محاضرة «تربية البنت» (الهيبة/الرعب، الفرق بين الولد والبنت) يحتاج مراجعة إضافية قبل النشر لتجنب أي تنميط</td><td>المراجع</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= STRATEGIC GAPS ================= -->
+<section class="wrap" id="gaps">
+  <div class="kicker"><span class="key">🧩</span><span class="txt">Strategic Gaps</span></div>
+  <h2>الفجوات الاستراتيجية وحلولها</h2>
+  <div class="grid-2">
+    <div class="card"><h3>1. فجوة الوصول</h3><p style="font-size:14.5px; color:var(--ink-soft);">343K متابع الأكاديمية وحدها مش كفاية للوصول لهدف تسجيلات كبير.</p><p style="font-size:14.5px;">✅ <b>الحل:</b> تفعيل صفحة الشيخ 3.8M رسميًا في الحملة، بدل الاعتماد على الأكاديمية بس.</p></div>
+    <div class="card"><h3>2. فجوة قاعدة البيانات</h3><p style="font-size:14.5px; color:var(--ink-soft);">مفيش قاعدة عملاء سابقين لهذه الدورة بالذات، فكل حملة بتبدأ من الصفر.</p><p style="font-size:14.5px;">✅ <b>الحل:</b> دليل تمهيدي (Lead Magnet) في الأسبوعين الأولين يبني قائمة قبل فتح باب التسجيل.</p></div>
+    <div class="card"><h3>3. فجوة المحتوى المنهجي</h3><p style="font-size:14.5px; color:var(--ink-soft);">محتوى عشوائي بلا ربط بمراحل رحلة الأب/الأم من الوعي للقرار.</p><p style="font-size:14.5px;">✅ <b>الحل:</b> Content Calendar بإطار AIDA — كل أسبوع له هدف واحد واضح.</p></div>
+    <div class="card"><h3>4. فجوة التتبع التقني</h3><p style="font-size:14.5px; color:var(--ink-soft);">بلا Pixel وCAPI وUTM، مفيش طريقة نعرف أي إعلان فعلًا بيجيب تسجيلات.</p><p style="font-size:14.5px;">✅ <b>الحل:</b> تفعيل التتبع الكامل قبل أول جنيه إعلانات، مش بعده.</p></div>
+    <div class="card"><h3>5. فجوة الاحتفاظ</h3><p style="font-size:14.5px; color:var(--ink-soft);">الطالب اللي يسجل ويسيب الدورة نص الطريق = خسارة سمعة مش بس مبيعات.</p><p style="font-size:14.5px;">✅ <b>الحل:</b> متابعة غياب أسبوعية + رسالة شخصية بعد أي انقطاع.</p></div>
+    <div class="card"><h3>6. فجوة التطبيق العملي</h3><p style="font-size:14.5px; color:var(--ink-soft);">معرفة نظرية بلا واجبات يومية = بلا تغيير حقيقي في البيت.</p><p style="font-size:14.5px;">✅ <b>الميزة التنافسية:</b> اجعلي "التطبيق العملي أسبوعيًا" نقطة البيع الأولى في كل رسالة.</p></div>
+  </div>
+</section>
+
+<!-- ================= IDEAS ================= -->
+<section class="wrap" id="ideas">
+  <div class="kicker"><span class="key">💡</span><span class="txt">Growth Ideas</span></div>
+  <h2>أفكار إضافية لزيادة الوصول والتحويل</h2>
+  <div class="grid-3">
+    <div class="card"><h3>🎁 نظام إحالة من اليوم الأول</h3><p style="font-size:14px; color:var(--ink-soft);">كل مشترك يحصل على كود خاص، وكل تسجيل من كوده = خصم أو محتوى بونص له. تفعيل نظام أبجديات بوينتس الموجود بالفعل.</p></div>
+    <div class="card"><h3>📢 قناة واتساب للإعلانات</h3><p style="font-size:14px; color:var(--ink-soft);">مكان واحد يلجأ له الجمهور لمتابعة كل جديد عن الدورة والعروض، بدل التشتت بين القنوات.</p></div>
+    <div class="card"><h3>🤝 شراكة مع مؤثرين تربويين</h3><p style="font-size:14px; color:var(--ink-soft);">3-5 صفحات أبوة/أمومة بمتابعين متوسطين، مقابل عمولة من كل تسجيل عبر رابطهم — بلا تكلفة مقدّمة.</p></div>
+    <div class="card"><h3>📸 بوست Social Proof</h3><p style="font-size:14px; color:var(--ink-soft);">سكرين شوت حقيقي من آراء أهالي حضروا محاضرات سابقة للشيخ، بإذنهم — الناس بتصدّق بعضها أكتر من الإعلان.</p></div>
+    <div class="card"><h3>👨‍👩‍👧‍👦 كوميونيتي أولياء الأمور</h3><p style="font-size:14px; color:var(--ink-soft);">جروب فيسبوك للأهالي المهتمين، حتى قبل التسجيل — مساحة نقاش تبني انتماء قبل البيع.</p></div>
+    <div class="card"><h3>🌍 حملة للجمهور خارج مصر</h3><p style="font-size:14px; color:var(--ink-soft);">نفس المحتوى، استهداف واستراتيجية تسعير مختلفة للخليج والمهجر.</p></div>
+  </div>
+</section>
+
+<!-- ================= AIDA CALENDAR ================= -->
+<section class="wrap" id="calendar">
+  <div class="kicker"><span class="key">📅</span><span class="txt">AIDA Content Calendar</span></div>
+  <h2>خريطة الأسابيع الستة — مراحل القرار</h2>
+  <div class="table-wrap"><table>
+    <tr><th>الأسبوع</th><th>مرحلة القرار</th><th>المخرجات الأساسية</th><th>بوابة الانتقال</th><th>قرار الإدارة</th></tr>
+    <tr><td>1</td><td>اختبار الرسالة</td><td>3 زوايا ألم + 6 ريلز + دليل مجاني + تجهيز القياس</td><td>أعلى حفظ ومشاهدة مؤهلة</td><td>نثبت زاويتين فقط</td></tr>
+    <tr><td>2</td><td>بناء الطلب</td><td>تحدي 5 أيام + لايف + تجميع Leads من الشيخ والأكاديمية</td><td>جودة الـLead والرد</td><td>نوسع الجمهور الفائز</td></tr>
+    <tr><td>3</td><td>تقديم العرض</td><td>صفحة البيع + درس عينة + تفاصيل المنهج + فتح التسجيل</td><td>زيارة الصفحة وإضافة الدفع</td><td>نعالج أكبر اعتراضين</td></tr>
+    <tr><td>4</td><td>إثبات القيمة</td><td>شهادات موثقة + FAQ + بث أسئلة + متابعة شخصية</td><td>بدء الدفع من الـLeads</td><td>نزيد على الكرياتيف الرابح</td></tr>
+    <tr><td>5</td><td>الإغلاق الذكي</td><td>عرض محدد بموعد واضح + إعادة استهداف + تذكير للقوائم</td><td>تحسن التسجيل اليومي</td><td>نوقف ما لا يحقق مبيعات</td></tr>
+    <tr><td>6</td><td>آخر دعوة ثم تفعيل</td><td>إغلاق التسجيل أو تغيير العرض بوضوح + رسائل ترحيب وبدء</td><td>دفع مكتمل وبدء الدورة</td><td>نحوّل التجربة إلى إحالات</td></tr>
+  </table></div>
+  <div class="grid-2" style="margin-top:24px;">
+    <div class="card"><h3>Content Mix Formula</h3>
+      <div class="table-wrap"><table>
+        <tr><th>النوع</th><th>النسبة</th></tr>
+        <tr><td>🎬 ريلز / فيديو</td><td>40%</td></tr>
+        <tr><td>📸 كاروسيل / صورة</td><td>25%</td></tr>
+        <tr><td>🔴 لايف / بث أسئلة</td><td>15%</td></tr>
+        <tr><td>📝 بوست نصي / تأملي</td><td>10%</td></tr>
+        <tr><td>📖 ستوري يومية</td><td>10%</td></tr>
+      </table></div>
+    </div>
+    <div class="card"><h3>قاعدة الـ3 في 1</h3><p style="font-size:14.5px; color:var(--ink-soft);">كل لايف أو مقطع تصوير من الشيخ = 3 ريلز (30–45 ث) + يوتيوب Short + تيك توك. يوم تصوير واحد = 5 قطع محتوى جاهزة للنشر على مدار الأسبوع.</p></div>
+  </div>
+</section>
+
+<!-- ================= SOPs ================= -->
+<section class="wrap" id="sops">
+  <div class="kicker"><span class="key">⚙️</span><span class="txt">Operating Procedures</span></div>
+  <h2>الإجراءات التشغيلية</h2>
+  <div class="grid-2">
+    <div class="card"><h3>SOP-01: إدارة التعليقات والرسائل</h3><ul><li>رد صباحي 9ص + مسائي 6م على كل تعليق ورسالة</li><li>أي سؤال عن السعر = Lead فوري يتنقل لخدمة العملاء</li><li>ممنوع أي رد دفاعي على تعليق سلبي</li><li>رد خلال 4 ساعات كحد أقصى</li></ul></div>
+    <div class="card"><h3>SOP-02: متابعة المهتمين (Leads)</h3><ul><li>قاعدة الـ30 دقيقة: رد شخصي على أي مهتم خلال نص ساعة</li><li>لو ما ردّش بعد 24 ساعة: رسالة متابعة لطيفة</li><li>لو ما ردّش بعد 3 أيام: رسالة أخيرة بلا إلحاح</li></ul></div>
+    <div class="card"><h3>SOP-03: الإعلانات المدفوعة</h3>
+      <div class="table-wrap"><table>
+        <tr><th>المؤشر</th><th>القرار</th></tr>
+        <tr><td>قبل اكتمال 1,000–2,000 ظهور</td><td>لا نقتل الإعلان مبكرًا؛ نراقب المشاهدة والنقر فقط</td></tr>
+        <tr><td>CPL أعلى من الهدف بـ30%</td><td>نختبر Hook أو جمهورًا أو صفحة؛ لا نزيد الميزانية</td></tr>
+        <tr><td>Leads جيدة بلا دفع</td><td>نراجع العرض، الثقة، الأسئلة الشائعة، وسرعة المتابعة</td></tr>
+        <tr><td>تسجيلات بتكلفة مقبولة</td><td>نرفع الميزانية تدريجيًا مع مراقبة الجودة والإكمال</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:0;"><b>معادلة الهدف:</b> أقصى CPL = أقصى CAC المقبول × معدل التحويل من Lead إلى تسجيل.</p>
+    </div>
+    <div class="card"><h3>SOP-04: التقرير الأسبوعي — كل أحد</h3><ul><li>الوصول والتفاعل مقارنة بالأسبوع السابق</li><li>عدد المهتمين الجدد وعدد التسجيلات</li><li>متوسط CPL وأفضل قطعة محتوى أداءً</li><li>3 قرارات فقط للأسبوع القادم</li></ul></div>
+  </div>
+</section>
+
+<!-- ================= TEAM ================= -->
+<section class="wrap" id="team">
+  <div class="kicker"><span class="key">👥</span><span class="txt">Team & Ownership</span></div>
+  <h2>الفريق والمسؤوليات لكل قناة</h2>
+  <div class="table-wrap"><table>
+    <tr><th>القناة</th><th>المسؤول</th><th>المرجع عند التصعيد</th></tr>
+    <tr><td>فيسبوك/انستجرام (مدفوع)</td><td>مسؤول الإعلانات</td><td>الميسّر (أبو عبود)</td></tr>
+    <tr><td>انستجرام/تيك توك (عضوي)</td><td>مسؤول المحتوى</td><td>مسؤولة المحتوى</td></tr>
+    <tr><td>يوتيوب</td><td>مسؤول الفيديو الطويل</td><td>مسؤول التصميم والفيديو</td></tr>
+    <tr><td>تليجرام</td><td>مسؤول الأتمتة/المجتمع</td><td>مسؤولة التقني</td></tr>
+    <tr><td>واتساب</td><td>مسؤول خدمة العملاء</td><td>الميسّر</td></tr>
+    <tr><td>المراجعة الشرعية</td><td>الشيخ الغليظ/مختص محدد</td><td>مسؤول المحتوى</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= KPI CONTROL ================= -->
+<section class="wrap" id="kpi">
+  <div class="kicker"><span class="key">📊</span><span class="txt">Control Dashboard</span></div>
+  <h2>لوحة القياس والتحكم — حسب القناة</h2>
+  <div class="table-wrap"><table>
+    <tr><th>القناة</th><th>مؤشر التمهيد</th><th>مؤشر البيع</th><th>قرار عند الضعف</th></tr>
+    <tr><td>فيسبوك/انستجرام</td><td>CTR، تكلفة التفاعل</td><td>CPL، CPA، ROAS</td><td>تغيير الإعلان/الجمهور قبل زيادة الميزانية</td></tr>
+    <tr><td>تيك توك</td><td>معدل المشاهدة الكامل، المشاركات</td><td>الزيارات لصفحة التسجيل</td><td>تغيير أول 3 ثواني من الريل</td></tr>
+    <tr><td>يوتيوب</td><td>مدة المشاهدة، البحث العضوي</td><td>نقرات الرابط في الوصف</td><td>تعديل العنوان والصورة المصغرة</td></tr>
+    <tr><td>تليجرام</td><td>نمو القناة، نسبة القراءة</td><td>الرد على رابط التسجيل</td><td>تغيير التوقيت أو نوع الرسالة</td></tr>
+    <tr><td>واتساب</td><td>—</td><td>معدل الرد والتحويل من الرسائل</td><td>مراجعة صياغة الرسائل مع مسؤول خدمة العملاء</td></tr>
+  </table></div>
+  <p class="sub" style="margin-top:14px;">اجتماع مراجعة قصير كل 3 أيام أثناء شهر البيع — قرارات التعديل لازم تطلع بسرعة، مش بعد أسبوع.</p>
+</section>
+
+<!-- ================= REEL SCRIPTS ================= -->
+<section class="wrap" id="reels">
+  <div class="kicker"><span class="key">🎬</span><span class="txt">Reel Scripts</span></div>
+  <h2>سكريبتات جاهزة للتصوير</h2>
+  <p class="sub">اضغطي على أي ريل لفتح تفاصيله. الخمسة الأول مبنيين على عناوين الدورة الفعلية، والباقي زوايا تكميلية لنفس المحاور. أي اقتباس حديث أو آية لازم يمر على المراجع الشرعي قبل التصوير.</p>
+  <div id="reelList"></div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="wrap" id="pricing">
+  <div class="kicker"><span class="key">💳</span><span class="txt">Pricing</span></div>
+  <h2>الأسعار والباقات</h2>
+  <p class="sub">لا نضع رقمًا تخمينيًا قبل معرفة تكلفة الإنتاج، السوق المستهدف، وسياسة الدفع. نثبت هيكل العرض أولًا ثم نختبر السعر على شرائح صغيرة.</p>
+  <div class="grid-2">
+    <div class="card"><h3>🇪🇬 من داخل مصر</h3><ul>
+      <li>السعر الأساسي: <span class="ph">[السعر]</span> ج.م</li>
+      <li>عرض الحجز المبكر: <span class="ph">[السعر]</span> ج.م</li>
+    </ul></div>
+    <div class="card"><h3>🌍 من خارج مصر</h3><ul>
+      <li>السعر الأساسي: <span class="ph">[السعر]</span> $</li>
+      <li>عرض الحجز المبكر: <span class="ph">[السعر]</span> $</li>
+    </ul></div>
+  </div>
+  <div class="card" style="margin-top:18px;"><h3>👨‍👩‍👧‍👦 عرض العائلة</h3><p style="font-size:14.5px; color:var(--ink-soft);">نستخدم خصمًا بسيطًا ومفهومًا للأسرة، لا عرضًا يربك القيمة. يُفضل اختبار: فرد واحد، فردان، أو باقة عائلية ثابتة، مع كود مستقل لقياس أثر العرض.</p></div>
+  <div class="table-wrap" style="margin-top:18px;"><table>
+    <tr><th>الباقة</th><th>هدفها</th><th>ما يجب أن يتضمنه العرض</th><th>قاعدة الاختبار</th></tr>
+    <tr><td>فردية</td><td>التحويل الأساسي</td><td>الدورة + الوصول + واجبات التطبيق</td><td>السعر المرجعي</td></tr>
+    <tr><td>عائلية</td><td>رفع متوسط قيمة الطلب</td><td>مقعدان أو أكثر + متابعة مشتركة</td><td>لا نبيع بخصم يضر الثقة</td></tr>
+    <tr><td>مبكرة</td><td>تسريع القرار</td><td>موعد انتهاء حقيقي وبونص مرتبط بالتطبيق</td><td>تُغلق في الموعد ولا تمدد بلا سبب</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= ESCALATION ================= -->
+<section class="wrap" id="escalation">
+  <div class="kicker"><span class="key">🚨</span><span class="txt">Escalation Matrix</span></div>
+  <h2>مصفوفة التصعيد — مين يتصرف وإمتى</h2>
+  <div class="callout" style="margin-bottom:20px;">القاعدة الذهبية: أي مشكلة بتتأخر 30 دقيقة بلا حل = تتبلغ للميسّر (أبو عبود) فورًا.</div>
+  <div class="table-wrap"><table>
+    <tr><th>المشكلة</th><th>من يتصرف</th><th>الإجراء الفوري</th></tr>
+    <tr><td>رابط التسجيل واقف أو غلط</td><td>مسؤول الإعلانات</td><td>يتصل بالتقني فورًا + يبلغ الميسّر</td></tr>
+    <tr><td>رسائل بلا رد لأكتر من 30 دقيقة</td><td>مسؤول خدمة العملاء</td><td>يرد فورًا ويبلغ الميسّر</td></tr>
+    <tr><td>مسجلين = صفر بعد 24 ساعة من فتح الباب</td><td>الميسّر</td><td>لايف مفاجئ + رسالة طوارئ للقائمة</td></tr>
+    <tr><td>CPL أعلى من الهدف المشتق من CAC بـ30%+ لمدة يومين</td><td>مسؤول الإعلانات</td><td>إيقاف الإعلان واختبار Hook/جمهور جديد، لا زيادة الميزانية</td></tr>
+    <tr><td>محتوى فيه تنميط أو تعميم بين الولد والبنت</td><td>المراجع الشرعي</td><td>وقف النشر فورًا وإعادة الصياغة</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  مفاتيح تربية الأبناء — الخطة التسويقية الشاملة · أبجديات أونلاين
+</footer>
+
+<script>
+// ---------- Tabs ----------
+document.querySelectorAll('#platTabs .tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#platTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---------- Budget calculator ----------
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function calc(){
+  const target = parseFloat(document.getElementById('calcTarget').value) || 0;
+  const price = parseFloat(document.getElementById('calcPrice').value) || 0;
+  const cpl = parseFloat(document.getElementById('calcCPL').value) || 1;
+  const conv = (parseFloat(document.getElementById('calcConv').value) || 1) / 100;
+  const organicPct = (parseFloat(document.getElementById('calcOrganic').value) || 0) / 100;
+  const safety = 1 + (parseFloat(document.getElementById('calcSafety').value) || 0) / 100;
+
+  const totalStudentsNeeded = target * safety;
+  const totalLeadsNeeded = conv > 0 ? totalStudentsNeeded / conv : 0;
+  const organicLeads = totalLeadsNeeded * organicPct;
+  const paidLeads = totalLeadsNeeded - organicLeads;
+  const budget = paidLeads * cpl;
+  const revenue = target * price;
+
+  document.getElementById('rLeads').textContent = fmt(totalLeadsNeeded);
+  document.getElementById('rPaidLeads').textContent = fmt(paidLeads);
+  document.getElementById('rBudget').textContent = fmt(budget);
+  document.getElementById('rRevenue').textContent = fmt(revenue);
+  document.getElementById('rCAC').textContent = fmt(target > 0 ? budget / target : 0);
+  document.getElementById('rROAS').textContent = budget > 0 ? (revenue / budget).toFixed(1) + 'x' : '–';
+}
+['calcTarget','calcPrice','calcCPL','calcConv','calcOrganic','calcSafety'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', calc);
+});
+calc();
+
+// ---------- Lecture Content Bank ----------
+const lectureBank = [
+{num:'2', title:'تربية الولد أمانة', pillar:'1', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'الأب مش مجرد موفّر للنفقة؛ هو مهندس العقل وحارس الفطرة وغارس القيم. الولد استئمان إلهي، والوالد مسؤول عن دين الولد وعقله وخُلقه وتعليمه ونفقته ورعايته. الأثر المتعدي: الولد الصالح أعظم صدقة جارية.',
+ hooks:['ابنك مش بس ابنك... هو أمانة هتتسأل عنها','أنت الشيطان في البيت (ازدواجية الأب/الأم في التدين قدام الطفل)','بابا صح؟ (تقليد الأبناء لأفعال آبائهم حرفيًا)','مالكش دعوة — أخطر نظرية دمّرت جيل كامل من الرجال','بعد الموت لسه بتتحاسب (سيئات الابن العاصي جارية على أبيه)'],
+ quotes:[
+   {t:'ما نحل والد ولده من نحل أفضل من أدب حسن',s:'حديث نبوي'},
+   {t:'إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، وعلم ينتفع به، وولد صالح يدعو له',s:'حديث نبوي — صحيح'},
+   {t:'قلبه جوهرة ساذجة، قابلة لكل نقش',s:'الإمام الغزالي'},
+   {t:'شيل كلمة تربية وحط تعويد',s:'من كلام الشيخ'},
+   {t:'أنا ربّيته على المعاصي دي عادي... بتتكتب عليه وبتتكتب عليّ',s:'من كلام الشيخ'}
+ ],
+ stories:['تقبيل النبي ﷺ للحسن ودهشة الأقرع بن حابس اللي قال «ما قبّلت أحدًا منهم قط»، فرد النبي ﷺ: «من لا يرحم لا يُرحم» — رواه أحمد بإسناد صحيح','عمر بن أبي سلمة وتعويد آداب الطعام: يده كانت تطيش في الصحفة، فقال له النبي ﷺ: «يا غلام، سمِّ الله، وكل بيمينك، وكل مما يليك» — متفق عليه'],
+ situations:[],
+ readyCopy:[
+   {hook:'وهو بيردّ عليكِ: باباما بيصليش', text:'"بابا ما بيصليش" ـ جملة بسيطة زي دي، قد إيه المرة اللي قالها فيها ابنك أو بنتك ردًا على "ياهلل صلّي"؟ الطفل الصغير مش بيسمع الأوامر بس، هو بيراقب. بيشوف مرتين: اللي بيقوم يصلي، والللي بيقول الكلام وبس. مش عيب منه، هو بس بيقولك اللي فعلًا شافه.'},
+   {hook:'بابا صح؟', text:'إحنا مش واخدين بالنا إن هما بيصوّرونا طول الوقت. الطفل مش بيسمع كلامك بس... هو بيتفرج عليك وهو بيقلدك.'},
+   {hook:'مالكش دعوة', text:'"مالكش دعوة" — فاكرة كام مرة قلتيها؟ مش قصدك حاجة وحشة، هي بس أسهل جملة بنقولها لما مش عايزين نشرح أو نتناقش. بس الجملة دي بتعلّم حاجة تانية غير اللي إحنا قاصدينها: إنه مفيش داعي يفكر، مفيش داعي يوقف نفسه، بس يمشي في طريقه من غير ما يسأل ليه. المشكلة إن الطفل هيكبر، وهيقابل مواقف محتاجة عقل بيوقف، بيسأل، بيوازن — قبل ما يتصرف. لكنه اتعوّد من الأول إن التفكير ده مش شغلته. مش لازم نشرح كل حاجة لولادنا بتفصيل ممل، بس ممكن بدل "مالكش دعوة" نقول "ليه"، ولو مرة واحدة بس في اليوم. الفرق بسيط، لكنه يبني عقل مختلف تمامًا.'}
+ ],
+ content:['ريلز قصير: يبدأ بجملة «اعلم أن الصبي أمانة عند والديه» مع تعليق نصي «هل أنت مستعد للسؤال؟» (من الدقيقة 1:21)','ريلز مصوّر بدون تعليق صوتي: أب على الكنبة بالموبايل، الابن يقلده بورقة ملفوفة زي السيجارة ويسأل «أنا بابا صح؟» — تعليق نصي بيظهر ببطء: «هو مش بيسمع كلامك بس... هو بيتفرج عليك وهو بيقلدك»','بوست تصميم بسيط: «صدقة جارية... أم سيئة جارية؟»']},
+
+{num:'3', title:'مقدمة هامة في تربية الأبناء', pillar:'1', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'الطفل يتربى من سلوك والديه اليومي، مش من جلسات النصح بس. التربية حياة مش حصة. الصون والتأديب والتهذيب وتعليم محاسن الأخلاق هي شغلة الوالد المستمرة، مش موعد مجدول.',
+ hooks:['ابنك بيتربى منك... حتى وإنت مش بتربيه','هو ابنك... ولا مشروعك الشخصي؟','الدلع اللي بتفتخر بيه... ممكن يكون نقطة ضعف','مشكلة مع ابنك محتاجة حوار مش أمر','ابنك مش بيسمعك بس... ابنك بيراقبك'],
+ quotes:[
+   {t:'اعلم أن الصبي أمانة عند والديه، وقلبه جوهرة ساذجة، وهي قابلة لكل نقش',s:'ابن قدامة'},
+   {t:'فينبغي أن يصونه ويؤدبه ويهذبه ويعلمه محاسن الأخلاق',s:'ابن قدامة'},
+   {t:'أنت لما بتعمل أي حاجة حلوة أو وحشة دي تربية',s:'من كلام الشيخ'},
+   {t:'شغلتك إنك تصونه، شغلتك إنك تؤدبه، شغلتك إنك تهذبه، شغلتك إنك تعلّمه محاسن الأخلاق',s:'من كلام الشيخ'},
+   {t:'الزم إن أنا أصون ابني من نفسه',s:'من كلام الشيخ'},
+   {t:'مفيش حاجة اسمها أنا هعملهم حصة تربية',s:'من كلام الشيخ'},
+   {t:'القدوات المرئية',s:'من كلام الشيخ'},
+   {t:'المشاركة التفاعلية دي أحسنها',s:'من كلام الشيخ'}
+ ],
+ stories:['أنس بن مالك وعمر بن أبي سلمة: التعليم أثناء الموقف اليومي نفسه، مع التوجيه والتكرار والصبر','ابن عباس رضي الله عنهما: استغلال وجود الطفل لغرس معاني العقيدة والتوكل ومراقبة الله مبكرًا','أسامة بن زيد رضي الله عنه: إسناد المسؤولية للشاب — الصيانة لا تعني صناعة شخصية عاجزة','الشاب الذي جاء يستأذن النبي ﷺ في الزنا: الحوار الهادئ اللي ساعده يفهم بدل الاكتفاء بالتصادم','الاعتذار والقدوة: تعليم الطفل أن الاعتذار ليس ضعفًا، وأن رؤية الوالد يصحح خطأه تربية عملية'],
+ content:['مشهد أب يطلب من ابنه ألا يرفع صوته، ثم يراه الطفل يتعامل بعصبية لحظة بعدها','الفرق بين مساعدة الابن على اكتشاف نفسه وفرض طموحات الوالد عليه','طفل لا يعرف القيام بمسؤوليات بسيطة لأن أهله يفعلون كل شيء بدلًا منه','الحوار كوسيلة تربوية لما الطفل يحتاج فهمًا لا توبيخًا فقط']},
+
+{num:'7', title:'لباس الأولاد والموضة', pillar:'2', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'اللباس مرآة للهوية، مش تفاصيل شكلية. التقييد بالحكمة والحب رحمة، والقسوة فيه بتخرب. الأصالة المنهجية توازن بين الشرع والعرف المقبول والنفسية التربوية الحديثة.',
+ hooks:['لبس ابنك بيتكلم قبل ما يفتح بقّه','غضّيت بصري عن ولد... واكتشفت إنه ولد!','الموضة اللي بتربي والدنا من غيرنا','التقييد... رحمة','سأل عن الجواز... ونسي يسأل عن أهم سؤال (التربية)','إزاي تقول لابنك "ده غلط" من غير ما تكسره؟','لو مش قادر تغيّره... على الأقل متسكتش'],
+ quotes:[
+   {t:'البسوا من ثيابكم البياض، فإنها من خير ثيابكم، وكفّنوا فيها موتاكم، فإن الله يجلو البصر، ويشرح الصدر',s:'حديث صحيح — رواه أبو داود، رقم 3878'},
+   {t:'لعن الله المتشبهين من الرجال بالنساء، والمتشبهات من النساء بالرجال',s:'حديث صحيح — المجموع للنووي'},
+   {t:'التقييد رحمة',s:'من كلام الشيخ'},
+   {t:'ما بدأ الإسلام غريبًا، وسيعود غريبًا كما بدأ',s:'حديث نبوي'},
+   {t:'ابنك مش هيقبل منك إلا لو إحنا أصحاب',s:'من كلام الشيخ'},
+   {t:'لبس ابنك بيمثله، بيقدسه بمقدار ما يحسّ إنه جزء من التمثيل لاتجاهاته',s:'من كلام الشيخ'},
+   {t:'ارحم ابنك وارحم بنتك بأن تحط له قيود من وهو صغير',s:'من كلام الشيخ'}
+ ],
+ stories:[],
+ situations:[],
+ readyCopy:[
+   {hook:'لبس ابنك بيتكلم قبل ما يفتح بقّه', text:'هل فكرت قبل كده إن لبس ولدك ليه معنى؟ (رِيلز عن الحديث الشريف في اللباس الأبيض)'},
+   {hook:'الموضة اللي بتربي والدنا من غيرنا', text:'ابنك بيحب حاجة، بيقلد حاجة، بيتقمص حاجة... هل فكرتِ هو شايفها فين؟ مش دايمًا من بيته. أحيانًا من فيديو شافه ثانية، من صفحة مش عارفة اسمها. ولو كل اللي حواليه مستورد، مش مستغرب يبقى هو نفسه مستهلك مش ابن بيئته. مش المطلوب إنك تمنعيه كل حاجة، ولا تعزليه عن الدنيا. المطلوب إنك تسأليها السؤال ده بصراحة: مين اللي هو شايفها أكتر؟ مين اللي هو بيتربّى عليه... هو اللي هيتقلّده.'},
+   {hook:'سأل عن الجواز... ونسي يسأل عن أهم سؤال', text:'سأل عن المهر... ونسي يسأل عن أهم سؤال. قبل الجواز، بيتسأل عن كل حاجة: شغله، بيته، أهله، شكل حياته المادية. وبينسى سؤال واحد بسيط: اتربينا إزاي؟ لأن الاتنين مش بس بيتجوزوا بعض... هما هيربّوا ولاد مع بعض. ولو خلفيتهم التربوية مختلفة تمامًا، من غير ما يتكلموا فيها بصراحة من الأول، هتلاقيها بتطلع بعد كده، في كل قرار صغير عن الولاد. مش لازم يكونوا متطابقين في كل حاجة، بس لازم يكون فيه حوار حقيقي قبل ما يبقى فيه ولاد بينهم. اسأل عن التربية... زي ما بتسأل عن كل حاجة تانية.'},
+   {hook:'إزاي تقول لابنك ده غلط من غير ما تكسره؟', text:'إزاي تقول لابنك "ده غلط" من غير ما تكسره؟ فرق كبير بين إنك تصحّح لابنك، وإنك تهينه وانت بتصحح له. "إنت غلطان"، "مش زي دي مش صح"، "عيب عليك"، "مش زي دي من أخلاقنا" — الكلمة اللي بتستخدمها مش بس بتوصل معلومة، بتوصل معاها إحساس. وابنك بيفتكر الإحساس أكتر من الكلام. بيفتكر إنك مش راضي، من غير ما تكسر حاجة جواه. التربية مش سكوت على الغلط... ولا تجريح فيه، هي وسط بينهم.'},
+   {hook:'لو مش قادر تغيّره على الأقل متسكتش', text:'لو مش قادر تغيّره... على الأقل متسكتش. فيه لحظات هتحس إنك عاجز، إن الكلام مش بيوصل، إن التغيير مش في إيدك دلوقتي. بس فيه حاجة واحدة لسه في إيدك: إنك متبقاش راضي بصمتك. مش لازم تشتم، مش لازم تعاقب، مش لازم تهين، مش لازم تعلّق ع المشكلة. بس لازم يعرف إنك شايف، وإنك مش موافق عليه. لأن السكوت من غير ما تعلّق، بيتفهم على إنه رضا، حتى لو مقصودش كده. اقف على الباب في وشه بجملة بسيطة، ولو مقدرتيش تغيّري، على الأقل خلّي موقفك واضح.'}
+ ],
+ content:['ريلز قصير عن الحديث النبوي في اللباس الأبيض، مع نص تدريجي','ريلز هادئ متأملة: موقف الشيخ الشخصي مع الشخص اللي ظنّه بنتًا فاكتشف إنه ولد، غضّ بصره ظنًا منه أنها بنت','كاروسيل يشرح علامات "الاختراق الثقافي" في اختيارات الولد وخطوات عملية للحماية منه','كاروسيل أو ستوري: قصة الشاب اللي اتجوز من غير ما ياخد باله من فارق الخلفية التربوية بينه وبين زوجته','كاروسيل نقاط عملية مرقمة: أسلوب تصحيح الخطأ من غير ألفاظ مهينة أو مؤنثة','بوست قصير مباشر: إظهار عدم الرضا كواجب، حتى لو التغيير مش في إيدك بالكامل']},
+
+{num:'8', title:'فيمَ أشغل ابني؟', pillar:'4', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'الفراغ بيتحول لخطر لما ميتشغلش بالقرآن والقدوات الحقيقية. الصحبة والمدخلات (أغاني، أشعار عاطفية، مجتمعات أعلى ماديًا) بتشكل هوية الطفل قبل ما يحس. التنعم يضعف العزم.',
+ hooks:['ليه الأولاد بيسرقوا أهاليهم؟ (مجتمعات أو مدارس أعلى من مستواهم المادي)','باتمان وسبايدرمان أم خالد بن الوليد؟ (القدوة والهوية)','ابنك في ثالثة ثانوي وعارف سجود السهو؟ (الجهل بأساسيات الدين)','حماية الأبناء من العلاقات المبكرة (الأشعار العاطفية والأغاني)'],
+ quotes:[
+   {t:'ليبدأ الرجل بتعليم ولده قبل أن يأتيه الشيطان فيسبق إليه',s:'سفيان الثوري'},
+   {t:'التنعم يضعف العزم، ومن ضعف عزمه قلّ شأنه واحتقر بين الناس',s:'من كلام الشيخ'},
+   {t:'فلو عشمتني بالتنعم وما نعمتنيش أشعر بالتعاسة والحزن وعدم الرضا... ولو حسّستني بالتنعم ونعّمتني أطلع قليل العزم حقير الشأن',s:'من كلام الشيخ'},
+   {t:'ثم يشغله في المكتب بتعليم القرآن والحديث وأحاديث الأخيار ليغرس في قلبه حب الصالحين',s:'من كلام الشيخ'},
+   {t:'من أعظم الظلم أن تسمح لابنك، بل تدفع ابنك اللي عنده تسع عشر سنين، أنه يدخل في علاقة عاطفية.. احمي ابنك وبنتك من كسرة القلب',s:'من كلام الشيخ'},
+   {t:'كسل البدن يؤدي إلى كسل القلب، يؤدي إلى كسل العقل والذهن، فيبقى في الآخر أنت مخلّف جثة',s:'من كلام الشيخ'},
+   {t:'التربية تأديب وإعطاء ومنع ومتابعة، رفع قيم.. أنت بتبني بني آدم ومحتاج إنك تركز أكتر عشان هتتحاسب على كل حاجة',s:'من كلام الشيخ'}
+ ],
+ stories:['سفيان الثوري وأمه: «يا بني اطلب العلم وأنا أعينك بمغزلي» — «ليبدأ الرجل بتعليم ولده قبل أن يأتيه الشيطان فيسبق إليه»','الإمام مالك وأمه: «اذهب إلى ربيعة فتعلم من أدبه قبل علمه»','الإمام الشافعي وأمه: كانت تحمله للكتّاب فحفظ القرآن وهو ابن سبع سنين','الإمام أحمد بن حنبل وأمه وأبيه: كانت توقظه قبل الفجر وتخرج به للمسجد؛ وقال لابنه عبد الله: «يلزم العلم فإنه رأس مالك»','الإمام الأوزاعي وأمه: «اطلب العلم فإني أرى الله قد ألهمك رشدك»','قصة ابن عباس مع النبي ﷺ: «يا غلام إني أعلّمك كلمات: احفظ الله يحفظك»','موقف النبي ﷺ مع عمر بن أبي سلمة وآداب الطعام','تبسّم النبي ﷺ في وجوه أصحابه: «تبسّمك في وجه أخيك لك صدقة»'],
+ situations:['مخالطة الصبيان المتنعمين والترف: وضع الولد مع أصحاب مستواهم المادي أعلى منه بكثير — يدفعه لسرقة أهله لمجاراتهم (حيلة فلوس دروس الماث والفيزياء لشراء جزمة أو لعبة)','غياب الثقافة والتاريخ الإسلامي: معرفة الأطفال التفصيلية بالشخصيات الخيالية (سبايدرمان، هالك) مقابل جهلهم بالصحابة والفاتحين والدول المسلمة','رفض المظاهر الإسلامية: موقف البنت المنتقبة اللي استطلعت رأي الناس في الشارع، فتقبّلها غير المسلم بينما هاجمتها سيدة عربية مسلمة ورأت في سمتها تنفيرًا','تجاهل تعليم الأحكام الفقهية للشباب: طلاب ثالثة ثانوي لا يعرفون أحكامًا شرعية أساسية كسجود السهو أو الحجاب أو الميراث','سماع الأغاني العاطفية والأشعار الغرامية: تنمّي الشهوة والدخول في علاقات مبكرة تتسبب في كسرة القلب والتراجع الدراسي والديني','إغفال المهام الحياتية والرياضة والتكنولوجيا: عدم تعويد الطفل على حمل الأكياس، إغلاق الأبواب، إخراج القمامة، أو إغفال الرياضة والبرمجة، يخرج طفلًا كسولًا أو غير قادر على مواجهة الحياة'],
+ content:['بوست استفزازي: مقارنة بين طفل منعم مدلل رافض للتوجيه، وطفل معتدل سهل الطاعة','سؤال استثارة للمعلمات والمربيات: إزاي تخلي الفصل أو الورشة بيئة تزرع "التقوى" بدل الترديد الروتيني — شاركينا رأيك','ريلز: خارطة طريق عملية لبناء الشخصية القيّمة للطفل','ريلز هوك: «أكبر خطأ بنقع فيه لما بنعلم أولادنا الصلاة أو القيم!» — التكليف المجرد بدون ربط القلب بالله','كاروسيل: بناء قيمة «الوعي الذاتي والرقابة» عند الأطفال — ربط التحدي اليومي بالخلق والتقدير والمتابعة غير المباشرة','ريلز: «المرء على دين خليله، فلينظر أحدكم من يخالل» — الطفل يلقط سلوكيات صحبته']},
+
+{num:'9', title:'تعزيز وتعديل السلوك للأبناء', pillar:'3', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'إحنا معانا مفاتيح — مفتاح التعزيز هو الثناء. لما يظهر من الطفل خلق جميل، يُكرَّم عليه ويُمدح بين الناس بما يفرح هو به، مش بما يفرح الأب به. ولو أخطأ، يُتغافل عنه أولًا، فإن عاد يُعاتب سرًا برفق وتخويف من اطلاع الناس، من غير إكثار من العتاب.',
+ hooks:['إحنا معانا مفاتيح، لو ما استخدمتهاش هتقف قدام أبواب مغلقة','عايز تعمل تكرار لفعل؟ مفتاح التعزيز هو الثناء','الثناء كالملح في الطعام — رشة تظبط الطبخة، وكتير يبوظها','ابنك مرآة لتصرفاتك — المدح المتبادل','فخ المقارنة مقابل التعزيز الحقيقي','ليه الطفل مش بيسمع الكلام مهما زعقتيله؟'],
+ quotes:[
+   {t:'ومتى ظهر من الصبي خلق جميل وفعل محمود، فينبغي أن يُكرم عليه، ويجازى بما يفرح به، ويمدح بين أظهر الناس؛ فإن خالف ذلك في بعض الأحوال تُغوفل عنه ولا يُكاشف؛ فإن عاد عُوتب سرًا وخُوّف من اطلاع الناس عليه',s:'ابن قدامة'},
+   {t:'من حسن التربية أن يفرح بفعله الحسن، ويُظهر الثناء عليه، ويُكرم أمام أقرانه',s:'الإمام الغزالي'},
+   {t:'يستحب حمد الصغير إذا أصاب ليقوى قلبه على الخير، كما يعاتب إذا أخطأ',s:'ابن مفلح'},
+   {t:'التحفيز بالثناء والمدح للصبيان مما يقربهم من الفضائل ويعوّدهم على طلب المعالي',s:'ابن خلدون'},
+   {t:'ينبغي للمعلم أن يثيب الصبي إذا أحسن ويظهر الرضا عنه، فإن ذلك أنشط له على طلب العلم',s:'ابن سحنون'},
+   {t:'إحنا معانا مفاتيح، المفاتيح دي لو أنت ما استخدمتهاش هتقف قدام أبواب مغلقة مستحيلة الفتح',s:'من كلام الشيخ'},
+   {t:'أكم من أفسده الثناء المبالغ فيه، وزرع في قلبه الكبر، فالثناء كالملح في الطعام',s:'من كلام الشيخ'}
+ ],
+ stories:['عمر بن الخطاب رضي الله عنه: كان يثني على الغلام إذا أحسن الإجابة في مجلسه ويقول «هكذا فكونوا»','ابن عمر رضي الله عنه: كان يعطي أولاد إخوانه التمر أو العطايا إذا حفظوا شيئًا من القرآن','الربيع بن سليمان مع الإمام الشافعي: «كنت إذا أجبت الشافعي جوابًا صوابًا، رأيت وجهه يتهلل، وربما دعاني إلى الطعام»','الإمام الشافعي: كان يقول للغلام المتأدب «هذا الغلام يُرجى أن يكون له شأن»','حديث سهل بن سعد: النبي ﷺ استأذن الغلام الجالس عن يمينه قبل إعطاء الشراب للكبار، فقال الغلام: «والله لا أوثر بنصيبي منك أحدًا» فأعطاه النبي ﷺ إياه','تعيين النبي ﷺ لأسامة بن زيد أميرًا على الجيش وهو في سن صغيرة، وسط كبار الصحابة، ودفاعه ﷺ عن أهليته لما طُعن في إمارته لصغر سنه','أم خالد بنت خالد: لبست قميصًا أصفر فقال لها النبي ﷺ «سَنَهْ سَنَهْ» (حسن/جميل بالحبشية) وأثنى على قميصها','رأى أنس بن مالك النبي ﷺ يحمل الحسن بن علي على عاتقه ويقول «اللهم إني أحبه فأحبه»، وفعل مثلها مع أسامة بن زيد: «إن هذين أحب الناس إليّ»','أنس بن مالك رضي الله عنه: خدم النبي ﷺ منذ صغره ولم يوبخه أبدًا على خطأ، بل كان يدعو له بالبركة في ماله وولده'],
+ situations:['قواعد معالجة الخطأ: التغافل أولًا → فإن تكرر يُعاتب سرًا برفق وحب وصدق → فإن استمر يُفهم أن الغلام يحتاج عونًا وتوجيهًا لا عقابًا → قد يُذكَّر بمراقبة الله ثم التخويف من اطلاع الناس، مع عدم الإكثار من العتاب','الممنوع في المعالجة: العتاب المفرط، الإيذاء اللفظي، كثرة التخويف بالله في غير محله'],
+ content:['كاروسيل استفزازي: صورة ملح على أكل (رشة ظبطت الطبخة) مقابل ملح على تورتة (بوظ طعمها) — سؤال: التعزيز زي الملح في الأكل؟','ريلز: تصميم مفاتيح مختلفة لكل باب — «حتى الجنة لها مفتاح، تفتكروا إيه المفتاح اللي يخلي ابنك يكرر الأسلوب الصح؟»','ريلز: فيديو طفل مبسوط، تظهر فقاعات بجمل عن أساليب التعزيز المختلفة (باب ضحكلي لما عملت ماما، خلتني أحاسب عمو...)','ستوري تفاعلي: «لو ابنك عمل حاجة غلط... تصارحه ولا تتغافل وتعالج السبب؟»','ستوري سؤال: «إزاي تعزز في ابنك تحمل المسؤولية؟»','ريلز: «ليه الطفل مش بيسمع الكلام مهما زعقتيلُه؟»','ريلز: «السر في التغافل»','كاروسيل «قواعد معالجة الخطأ»: العتاب – الإيذاء اللفظي السلبي – كثرة التخويف السلبي بالله في غير محله']},
+
+{num:'10', title:'3 أشياء لازم تحمي ابنك منهم', pillar:'2', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'أنت لا تربي ابنك فقط بما تقوله له، بل بما تعوّده عليه، وبما تسمح له أن يراه ويسمعه ويخالطه ويعتاده. ابنك محتاج مقاومة مش رفاهية مطلقة. أنت لا تختار أصحاب ابنك فقط، أنت تختار بيئته كلها.',
+ hooks:['هل أنت بتسعد ابنك... ولا بتسلبه فرصة إنه يتعلم السعي؟','ما الذي يتعلمه ابنك من الطريق الذي يسلكه؟ (طفل يرى زميله متفوق في الرياضة أو حفظ القرآن)','أحيانًا منعك عن ابنك شيء تقدر تشتريه... هو عين التربية','مين صاحب ابنك؟ (المدرسة، المدرب، الناني، الأقارب، المحتوى)','ده لسه صغير! (أخطر فكرة — الطفل بيألف مش بس بيفهم)'],
+ quotes:[
+   {t:'المرء على دين خليله، فلينظر أحدكم من يخالل',s:'حديث نبوي'},
+   {t:'ربّي ابنك عنده مقاومة',s:'من كلام الشيخ'},
+   {t:'لا تربِّ ابنك على الرفاهية فيُضيّع عمره في طلبها إذا كبر',s:'من كلام الشيخ'},
+   {t:'اللي ما بيعملش... ما بيتجابلوش',s:'من كلام الشيخ'},
+   {t:'أنت لا تربي ابنك فقط بما تعطيه له... بل بما تعوّده عليه',s:'من كلام الشيخ'},
+   {t:'جليس ابنك أو بنتك... لابد أن يكون صالحًا',s:'من كلام الشيخ'},
+   {t:'الطفل لا يحتاج فقط إلى من يعلّمه... بل إلى من يخالطه',s:'من كلام الشيخ'}
+ ],
+ stories:['أسامة بن زيد رضي الله عنه: النبي ﷺ أمّره على جيش وهو في سن صغيرة (نحو 18 عامًا) وفي الجيش كبار الصحابة، ودافع ﷺ عن أهليته لما طُعن في إمارته لصغر سنه — «هل ابنك ممكن يبقى قائد جيش؟»'],
+ situations:['ابني مش ناقصه حاجة: الأب قادر ماديًا، وكل ما يطلبه الابن يُلبّى فورًا (موبايل، لعبة، خروجة) — هل بتسعد ابنك ولا بتسلبه فرصة إنه يتعلم السعي؟','طفل يرى زميله متفوق: واحد بيلعب رياضة، وواحد بيحفظ قرآن، الاتنين بيتعبوا وعندهم التزام — القضية مش نوع النشاط، القضية إنك تربي الطفل على البذل والاستمرار','أنا مش هجيبها له رغم إني أقدر: الأب يستطيع الشراء لكنه يتعمد التأجيل حتى يتعلم الابن أن الرغبة لا تعني الاستحقاق','أنا مطمن عليه عشان أصحابه كويسين: ثم نكتشف إن المشكلة مش في أصحابه بس، ممكن تكون في مدرسه أو مدربه أو الناني أو المحتوى اللي بيشاهده','ده لسه صغير: الطفل الصغير لا يفهم كل شيء، لكنه يألف كل شيء — المشكلة مش إنه "يفهم" الحرام، المشكلة إنه ممكن يتعوّد على رؤيته حتى يصبح غير مستنكر بالنسبة له'],
+ content:['بوست: موقف الأب القادر ماديًا اللي بيجيب كل حاجة يطلبها ابنه من غير مجهود','بوست: طفلين، واحد بيلعب رياضة وواحد بيحفظ قرآن — الاتنين بيتعلموا البذل والاستمرار','بوست: الأب اللي يقدر يشتري بس بيتعمد يأجل — «أحيانًا منعك عن ابنك شيء تقدر تشتريه... هو عين التربية»','ريلز هوك: «مين صاحب ابنك؟» — سؤال إجابته مش اسم طفل واحد','محتوى قوي للأمهات عن فكرة إن الطفل بيألف قبل ما يفهم']},
+
+{num:'أهم ما تربي عليه ابنتك', title:'حاجات لازم تربي بنتك عليها', pillar:'4', phase:'indirect', phaseLabel:'غير مباشر — تمهيد (حساس، يحتاج مراجعة شرعية)',
+ bigIdea:'الهيبة =/ الرعب، والتربية =/ الإهانة. الأب اللي بيهد شخصية ابنه بالتوبيخ والمقارنة والإهانة، بيتفاجأ بعدين إنه مش واثق في نفسه ومش طموح. تربية البنت لها خصوصية: أمة لله، زوجة، أم — تحتاج عفة وكرامة وجماليات وأنوثة ورقة، مش نسخة من تربية الولد.',
+ hooks:['أنت بتهد في ابنك الحاجة اللي هتطلبها منه بكرة','هيبة أبويا: عايز ابنك يهابك؟ خد بالك إن الهيبة شيء، والرعب شيء آخر','بابا جاي! من إمتى بقى بابا هو العقوبة؟','اسمع الأول — الاستماع مش ضعف (قصة الكوباية المكسورة)','ما تعاقبش على عمى — افهم الموقف قبل ما تحكم','بص فالن! (فخ المقارنة يزرع "أنا مش كويس")','مكسور ولا متمرد؟ (نتيجتا الإهانة المستمرة)','هل ابنك لما يكبر هيشتاق يرجع لك... ولا هيكون أول هدفه يخرج من بيتك؟','ليه بتربي بنتك كأنها ولد؟','لو أبوها ما اداهاش الاحتواء... هتدور عليه فين؟','أخطر حاجة في التربية إنك تستخدم مفتاح واحد لكل الأبواب'],
+ quotes:[
+   {t:'تبسُّمك في وجه أخيك لك صدقة',s:'حديث نبوي — قصة الحسن بن علي مع تمرة الصدقة'},
+   {t:'أنت أحيانًا بتطلب من ابنك في المستقبل شخصية أنت الآن بتهدمها فيه',s:'من كلام الشيخ'}
+ ],
+ stories:['الحسن بن علي رضي الله عنهما وتمرة الصدقة: أخذ تمرة فقال له النبي ﷺ «كخ كخ» وأمره أن يطرحها، وبيّن له السبب أن آل محمد لا يأكلون الصدقة، من غير إهانة — صحيح البخاري'],
+ readyCopy:[
+   {hook:'اسمع الأول', text:'مشهد: الأم تقول "عيالك عملوا مصيبة!" فيدخل الأب منفعلًا ويسأل "إيه اللي حصل؟!" فتقول "كسروا الكوباية". ثم يظهر النص: "قبل ما تعاقب... اسمع". في التربية، الاستماع مش ضعف.'}
+ ],
+ content:['ريلز تمثيلي: الأم تقول «عيالك عملوا مصيبة» بنبرة كارثة، الأب يتفاجأ إن الموضوع مجرد كوباية اتكسرت — CTA: «قبل ما تعاقب... اسمع»','كاروسيل: «ما ينفعش تعاقب على عمى» — اسمع الأم، اسمع الابن، افهم السياق، ثم احكم','بوست: «إنت عايز تبني ابن طموح... ولا نسخة من ابن فلان؟» (فخ المقارنة)','تصميم: «لما تهين ابنك باستمرار... مش لازم يطيعك، إما ينكسر أو يتمرد»','ريل ناري بعنوان: «ليه بنتك مش ولد؟» — الفرق بين تربية الولد والبنت من غير تنميط','حملة منفصلة: «الأب لا يربي ابنته على الحدود فقط، بل يعلمها أيضًا كيف يكون الحب الآمن المحترم»','هوية بصرية مقترحة للسلسلة كلها: كل قطعة محتوى تُقدَّم كـ"مفتاح" — 🔑 مفتاح الهيبة، 🔑 مفتاح العقوبة، 🔑 مفتاح الحوار، 🔑 مفتاح الحب، 🔑 مفتاح المشاركة، 🔑 مفتاح تربية البنت، 🔑 مفتاح الخشونة والمقاومة — يحوّل اسم "مفاتيح" من مجرد اسم سلسلة لهوية بصرية وفكرية للحملة كلها']},
+
+{num:'12', title:'الرياضة والقيمة والتواضع', pillar:'4', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'الرياضة نفسها مش المشكلة؛ السؤال هو هل بتقدّم بيها نفع ولا بتتحول لمجرد استهلاك وترفيه؟ وممنوع الطفل يفتخر بإنجازات أبوه أو ممتلكاته بدل ما يبني إنجازه الشخصي ويتعلم العطاء وعزة النفس.',
+ hooks:['الرياضة مش المشكلة... السؤال: إنت بتقدم بيها إيه؟','أبوك ناجح... بس أنت عملت إيه؟','مش كل حاجة تقدر تجيبها لابنك... تكون فعلًا خيرًا ليه','إنت بتربي ابنك يكون: هات... ولا خد؟','عايز ابنك يبقى كبير في عين الناس؟ علّمه ما يصغّره'],
+ quotes:[
+   {t:'أفضل الصدقة ما كان عن ظهر غنى، واليد العليا خير من اليد السفلى',s:'حديث نبوي'},
+   {t:'لما تودّي ابنك يتعلم رياضة ده شيء جيد، ده موضوع منتهي',s:'من كلام الشيخ'},
+   {t:'إهماله للرياضة ده شيء غير جيد',s:'من كلام الشيخ'},
+   {t:'لو واحد مدرب أو واحد فاتح جيم فده حاجة وده حاجة',s:'من كلام الشيخ'},
+   {t:'الحياة مش قيمة ترفيهية',s:'من كلام الشيخ'},
+   {t:'ويُمنع أن يفتخر على أقرانه بشيء مما يملكه أبواه أو بمطعمه أو ملبسه',s:'من كلام الشيخ'},
+   {t:'عشان ما يتعودش إنه يتكل على إنجازاته (إنجازات أبيه)',s:'من كلام الشيخ'},
+   {t:'أي حد بيتفاخر بحاجة هو بينقص نفسه مش بيكبرها',s:'من كلام الشيخ'},
+   {t:'عايز تبان كبير ما تكبرش نفسك على الناس',s:'من كلام الشيخ'}
+ ],
+ stories:['مصعب بن عمير رضي الله عنه: انتقل من النعيم إلى تحمل المشقة في سبيل الله — قيمة الإنسان ليست في الرفاهية والمظاهر','عبد الرحمن بن عوف رضي الله عنه: اختار العمل وطلب السوق بدل الاتكال على الآخرين — الاعتماد على النفس والعطاء','عمر بن الخطاب رضي الله عنه: شخصية قوية ومؤثرة من غير ما يكون التكبر مصدر القيمة','تعليم النبي ﷺ لعمر بن أبي سلمة آداب الطعام بالتوجيه المباشر']},
+
+{num:'13', title:'آداب الأولاد في المجالس', pillar:'4', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'الأب القاسي مبيربيش، الأب القاسي بيعقّد. آداب المجلس تُغرس برحمة من غير تقليل من قيمة الابن أو البنت — لازم يشوف نفسه في عينك راجل.',
+ hooks:['ابنك بيقاطع الكبار في الكلام؟ ده مش وقاحة، ده مهارة ناقصة','التربية تكون برحمة وبدون التقليل من الابن أو البنت','لازم يشوف نفسه في عينك راجل'],
+ quotes:[
+   {t:'الأب القاسي مبيربيش، الأب القاسي بيعقّد',s:'من كلام الشيخ'},
+   {t:'لو استعجلت مش هتربي، هتعقّد',s:'من كلام الشيخ'},
+   {t:'إن أصل حفظ الصبيان حفظهم من قرناء السوء، ودا لُبّ التربية',s:'من كلام الشيخ'}
+ ],
+ stories:[],
+ situations:['البصق والتمخط والتثاؤب في المجلس','الفرق بين قعدة البنات وقعدة الأولاد','عدم وضع رجل على رجل','التحفظ في التعامل مع اللي علاقتهم مش قريبة، ووضع الألقاب المناسبة','القيام للكبير والمبادرة بالسلام عليه','عدم البدء في الطعام قبل الأب','تعليم الطفل الطريقة الصحيحة للاعتراض بأدب','حسن الاستماع خاصة للكبير وعدم المقاطعة','عدم كثرة الكلام ونقله','منع الكلام البذيء','منع مصاحبة قرناء السوء'],
+ content:['كاروسيل عملي بـ11 موقفًا يوميًا (من البصق والمقاطعة لحد قرناء السوء) وكيفية التعامل معاها برحمة من غير قسوة','ريل: الفرق بين قعدة البنات والأولاد، والتحفظ في التعامل مع غير المقربين ووضع الألقاب']},
+
+{num:'14', title:'كيف نعلم أولادنا طاعة الوالدين', pillar:'3', phase:'indirect', phaseLabel:'غير مباشر — تمهيد',
+ bigIdea:'80% من تعظيم وطاعة الأب بييجي من التوجيه المباشر والقدوة في التعامل، مش الأوامر. البيت المتوازن: الأب يوجّه لاحترام الأم والأم توجّه لاحترام الأب، ولا يخون أحدهما الآخر في ذلك. التربية تأهيل ثم تمرين ثم تكليف، وتحتاج زمنًا واستمرارًا وثباتًا.',
+ hooks:['التربية تأهيل ثم تمرين ثم تكليف','ابنك طالما مبيفتحش بقّه يبقى بيخاف منك','ربّي ابنك على تشجيع من غير إفساد، وتخويف من غير إرهاب','اختاري صح عشان تعرفي تعيشي صح (التزام الأم بأوامر الأب حتى في غيابه)'],
+ quotes:[
+   {t:'التربية تأديب وبناء شخصية مش بناء جسم',s:'من كلام الشيخ'},
+   {t:'التربية تحتاج لزمن واستمرار وثبات',s:'من كلام الشيخ'},
+   {t:'متبصش للنتيجة من يوم ولا اتنين، إنت بتمشي على خطوات والثمرة بتطلع لما يأذن لها الله سبحانه وتعالى',s:'من كلام الشيخ'},
+   {t:'الله هو الذي يربي',s:'من كلام الشيخ'},
+   {t:'ربّي نفسك عشان تعرف تربي ابنك',s:'من كلام الشيخ'}
+ ],
+ stories:[],
+ situations:['الالتزام بأمر الصلاة والطهارة يبدأ تدريجيًا وإلزاميًا من سن السابعة','تخويف الطفل من الكذب والخيانة وتطبيقاتها العملية: إفشاء السر، أخذ حاجة حد من وراه، الصحبوية خيانة لأهله اللي فاكرينه كويس، ترك الصديق يتمادى في الذنب من غير نصح، صرف فلوس الدروس في حاجة تانية وعدم الحضور','مصيبة التقليل من الأم قدام الابن تؤدي إلى: كره الابن لأبيه (لأن عنده حب فطري غريزي لأمه)، وإهانته لزوجته لما يكبر ويتجوز، وإهانته لأمه هو نفسه زي ما كان أبوه بيهينها — لذلك لا يُهين الأب الأم أبدًا أو يقلل من رأيها، لكن بتعريف الأولاد على طبيعة الأنثى والاختلاف بينها وبين الرجل','الاختيار الصحيح للزوج والزوجة من البداية سبب لنجاح تكوين بيت متوازن','تعليم الأبناء تعظيم الشيوخ والمعلمين وأوامرهم وواجباتهم'],
+ content:['بوست تأملي: مصيبة التقليل من الأم أمام الابن وأثرها عليه لما يكبر ويتزوج','محتوى عن التدرج في تعليم الصلاة والطهارة من سن السابعة','محتوى عن تطبيقات الخيانة العملية في حياة الطفل اليومية (إفشاء السر، الصحبوية، فلوس الدروس)']}
+];
+
+const masterHooks10 = [
+ 'لو ابنك مش قادر يستحمل كلمة "أل"... عندك مشكلة تربوية',
+ 'أنت ممكن تكون بتدلّع ابنك بطريقة بتفشّله من غير ما تقصد',
+ 'عايز ابنك يبقى راجل؟ بالاش تربّيه على الراحة',
+ 'مش كل شخص ابنك بيقعد معاه اسمه صاحب... لكنه ممكن يكون مؤثر عليه',
+ 'من إمتى بقى بابا هو العقوبة؟',
+ 'أنت عايز ابنك يبقى واثق من نفسه... ليه بتهينه؟',
+ 'قبل ما تعاقب ابنك... اسمع',
+ 'الهيبة مش إن ابنك يخاف منك',
+ 'ليه بتربي بنتك كأنها ولد؟',
+ 'أخطر حاجة في التربية إنك تستخدم مفتاح واحد لكل الأبواب'
+];
+
+const lecFiltersEl = document.getElementById('lecFilters');
+const lecListEl = document.getElementById('lecList');
+function renderLectures(filter){
+  lecListEl.innerHTML = '';
+  lectureBank.filter(l=>{
+    if(filter==='all') return true;
+    if(filter==='indirect') return l.phase==='indirect';
+    if(filter==='direct') return l.phase==='direct';
+    return l.pillar===filter;
+  }).forEach(l=>{
+    const div = document.createElement('div');
+    div.className = 'lec';
+    const quotesHtml = (l.quotes||[]).map(q=>`<div class="quote-box">«${q.t}»<span class="src">${q.s}</span></div>`).join('');
+    const storiesHtml = (l.stories&&l.stories.length) ? `<div class="lec-sub">📜 إسقاطات من السيرة</div><ul>${l.stories.map(s=>`<li>${s}</li>`).join('')}</ul>` : '';
+    const situationsHtml = (l.situations&&l.situations.length) ? `<div class="lec-sub">🧩 مواقف من المحاضرة</div><ul>${l.situations.map(s=>`<li>${s}</li>`).join('')}</ul>` : '';
+    const readyCopyHtml = (l.readyCopy&&l.readyCopy.length) ? `<div class="lec-sub">✍️ نصوص بوستات جاهزة</div>${l.readyCopy.map(r=>`<div class="ready-copy"><span class="rhook">"${r.hook}"</span>${r.text}</div>`).join('')}` : '';
+    const contentHtml = (l.content&&l.content.length) ? `<div class="lec-sub">🎬 أفكار محتوى جاهزة</div>${l.content.map(c=>`<div class="content-idea">${c}</div>`).join('')}` : '';
+    div.innerHTML = `
+      <div class="lec-head">
+        <span class="lnum">${l.num}</span>
+        <h4>${l.title}</h4>
+        <span class="phase ${l.phase==='direct'?'direct':''}">${l.phaseLabel} · محور ${l.pillar}</span>
+      </div>
+      <div class="lec-body">
+        <p style="font-size:14px;color:var(--ink-soft);">${l.bigIdea}</p>
+        <div class="lec-sub">🪝 الهوكس</div>
+        <ul>${l.hooks.map(h=>`<li>«${h}»</li>`).join('')}</ul>
+        <div class="lec-sub">💬 اقتباسات وأحاديث</div>
+        ${quotesHtml}
+        ${situationsHtml}
+        ${storiesHtml}
+        ${readyCopyHtml}
+        ${contentHtml}
+      </div>`;
+    div.querySelector('.lec-head').addEventListener('click', ()=> div.classList.toggle('open'));
+    lecListEl.appendChild(div);
+  });
+}
+renderLectures('all');
+document.getElementById('masterHooksCard').innerHTML = '<h3>🏆 أقوى 10 هوكس مجمّعة (محاضرة 10 + تربية البنت)</h3><ul>' + masterHooks10.map(h=>`<li>«${h}»</li>`).join('') + '</ul>';
+lecFiltersEl.querySelectorAll('.lec-filter').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    lecFiltersEl.querySelectorAll('.lec-filter').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderLectures(btn.dataset.f);
+  });
+});
+
+// ---------- Reel scripts data ----------
+const reels = [
+  {
+    title:'الحماية الثلاثية',
+    meta:'من محتوى الدورة · 30-45 ث',
+    beats:[
+      ['0-3 ث','هوك','«3 حاجات لو ما حميتش ابنك منهم دلوقتي.. التربية هتبقى صعبة جدًا بعدين»'],
+      ['3-20 ث','المشكلة','لقطات سريعة لمواقف يومية بسيطة تكشف كل مهدد من الثلاثة بدون تهويل'],
+      ['20-35 ث','النصيحة الوقائية','نصيحة عملية خاطفة لكل مهدد — جملة واحدة فقط لكل نقطة'],
+      ['35-45 ث','CTA','«احفظه وابعته لأي أب أو أم» — بلا ذكر اسم الدورة في هذا الأسبوع']
+    ]
+  },
+  {
+    title:'أثر الترف والدلال الزايد',
+    meta:'من محتوى الدورة · 30-45 ث',
+    beats:[
+      ['0-3 ث','هوك','«فاكر إنك بتسعده؟ إزاي الدلال الزايد بيضعف شخصية ابنك»'],
+      ['3-20 ث','التوضيح','الفرق بين الحب غير المشروط وتلبية كل رغبة مادية، بمثال يومي بسيط'],
+      ['20-35 ث','الأثر','أثر الترف على جلد الطفل النفسي عند مواجهة أول صعوبة حقيقية'],
+      ['35-45 ث','CTA','«شاركنا موقف حسيت فيه إنك دلعت أكتر من اللازم»']
+    ]
+  },
+  {
+    title:'استثمار وقت الفراغ',
+    meta:'من محتوى الدورة · 30-45 ث',
+    beats:[
+      ['0-3 ث','هوك','«فيمَ أشغل ابني؟ بدائل عملية تنقذه من الشاشة والملل»'],
+      ['3-25 ث','3 أفكار','3 أنشطة عملية ومحببة تنمّي عقل الطفل بعيد عن الموبايل'],
+      ['25-45 ث','CTA','«شاركنا نشاط بيحبه ابنك بعيد عن الشاشة»']
+    ]
+  },
+  {
+    title:'أهم قيمة تُزرع في البنت',
+    meta:'من محتوى الدورة · موجّه لأهل البنات تحديدًا · 30-45 ث',
+    beats:[
+      ['0-3 ث','هوك','«لو عندك بنت.. دي أهم قيمة لازم تزرعها فيها من الصغر»'],
+      ['3-25 ث','الشرح','خصوصية تربية البنات وأهم مرتكز بيحميها ويبني ثقتها المستقبلية'],
+      ['25-45 ث','CTA','«شاركينا رأيك في تعليق»']
+    ]
+  },
+  {
+    title:'العند وطاعة الوالدين',
+    meta:'من محتوى الدورة · 30-45 ث',
+    beats:[
+      ['0-3 ث','هوك','«تعبت من العند؟ الطريقة اللي تخلي ابنك يسمعك بحب مش خوف»'],
+      ['3-25 ث','الخطوة العملية','خطوة واحدة عملية لبناء طاعة نابعة من احترام متبادل، لا من عقاب مستمر'],
+      ['25-45 ث','CTA','«اكتب كلمة مفاتيح لو حابب توصلك التفاصيل أول ما تنزل»']
+    ]
+  },
+  {
+    title:'ابنك أمانة قبل ما يكون مشروع',
+    meta:'مقدمة الدورة · تمهيد · 30-40 ث',
+    beats:[
+      ['0-4 ث','هوك','«التربية ما بتبدأش بقاعدة؛ بتبدأ إننا نفهم إن ابننا أمانة»'],
+      ['4-25 ث','الفكرة','الفرق بين تشكيل الطفل بالقوة وفهمه ومرافقته في نموه'],
+      ['25-40 ث','CTA','«إيه أكتر موقف بيوجعك مع ولادك؟» — يفتح باب التعليقات']
+    ]
+  },
+  {
+    title:'آداب المجالس',
+    meta:'محور الطاقات والمهارات · 30-40 ث',
+    beats:[
+      ['0-4 ث','هوك','«ابنك بيقاطع الكبار في الكلام؟ ده مش وقاحة.. ده مهارة ناقصة»'],
+      ['4-25 ث','التوضيح','الفرق بين تأديب قاسٍ وتعليم تدريجي لآداب الجلوس والاستماع'],
+      ['25-40 ث','CTA','«جرّب الخطوة دي الأسبوع ده وقولّنا حصل إيه»']
+    ]
+  },
+  {
+    title:'تشويقي — فتح باب التسجيل',
+    meta:'بيعي / تشويقي · بداية شهر البيع · 40-55 ث',
+    beats:[
+      ['0-5 ث','هوك','«دورة مفاتيح تربية الأبناء.. قريبًا بتفتح أبوابها»'],
+      ['5-25 ث','القيمة','14 درسًا في 4 محاور: التأسيس، الحماية، السلوك والطباع، والمهارات — بمنهج نبوي وشرعي منظم'],
+      ['25-40 ث','الوعد','مش وصفة واحدة لكل الأبناء — مفاتيح تتعلمها وتطبقها حسب كل طفل وموقف'],
+      ['40-55 ث','CTA','«الرابط في البايو — كوني أول من يعرف موعد فتح التسجيل»']
+    ]
+  }
+];
+
+const list = document.getElementById('reelList');
+reels.forEach((r,i)=>{
+  const div = document.createElement('div');
+  div.className = 'reel';
+  div.innerHTML = `
+    <div class="reel-head">
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      <h4>${r.title}</h4>
+      <span class="meta">${r.meta}</span>
+    </div>
+    <div class="reel-body">
+      ${r.beats.map(b=>`<div class="beat"><div class="time">${b[0]}</div><div class="txt"><b>${b[1]}</b>${b[2]}</div></div>`).join('')}
+    </div>
+  `;
+  div.querySelector('.reel-head').addEventListener('click', ()=> div.classList.toggle('open'));
+  list.appendChild(div);
+});
+reels.length && list.firstChild.classList.add('open');
+</script>
+
+</body>
+</html>
